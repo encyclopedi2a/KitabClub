@@ -16,10 +16,13 @@
             android:layout_weight="1">
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:src="@drawable/logo" />
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:maxHeight="150dp"
+                android:src="@drawable/sign_up_logo" />
 
         </LinearLayout>
 
@@ -32,6 +35,7 @@
             android:orientation="vertical">
 
             <EditText
+                android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_edittext"
@@ -41,6 +45,7 @@
                 android:textSize="20sp" />
 
             <EditText
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
@@ -52,6 +57,7 @@
                 android:textSize="20sp" />
 
             <Button
+                android:id="@+id/loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/buttonColor"
@@ -63,23 +69,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    >
 
                     <TextView
-                        android:id="@+id/username"
+                        android:id="@+id/signup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:padding="10dp"
-                        android:text="Sign Up  "
-                        android:textSize="20sp" />
+                        android:padding="7dp"
+                        android:text="Sign Up"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -99,16 +107,16 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2">
+                    android:layout_weight="1">
 
                     <TextView
-                        android:id="@+id/password"
+                        android:id="@+id/guestlogin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:padding="10dp"
-                        android:text="  Login as Guest"
-                        android:textSize="20sp" />
+                        android:padding="7dp"
+                        android:text="Login as Guest"
+                        android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
 
