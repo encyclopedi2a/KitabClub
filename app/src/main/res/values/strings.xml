@@ -13,4 +13,6 @@
     <string name="notificationNumber">2</string>
     <string name="title_activity_book_list">BookListActivity</string>
     <string name="booklist">Book List</string>
+    <string name="fiction">Fiction</string>
+    <string name="fictionbooks">31 books</string>
 </resources>

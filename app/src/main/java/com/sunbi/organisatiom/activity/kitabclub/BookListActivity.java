@@ -6,19 +6,40 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.GridView;
+
+import com.sunbi.organisatiom.activity.kitabclub.adapters.GridAdpater;
 
 public class BookListActivity extends AppCompatActivity {
+    private GridView gridView;
+    String[] web = {
+            "Google",
+            "Github",
+            "Instagram",
+            "Facebook",
+            "Flickr",
+    };
+    int[] imageId = {
+            R.drawable.book1,
+            R.drawable.book1,
+            R.drawable.book1,
+            R.drawable.book1,
+            R.drawable.book1,
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
-        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(getResources().getColor(R.color.buttonColor));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        gridView = (GridView) findViewById(R.id.gridView);
+        GridAdpater gridAdpater=new GridAdpater(getApplicationContext(),web,imageId);
+        gridView.setAdapter(gridAdpater);
     }
 
     @Override

@@ -3,8 +3,72 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#d3d3d3"
     tools:context="com.sunbi.organisatiom.activity.kitabclub.BookListActivity">
+    <include layout="@layout/toolbar" />
 
-    <include layout="@layout/toolbar"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/buttonColor"
+        android:orientation="horizontal"
+        android:padding="20dp">
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fiction"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:text="@string/fictionbooks"
+                android:textSize="17sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectanglelayout"
+                android:entries="@array/spinnerArray"
+                android:padding="10dp"
+                android:textColor="#ffffff"
+
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:numColumns="2"
+        android:scrollbars="none"
+        android:layout_margin="10dp"
+        android:horizontalSpacing="8dp"
+        android:verticalSpacing="8dp"
+        android:stretchMode="columnWidth"
+        >
+    </GridView>
 </LinearLayout>
