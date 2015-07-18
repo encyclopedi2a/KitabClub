@@ -10,4 +10,7 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="notificationNumber">2</string>
+    <string name="title_activity_book_list">BookListActivity</string>
+    <string name="booklist">Book List</string>
 </resources>

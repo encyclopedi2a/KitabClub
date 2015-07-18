@@ -4,4 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#ffffff"
-    android:minHeight="?attr/actionBarSize"></android.support.v7.widget.Toolbar>
+    android:minHeight="?attr/actionBarSize">
+
+    <TextView
+        android:id="@+id/titletext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/booklist"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+</android.support.v7.widget.Toolbar>
