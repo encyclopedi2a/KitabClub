@@ -21,7 +21,7 @@ public class Homepage extends AppCompatActivity implements  View.OnClickListener
     private ActionBarDrawerToggle mDrawerToggle;
     private int [] imageTitle={R.drawable.book1,R.drawable.book1,R.drawable.book1,R.drawable.book1,R.drawable.book1,R.drawable.book1,R.drawable.book1,R.drawable.book1,R.drawable.book1};
     private TextView username;
-    private ImageView bookList;
+    private LinearLayout bookList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +34,7 @@ public class Homepage extends AppCompatActivity implements  View.OnClickListener
         TextView titleText=(TextView)findViewById(R.id.titletext);
         titleText.setText("");
         username = (TextView) findViewById(R.id.username);
-        bookList=(ImageView)findViewById(R.id.bookList);
+        bookList=(LinearLayout)findViewById(R.id.bookList);
         bookList.setOnClickListener(this);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
