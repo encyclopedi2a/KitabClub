@@ -30,13 +30,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if ((Button) view == loginButton) {
-            Intent intent = new Intent(MainActivity.this, Homepage.class);
-            startActivity(intent);
-        } else if ((TextView) view == signup) {
-            signup.setBackgroundResource(R.drawable.selector_state);
-        }else if((TextView) view == guestLogin){
-            guestLogin.setBackgroundResource(R.drawable.selector_state);
+        switch (view.getId()){
+            case R.id.loginButton:
+                Intent intent = new Intent(MainActivity.this, Homepage.class);
+                startActivity(intent);
+                break;
+            case R.id.signup:
+                signup.setBackgroundResource(R.drawable.selector_state);
+                break;
+            case R.id.guestlogin:
+                guestLogin.setBackgroundResource(R.drawable.selector_state);
+                break;
+
         }
     }
 }

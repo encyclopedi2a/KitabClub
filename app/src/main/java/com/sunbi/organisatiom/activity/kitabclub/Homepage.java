@@ -2,25 +2,22 @@ package com.sunbi.organisatiom.activity.kitabclub;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.sunbi.organisatiom.activity.kitabclub.fragments.HomepageFragment;
 
 public class Homepage extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-
+    private int [] imageTitle={R.drawable.book1,R.drawable.book1,R.drawable.book1,R.drawable.book1,R.drawable.book1,R.drawable.book1,R.drawable.book1,R.drawable.book1,R.drawable.book1};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +46,8 @@ public class Homepage extends AppCompatActivity {
         mDrawerToggle.syncState();
         TextView textView = (TextView) findViewById(R.id.username);
         textView.setText(Html.fromHtml("Welcome "+"<b>Bijay</b>"));
+        LinearLayout linearLayout=(LinearLayout)findViewById(R.id.bookContainer);
+        setImageInLinerLayout(linearLayout);
     }
 
     @Override
@@ -65,11 +64,17 @@ public class Homepage extends AppCompatActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    private void setupHomeFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = new HomepageFragment();
-        fragmentTransaction.replace(R.id.content_frame, fragment).commit();
-    }
+   private void setImageInLinerLayout(LinearLayout linearLayout){
+       for(int i=0;i<imageTitle.length;i++){
+           ImageView imageView=new ImageView(this);
+           LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+           lp.setMargins(15,30,10,0);
+           imageView.setLayoutParams(lp);
+           imageView.setBackgroundResource(imageTitle[i]);
+           imageView.setAdjustViewBounds(true);
+           imageView.setMaxHeight(50);
+           linearLayout.addView(imageView);
+       }
+   }
 
 }
