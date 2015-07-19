@@ -85,7 +85,7 @@ public class Homepage extends AppCompatActivity implements  View.OnClickListener
                    break;
                case Configuration.SCREENLAYOUT_SIZE_NORMAL:
                    lp.setMargins(15,3,5,3);
-                   username.setTextSize(15);
+                   //username.setTextSize(15);
                    break;
                case Configuration.SCREENLAYOUT_SIZE_SMALL:
                    break;
@@ -103,7 +103,7 @@ public class Homepage extends AppCompatActivity implements  View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.bookList:
-                Intent intent=new Intent(Homepage.this,BookListActivity.class);
+                Intent intent=new Intent(Homepage.this,BookCatagories.class);
                 startActivity(intent);
                 break;
         }

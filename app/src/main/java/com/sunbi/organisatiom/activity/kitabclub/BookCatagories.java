@@ -1,51 +1,49 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.sunbi.organisatiom.activity.kitabclub.adapters.GridAdpater;
+import com.sunbi.organisatiom.activity.kitabclub.adapters.BookCategoriesGridAdpater;
 
-public class BookListActivity extends AppCompatActivity {
+public class BookCatagories extends AppCompatActivity implements View.OnClickListener {
     private GridView gridView;
-    String[] web = {
-            "Google",
-            "Github",
-            "Instagram",
-            "Facebook",
-            "Flickr",
-    };
+    private ImageView arrowImage;
     int[] imageId = {
-            R.drawable.book1,
-            R.drawable.book1,
-            R.drawable.book1,
-            R.drawable.book1,
-            R.drawable.book1,
+            R.drawable.categories,
+            R.drawable.categories,
+            R.drawable.categories,
+            R.drawable.categories,
+            R.drawable.categories,
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_list);
+        setContentView(R.layout.activity_book_catagories);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(getResources().getColor(R.color.buttonColor));
+        toolbar.setBackgroundColor(getResources().getColor(R.color.toolbarcolor));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        TextView titleText = (TextView) findViewById(R.id.titletext);
+        titleText.setText("Book Categories");
         gridView = (GridView) findViewById(R.id.gridView);
-        GridAdpater gridAdpater=new GridAdpater(getApplicationContext(),web,imageId);
+        BookCategoriesGridAdpater gridAdpater = new BookCategoriesGridAdpater(BookCatagories.this, imageId);
         gridView.setAdapter(gridAdpater);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_book_list, menu);
+        getMenuInflater().inflate(R.menu.menu_book_catagories, menu);
         return true;
     }
 
@@ -64,5 +62,11 @@ public class BookListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+
     }
 }

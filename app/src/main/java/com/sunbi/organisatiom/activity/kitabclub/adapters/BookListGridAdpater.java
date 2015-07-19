@@ -13,12 +13,12 @@ import com.sunbi.organisatiom.activity.kitabclub.R;
 /**
  * Created by gokarna on 7/18/15.
  */
-public class GridAdpater extends BaseAdapter {
+public class BookListGridAdpater extends BaseAdapter {
     private Context mContext;
     private final String[] web;
     private final int[] Imageid;
 
-    public GridAdpater(Context c, String[] web, int[] Imageid) {
+    public BookListGridAdpater(Context c, String[] web, int[] Imageid) {
         mContext = c;
         this.Imageid = Imageid;
         this.web = web;
@@ -51,7 +51,7 @@ public class GridAdpater extends BaseAdapter {
 
         if (convertView == null) {
             grid = new View(mContext);
-            grid = inflater.inflate(R.layout.grid_item, null);
+            grid = inflater.inflate(R.layout.book_list_grid_item, null);
             TextView textView = (TextView) grid.findViewById(R.id.gridText);
             ImageView imageView = (ImageView) grid.findViewById(R.id.gridImage);
             textView.setText(web[position]);

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="#ffffff"
+    android:background="#F5F5F5"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="5dp">
@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
         android:textColor="#000000"
         android:textSize="17sp" />
 
@@ -31,7 +32,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#d3d3d3" />
+            android:background="#DCDCDC" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,13 +45,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:padding="5dp"
             android:adjustViewBounds="true"
-            android:maxHeight="30dp"
+            android:maxHeight="40dp"
             android:src="@drawable/favourite" />
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:layout_weight="1"
             />
 
@@ -59,7 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:adjustViewBounds="true"
-            android:maxHeight="30dp"
+            android:padding="5dp"
+            android:maxHeight="40dp"
             android:src="@drawable/cart" />
     </LinearLayout>
 </LinearLayout>

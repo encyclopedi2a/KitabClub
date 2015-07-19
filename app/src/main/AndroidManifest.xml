@@ -23,8 +23,12 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".BookListActivity"
+            android:name=".BookList"
             android:label="@string/title_activity_book_list" >
+        </activity>
+        <activity
+            android:name=".BookCatagories"
+            android:label="@string/title_activity_book_catagories" >
         </activity>
     </application>
 
