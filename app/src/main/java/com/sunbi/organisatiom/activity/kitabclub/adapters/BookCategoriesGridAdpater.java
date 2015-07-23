@@ -8,13 +8,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.andexert.library.RippleView;
 import com.sunbi.organisatiom.activity.kitabclub.BookList;
 import com.sunbi.organisatiom.activity.kitabclub.R;
 
 /**
  * Created by gokarna on 7/18/15.
  */
-public class BookCategoriesGridAdpater extends BaseAdapter implements View.OnClickListener {
+public class BookCategoriesGridAdpater extends BaseAdapter implements RippleView.OnRippleCompleteListener {
     private Context mContext;
     private final int[] Imageid;
 
@@ -49,11 +50,10 @@ public class BookCategoriesGridAdpater extends BaseAdapter implements View.OnCli
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null) {
-            grid = new View(mContext);
             grid = inflater.inflate(R.layout.book_categories_grid_item, null);
             ImageView imageView = (ImageView) grid.findViewById(R.id.gridImage);
-            ImageView arrowImage=(ImageView)grid.findViewById(R.id.arrowImage);
-            arrowImage.setOnClickListener(this);
+            RippleView rippleView=(RippleView)grid.findViewById(R.id.arrowRippleEffect);
+            rippleView.setOnRippleCompleteListener(this);
             imageView.setBackgroundResource(Imageid[position]);
         } else {
             grid = (View) convertView;
@@ -62,7 +62,7 @@ public class BookCategoriesGridAdpater extends BaseAdapter implements View.OnCli
     }
 
     @Override
-    public void onClick(View v) {
+    public void onComplete(RippleView rippleView) {
         Intent intent=new Intent(mContext, BookList.class);
         mContext.startActivity(intent);
     }
