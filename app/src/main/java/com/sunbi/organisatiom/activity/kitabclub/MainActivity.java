@@ -1,54 +1,52 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dd.CircularProgressButton;
-import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionManager;
 import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionReceiver;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ViewTreeObserver.OnGlobalLayoutListener {
     private TextView signup;
     private TextView guestLogin;
     private EditText username, password;
     private CircularProgressButton loginButton;
     private static MainActivity mainActivityInstance;
     private BroadcastReceiver connectionReceiver;
+    private RelativeLayout relativeLayout;
+    private IntentFilter intentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainActivityInstance = this;
-        connectionReceiver = new ConnectionReceiver();
         setContentView(R.layout.activity_main);
+        relativeLayout = (RelativeLayout) findViewById(R.id.parentLayout);
+        relativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(this);
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         loginButton = (CircularProgressButton) findViewById(R.id.loginButton);
         loginButton.setIndeterminateProgressMode(true);
         loginButton.setBackgroundColor(getResources().getColor(R.color.buttonColor));
         loginButton.setStrokeColor(getResources().getColor(R.color.buttonColor));
+        loginButton.setText("LOGIN");
         loginButton.setOnClickListener(this);
         signup = (TextView) findViewById(R.id.signup);
         signup.setOnClickListener(this);
         guestLogin = (TextView) findViewById(R.id.guestlogin);
-        if (new ConnectionManager(getApplicationContext()).isConnectionToInternet()) {
-            loginButton.setText("LOGIN");
-        } else {
-            loginButton.setBackgroundColor(Color.RED);
-            loginButton.setStrokeColor(Color.RED);
-            loginButton.setText("No Internet Connection");
-        }
+        connectionReceiver = new ConnectionReceiver();
+        intentFilter = new IntentFilter();
     }
 
     @Override
@@ -100,28 +98,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onPostResume() {
+        try {
+              registerReceiver(connectionReceiver, intentFilter);
+        } catch (IllegalArgumentException ex) {
+
+        }
         super.onPostResume();
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(connectionReceiver, intentFilter);
+
     }
 
     @Override
     protected void onDestroy() {
+        try {
+             unregisterReceiver(connectionReceiver);
+        } catch (IllegalArgumentException ex) {
+
+        }
         super.onDestroy();
-        unregisterReceiver(connectionReceiver);
+
     }
 
-    private void enableBroadcastReceiver() {
-        PackageManager pm = getApplicationContext().getPackageManager();
-        ComponentName componentName = new ComponentName(MainActivity.this, ConnectionReceiver.class);
-        pm.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP);
+    @Override
+    protected void onPause() {
+        try {
+             unregisterReceiver(connectionReceiver);
+        } catch (IllegalArgumentException ex) {
+
+        }
+        super.onPause();
+
     }
 
-    private void disableBroadcastReceiver() {
-        PackageManager pm = getApplicationContext().getPackageManager();
-        ComponentName componentName = new ComponentName(MainActivity.this, PackageManager.class);
-        pm.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
+    @Override
+    public void onGlobalLayout() {
+        ImageView imageView = (ImageView) findViewById(R.id.logo);
+        int heightDiff = relativeLayout.getRootView().getHeight() - relativeLayout.getHeight();
+        if (heightDiff > 100) { // if more than 100 pixels, its probably a keyboard...
+            imageView.setVisibility(View.GONE);
+        } else {
+            imageView.setVisibility(View.VISIBLE);
+        }
     }
 }

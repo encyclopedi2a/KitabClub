@@ -1,128 +1,119 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:ripple="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="#ffffff"
     tools:context=".MainActivity">
+
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:maxHeight="150dp"
+        android:src="@drawable/sign_up_logo" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_centerInParent="true"
         android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_edittext"
+            android:drawableLeft="@mipmap/username"
+            android:hint="USERNAME"
+            android:padding="15dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_edittext"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@mipmap/password"
+            android:hint="PASSWORD"
+            android:inputType="textPassword"
+            android:padding="15dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="20sp" />
+
+        <com.dd.CircularProgressButton
+            android:id="@+id/loginButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:layout_marginTop="30dp"
+            app:cpb_colorIndicator="@color/buttonColor"
+            app:cpb_colorIndicatorBackground="#ffffff" />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.7">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
-            <ImageView
-                android:layout_width="match_parent"
+
+            <TextView
+                android:id="@+id/signup"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:gravity="center"
-                android:maxHeight="150dp"
-                android:src="@drawable/sign_up_logo" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:padding="4dp"
+                android:text="Sign Up"
+                android:textSize="17sp" />
 
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_weight="1.5"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_edittext"
-                android:drawableLeft="@mipmap/username"
-                android:hint="USERNAME"
-                android:padding="15dp"
-                android:textSize="20sp" />
-
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/custom_edittext"
-                android:drawableLeft="@mipmap/password"
-                android:hint="PASSWORD"
-                android:inputType="textPassword"
-                android:padding="15dp"
-                android:textSize="20sp" />
-
-                <com.dd.CircularProgressButton
-                    android:id="@+id/loginButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#ffffff"
-                    android:textSize="20sp"
-                    app:cpb_iconComplete="@drawable/accept"
-                    app:cpb_textError="No Internet Connection"
-                    app:cpb_colorIndicator="@color/buttonColor"
-                    app:cpb_colorIndicatorBackground="#ffffff"
-                    />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:orientation="horizontal"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-
-                <TextView
-                    android:id="@+id/signup"
-                    android:layout_width="wrap_content"
+                <View
+                    android:layout_width="2dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="5dp"
-                    android:padding="4dp"
-                    android:text="Sign Up"
-                    android:textSize="17sp" />
-
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="left"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="2dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="#999999" />
-                </LinearLayout>
-
-
-                <TextView
-                    android:id="@+id/guestlogin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:padding="4dp"
-                    android:text="Login as Guest"
-                    android:textSize="17sp" />
-
+                    android:layout_gravity="center"
+                    android:background="#999999" />
             </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/guestlogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="4dp"
+                android:text="Login as Guest"
+                android:textSize="17sp" />
 
         </LinearLayout>
 
-
     </LinearLayout>
+
 
 </RelativeLayout>
