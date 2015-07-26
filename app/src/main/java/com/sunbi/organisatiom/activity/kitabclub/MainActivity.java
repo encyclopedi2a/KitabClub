@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.dd.CircularProgressButton;
 import com.sunbi.organisatiom.activity.kitabclub.classes.LoginValidation;
 import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionManager;
@@ -45,6 +46,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loginButton.setIndeterminateProgressMode(true);
         loginButton.setBackgroundResource(R.drawable.selector_state);
         //set the initial state of button
+        setLoginButtonInitialState();
+        registerBroadCastReceiver();
+        initialiseListener();
+    }
+
+    //this is register so that login button automatically react on internet appear and gone
+    private void registerBroadCastReceiver() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        receiver = new ConnectionLoginReceiver();
+        this.registerReceiver(receiver, filter);
+    }
+
+    private void setLoginButtonInitialState() {
         if (new ConnectionManager(getApplicationContext()).isConnectionToInternet()) {
             loginButton.setBackgroundColor(getResources().getColor(R.color.buttonColor));
             loginButton.setStrokeColor(getResources().getColor(R.color.buttonColor));
@@ -54,17 +68,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             loginButton.setStrokeColor(Color.RED);
             loginButton.setText("No Internet Connection");
         }
-        registerBroadCastReceiver();
+    }
+
+    private void initialiseListener() {
         loginButton.setOnClickListener(this);
         signup.setOnClickListener(this);
+        guestLogin.setOnClickListener(this);
         relativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(this);
     }
-    //this is register so that login button automatically react on internet appear and gone
-    private void registerBroadCastReceiver() {
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        receiver = new ConnectionLoginReceiver();
-        this.registerReceiver(receiver, filter);
-    }
+
     private void initialiseView() {
         relativeLayout = (RelativeLayout) findViewById(R.id.parentLayout);
         username = (EditText) findViewById(R.id.username);
@@ -79,25 +91,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.signup:
                 signup.setBackgroundResource(R.drawable.selector_state);
-                Intent intent=new Intent(MainActivity.this,SignUp.class);
+                Intent intent = new Intent(MainActivity.this, SignUp.class);
                 startActivity(intent);
-                finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.guestlogin:
                 guestLogin.setBackgroundResource(R.drawable.selector_state);
+                if (!(loginButton.getText().equals("No Internet Connection"))) {
+                    //this counter value is not required for normal button but the progress button limitation make me do this
+                    if (count == 0) {
+                        loginButton.setProgress(50);
+                        count++;
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                holdLoginDataInSharedPreference("<b>guest</b>");
+                                callHomepage();
+                            }
+                        }, 3000);
+
+                    }
+                }
                 break;
             case R.id.loginButton:
                 if (!(loginButton.getText().equals("No Internet Connection"))) {
                     //this counter value is not required for normal button but the progress button limitation make me do this
                     if (count == 0) {
-                        if (!new LoginValidation(username, password,null).validateLogin()) {
+                        if (!new LoginValidation(username, password, null,null).validateLogin()) {
                             loginButton.setProgress(50);
                             count++;
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    holdLoginDataInSharedPreference();
+                                    holdLoginDataInSharedPreference(username.getText().toString());
                                     callHomepage();
                                 }
                             }, 3000);
@@ -148,9 +174,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //holding data in shared preference so that once login user not not to login again
-    private void holdLoginDataInSharedPreference() {
+    private void holdLoginDataInSharedPreference(String userField) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("username", username.getText().toString());
+        editor.putString("username", userField);
         editor.putBoolean("isFirstTime", false);
         editor.commit();
     }

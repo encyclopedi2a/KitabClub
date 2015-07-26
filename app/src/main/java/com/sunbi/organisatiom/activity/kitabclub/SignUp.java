@@ -1,6 +1,5 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -27,6 +26,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, V
     private static SignUp activityInstance;
     private RelativeLayout relativeLayout;
     private static int count = 0;
+    private EditText email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, V
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         retypePassword = (EditText) findViewById(R.id.retypepassword);
+        email=(EditText)findViewById(R.id.email);
         signUp = (CircularProgressButton) findViewById(R.id.loginButton);
     }
 
@@ -112,15 +113,13 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, V
                 if (!(signUp.getText().equals("No Internet Connection"))) {
                     //this counter value is not required for normal button but the progress button limitation make me do this
                     if (count == 0) {
-                        if (!new LoginValidation(username, password, retypePassword).validateSignUp()) {
+                        if (!new LoginValidation(username, password, retypePassword,email).validateSignUp()) {
                             signUp.setProgress(50);
                             count++;
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Intent intent = new Intent(SignUp.this, MainActivity.class);
-                                    startActivity(intent);
-                                    //finish();
+                                    callLoginPage();
                                 }
                             }, 3000);
                         }
@@ -128,6 +127,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, V
                 }
                 break;
         }
+    }
+    private void callLoginPage() {
+
+        finish();
     }
 
 }

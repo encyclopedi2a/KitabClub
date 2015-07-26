@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -53,7 +54,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener 
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
-        username.setText("Welcome " + new SharedPreferenceValueProvider(getApplicationContext()).returnPreferenceValue());
+        username.setText("Welcome " + Html.fromHtml(new SharedPreferenceValueProvider(getApplicationContext()).returnPreferenceValue()));
         setImageInLinerLayout(linearLayout);
         bookList.setOnClickListener(this);
         logOut.setOnClickListener(this);
@@ -97,7 +98,6 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener 
                     break;
                 case Configuration.SCREENLAYOUT_SIZE_NORMAL:
                     lp.setMargins(15, 3, 5, 3);
-                    //username.setTextSize(15);
                     break;
                 case Configuration.SCREENLAYOUT_SIZE_SMALL:
                     break;

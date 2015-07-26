@@ -75,6 +75,18 @@
             android:inputType="textPassword"
             android:padding="15dp"
             android:textSize="20sp" />
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_edittext"
+            android:drawableLeft="@mipmap/email"
+            android:hint="EMAIL"
+            android:inputType="textEmailAddress"
+            android:padding="15dp"
+            android:textSize="20sp" />
 
         <com.dd.CircularProgressButton
             android:id="@+id/loginButton"
