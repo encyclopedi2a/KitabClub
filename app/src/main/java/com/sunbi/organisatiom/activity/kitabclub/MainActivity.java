@@ -1,9 +1,10 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -13,8 +14,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.dd.CircularProgressButton;
+import com.sunbi.organisatiom.activity.kitabclub.classes.LoginValidation;
+import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionManager;
 import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionReceiver;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ViewTreeObserver.OnGlobalLayoutListener {
@@ -23,30 +25,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText username, password;
     private CircularProgressButton loginButton;
     private static MainActivity mainActivityInstance;
-    private BroadcastReceiver connectionReceiver;
     private RelativeLayout relativeLayout;
-    private IntentFilter intentFilter;
+    private ConnectionReceiver receiver;
+    private static int count = 0;
+    public static final String preference_value = "username_preference";
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //determining if apps is opened for the first time then call login activity otherwise called homepage activity
+        sharedPreferences = getSharedPreferences(MainActivity.preference_value, MODE_PRIVATE);
+        if (!(sharedPreferences.getBoolean("isFirstTime", true))) {
+            callHomepage();
+        }
         mainActivityInstance = this;
         setContentView(R.layout.activity_main);
-        relativeLayout = (RelativeLayout) findViewById(R.id.parentLayout);
+        initialiseView();
+        loginButton.setIndeterminateProgressMode(true);
+        loginButton.setBackgroundResource(R.drawable.selector_state);
+        //set the initial state of button
+        if (new ConnectionManager(getApplicationContext()).isConnectionToInternet()) {
+            loginButton.setBackgroundColor(getResources().getColor(R.color.buttonColor));
+            loginButton.setStrokeColor(getResources().getColor(R.color.buttonColor));
+            loginButton.setText("LOGIN");
+        } else {
+            loginButton.setBackgroundColor(Color.RED);
+            loginButton.setStrokeColor(Color.RED);
+            loginButton.setText("No Internet Connection");
+        }
+        registerBroadCastReceiver();
+        loginButton.setOnClickListener(this);
+        signup.setOnClickListener(this);
         relativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(this);
+    }
+    //this is register so that login button automatically react on internet appear and gone
+    private void registerBroadCastReceiver() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        receiver = new ConnectionReceiver();
+        this.registerReceiver(receiver, filter);
+    }
+    private void initialiseView() {
+        relativeLayout = (RelativeLayout) findViewById(R.id.parentLayout);
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         loginButton = (CircularProgressButton) findViewById(R.id.loginButton);
-        loginButton.setIndeterminateProgressMode(true);
-        loginButton.setBackgroundColor(getResources().getColor(R.color.buttonColor));
-        loginButton.setStrokeColor(getResources().getColor(R.color.buttonColor));
-        loginButton.setText("LOGIN");
-        loginButton.setOnClickListener(this);
         signup = (TextView) findViewById(R.id.signup);
-        signup.setOnClickListener(this);
         guestLogin = (TextView) findViewById(R.id.guestlogin);
-        connectionReceiver = new ConnectionReceiver();
-        intentFilter = new IntentFilter();
     }
 
     @Override
@@ -59,23 +84,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 guestLogin.setBackgroundResource(R.drawable.selector_state);
                 break;
             case R.id.loginButton:
-                if (loginButton.getText().equals("No Internet Connection")) {
-                    //perform nothing
-                } else {
-                    loginButton.setProgress(50);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent(MainActivity.this, Homepage.class);
-                            startActivity(intent);
-                            finish();
-                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                if (!(loginButton.getText().equals("No Internet Connection"))) {
+                    //this counter value is not required for normal button but the progress button limitation make me do this
+                    if (count == 0) {
+                        if (!new LoginValidation(username, password).validateLogin()) {
+                            loginButton.setProgress(50);
+                            count++;
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    holdLoginDataInSharedPreference();
+                                    callHomepage();
+                                }
+                            }, 3000);
                         }
-                    }, 3000);
+                    }
                 }
-
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (receiver != null) {
+            this.unregisterReceiver(receiver);
+        }
+
     }
 
     //return static class for broadcast receivers
@@ -89,44 +124,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             loginButton.setBackgroundColor(getResources().getColor(R.color.buttonColor));
             loginButton.setStrokeColor(getResources().getColor(R.color.buttonColor));
             loginButton.setText("LOGIN");
+            count = 0;
         } else {
             loginButton.setBackgroundColor(Color.RED);
             loginButton.setStrokeColor(Color.RED);
             loginButton.setText("No Internet Connection");
         }
-    }
-
-    @Override
-    protected void onPostResume() {
-        try {
-              registerReceiver(connectionReceiver, intentFilter);
-        } catch (IllegalArgumentException ex) {
-
-        }
-        super.onPostResume();
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        try {
-             unregisterReceiver(connectionReceiver);
-        } catch (IllegalArgumentException ex) {
-
-        }
-        super.onDestroy();
-
-    }
-
-    @Override
-    protected void onPause() {
-        try {
-             unregisterReceiver(connectionReceiver);
-        } catch (IllegalArgumentException ex) {
-
-        }
-        super.onPause();
-
     }
 
     @Override
@@ -138,5 +141,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             imageView.setVisibility(View.VISIBLE);
         }
+    }
+
+    //holding data in shared preference so that once login user not not to login again
+    private void holdLoginDataInSharedPreference() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", username.getText().toString());
+        editor.putBoolean("isFirstTime", false);
+        editor.commit();
+    }
+
+    private void callHomepage() {
+        Intent intent = new Intent(MainActivity.this, Homepage.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }
