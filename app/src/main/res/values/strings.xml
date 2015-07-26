@@ -16,4 +16,5 @@
     <string name="fiction">Fiction</string>
     <string name="fictionbooks">31 books</string>
     <string name="title_activity_book_catagories">BookCatagories</string>
+    <string name="title_activity_sign_up">SignUp</string>
 </resources>

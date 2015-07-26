@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.sunbi.organisatiom.activity.kitabclub">
+    package="com.sunbi.organisatiom.activity.kitabclub" >
 
     <uses-sdk tools:overrideLibrary="com.andexert.library,com.dd.circular.progress.button" />
 
@@ -13,36 +13,39 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
-
     />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        >
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            >
+            android:windowSoftInputMode="adjustResize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".Homepage"
             android:label="@string/title_activity_homepage"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".BookList"
-            android:label="@string/title_activity_book_list"></activity>
+            android:label="@string/title_activity_book_list" />
         <activity
             android:name=".BookCatagories"
-            android:label="@string/title_activity_book_catagories"></activity>
+            android:label="@string/title_activity_book_catagories" />
+        <activity
+            android:name=".SignUp"
+            android:label="@string/title_activity_sign_up"
+            android:windowSoftInputMode="adjustResize"
+            >
+        </activity>
     </application>
 
 </manifest>

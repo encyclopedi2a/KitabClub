@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.dd.CircularProgressButton;
 import com.sunbi.organisatiom.activity.kitabclub.classes.LoginValidation;
 import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionManager;
-import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionReceiver;
+import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionLoginReceiver;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ViewTreeObserver.OnGlobalLayoutListener {
     private TextView signup;
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CircularProgressButton loginButton;
     private static MainActivity mainActivityInstance;
     private RelativeLayout relativeLayout;
-    private ConnectionReceiver receiver;
+    private ConnectionLoginReceiver receiver;
     private static int count = 0;
     public static final String preference_value = "username_preference";
     private SharedPreferences sharedPreferences;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //this is register so that login button automatically react on internet appear and gone
     private void registerBroadCastReceiver() {
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        receiver = new ConnectionReceiver();
+        receiver = new ConnectionLoginReceiver();
         this.registerReceiver(receiver, filter);
     }
     private void initialiseView() {
@@ -79,6 +79,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.signup:
                 signup.setBackgroundResource(R.drawable.selector_state);
+                Intent intent=new Intent(MainActivity.this,SignUp.class);
+                startActivity(intent);
+                finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.guestlogin:
                 guestLogin.setBackgroundResource(R.drawable.selector_state);
@@ -87,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (!(loginButton.getText().equals("No Internet Connection"))) {
                     //this counter value is not required for normal button but the progress button limitation make me do this
                     if (count == 0) {
-                        if (!new LoginValidation(username, password).validateLogin()) {
+                        if (!new LoginValidation(username, password,null).validateLogin()) {
                             loginButton.setProgress(50);
                             count++;
                             new Handler().postDelayed(new Runnable() {
