@@ -4,7 +4,6 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -16,6 +15,8 @@ import com.dd.CircularProgressButton;
 import com.sunbi.organisatiom.activity.kitabclub.classes.LoginValidation;
 import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionManager;
 import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionSignUpReceiver;
+import com.sunbi.organisatiom.activity.kitabclub.json.UsernamePasswordSender;
+import com.sunbi.organisatiom.activity.kitabclub.models.SignUpDTO;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener, ViewTreeObserver.OnGlobalLayoutListener {
     private EditText username;
@@ -61,7 +62,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, V
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         retypePassword = (EditText) findViewById(R.id.retypepassword);
-        email=(EditText)findViewById(R.id.email);
+        email = (EditText) findViewById(R.id.email);
         signUp = (CircularProgressButton) findViewById(R.id.loginButton);
     }
 
@@ -113,24 +114,18 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, V
                 if (!(signUp.getText().equals("No Internet Connection"))) {
                     //this counter value is not required for normal button but the progress button limitation make me do this
                     if (count == 0) {
-                        if (!new LoginValidation(username, password, retypePassword,email).validateSignUp()) {
+                        if (!new LoginValidation(username, password, retypePassword, email).validateSignUp()) {
                             signUp.setProgress(50);
                             count++;
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    callLoginPage();
-                                }
-                            }, 3000);
+                            SignUpDTO signUpDTO = new SignUpDTO();
+                            signUpDTO.setUsername(username.getText().toString());
+                            signUpDTO.setPassword(username.getText().toString());
+                            signUpDTO.setEmail(email.getText().toString());
+                            new UsernamePasswordSender(getApplicationContext(),signUp, signUpDTO).execute();
                         }
                     }
                 }
                 break;
         }
     }
-    private void callLoginPage() {
-
-        finish();
-    }
-
 }

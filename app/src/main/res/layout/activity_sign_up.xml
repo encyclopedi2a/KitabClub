@@ -96,6 +96,7 @@
             android:textColor="#ffffff"
             android:textSize="20sp"
             app:cpb_colorIndicator="@color/buttonColor"
+            app:cpb_iconComplete="@drawable/accept"
             app:cpb_colorIndicatorBackground="#ffffff" />
     </LinearLayout>
 </RelativeLayout>
