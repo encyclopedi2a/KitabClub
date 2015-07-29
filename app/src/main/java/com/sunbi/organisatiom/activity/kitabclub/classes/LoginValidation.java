@@ -45,7 +45,7 @@ public class LoginValidation {
         } else if (reTypePassword.getText().toString().equals("") || (!password.getText().toString().equals(reTypePassword.getText().toString()))) {
             reTypePassword.setError("password do not match");
             flag = true;
-        } else if (email.getText().toString().equals("")||emailValidator(email.getText().toString())) {
+        } else if (email.getText().toString().equals("")||!emailValidator(email.getText().toString())) {
             email.setError("Invalid email address");
             flag = true;
         } else {

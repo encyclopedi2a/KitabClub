@@ -96,8 +96,14 @@
             android:textColor="#ffffff"
             android:textSize="20sp"
             app:cpb_colorIndicator="@color/buttonColor"
+            app:cpb_textIdle="SIGN UP"
+            app:cpb_textError="No Internet Connection!"
+            app:cpb_colorIndicatorBackground="#ffffff"
+            app:cpb_selectorIdle="@drawable/circular_button_idle_state"
+            app:cpb_selectorError="@drawable/circular_button_error_state"
+            app:cpb_selectorComplete="@drawable/circular_button_idle_state"
             app:cpb_iconComplete="@drawable/accept"
-            app:cpb_colorIndicatorBackground="#ffffff" />
+            />
     </LinearLayout>
 </RelativeLayout>
 

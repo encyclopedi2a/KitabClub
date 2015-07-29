@@ -72,7 +72,14 @@
             android:textSize="20sp"
             android:layout_marginTop="30dp"
             app:cpb_colorIndicator="@color/buttonColor"
-            app:cpb_colorIndicatorBackground="#ffffff" />
+            app:cpb_colorIndicatorBackground="#ffffff"
+            app:cpb_textIdle="LOG IN"
+            app:cpb_textError="No internet Connection!"
+            app:cpb_selectorIdle="@drawable/circular_button_idle_state"
+            app:cpb_selectorError="@drawable/circular_button_error_state"
+            app:cpb_selectorComplete="@drawable/circular_button_idle_state"
+            app:cpb_iconComplete="@drawable/accept"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"

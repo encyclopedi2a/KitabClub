@@ -22,7 +22,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    private int[] imageTitle = {R.drawable.book1, R.drawable.book1, R.drawable.book1, R.drawable.book1, R.drawable.book1, R.drawable.book1, R.drawable.book1, R.drawable.book1, R.drawable.book1};
+    private int[] imageTitle = {R.drawable.guy, R.drawable.book1, R.drawable.book1, R.drawable.book1, R.drawable.book1, R.drawable.book1, R.drawable.book1, R.drawable.book1, R.drawable.book1};
     private TextView username, titleText;
     private LinearLayout bookList;
     private ImageView logOut;
@@ -54,7 +54,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener 
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
-        username.setText("Welcome " + Html.fromHtml(new SharedPreferenceValueProvider(getApplicationContext()).returnPreferenceValue()));
+        username.setText(Html.fromHtml("Welcome<b> " +(new SharedPreferenceValueProvider(getApplicationContext()).returnPreferenceValue())));
         setImageInLinerLayout(linearLayout);
         bookList.setOnClickListener(this);
         logOut.setOnClickListener(this);
@@ -88,25 +88,22 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener 
     private void setImageInLinerLayout(LinearLayout linearLayout) {
         for (int i = 0; i < imageTitle.length; i++) {
             ImageView imageView = new ImageView(this);
-            imageView.setMaxHeight(50);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
             lp.gravity = Gravity.CENTER;
             int screenSize = getResources().getConfiguration().screenLayout &
                     Configuration.SCREENLAYOUT_SIZE_MASK;
             switch (screenSize) {
-                case Configuration.SCREENLAYOUT_SIZE_LARGE:
-                    break;
                 case Configuration.SCREENLAYOUT_SIZE_NORMAL:
                     lp.setMargins(15, 3, 5, 3);
                     break;
-                case Configuration.SCREENLAYOUT_SIZE_SMALL:
-                    break;
                 default:
-
             }
             imageView.setLayoutParams(lp);
             imageView.setBackgroundResource(imageTitle[i]);
             imageView.setAdjustViewBounds(true);
+            imageView.getLayoutParams().height=200;
+            imageView.getLayoutParams().width=150;
+            imageView.requestLayout();
             linearLayout.addView(imageView);
         }
     }

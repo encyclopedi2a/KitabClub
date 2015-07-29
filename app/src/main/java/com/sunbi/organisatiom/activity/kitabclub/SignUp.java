@@ -1,7 +1,6 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +14,7 @@ import com.dd.CircularProgressButton;
 import com.sunbi.organisatiom.activity.kitabclub.classes.LoginValidation;
 import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionManager;
 import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionSignUpReceiver;
-import com.sunbi.organisatiom.activity.kitabclub.json.UsernamePasswordSender;
+import com.sunbi.organisatiom.activity.kitabclub.json.SignUpJSON;
 import com.sunbi.organisatiom.activity.kitabclub.models.SignUpDTO;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener, ViewTreeObserver.OnGlobalLayoutListener {
@@ -26,7 +25,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, V
     private ConnectionSignUpReceiver receiver;
     private static SignUp activityInstance;
     private RelativeLayout relativeLayout;
-    private static int count = 0;
     private EditText email;
 
     @Override
@@ -39,13 +37,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, V
         signUp.setBackgroundResource(R.drawable.selector_state);
         //set the initial state of button
         if (new ConnectionManager(getApplicationContext()).isConnectionToInternet()) {
-            signUp.setBackgroundColor(getResources().getColor(R.color.buttonColor));
-            signUp.setStrokeColor(getResources().getColor(R.color.buttonColor));
-            signUp.setText("LOGIN");
+            signUp.setProgress(0);
         } else {
-            signUp.setBackgroundColor(Color.RED);
-            signUp.setStrokeColor(Color.RED);
-            signUp.setText("No Internet Connection");
+           signUp.setProgress(-1);
         }
         registerBroadCastReceiver();
         signUp.setOnClickListener(this);
@@ -75,14 +69,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, V
     public void updateTheLoginButton(final boolean state) {
 
         if (state) {
-            signUp.setBackgroundColor(getResources().getColor(R.color.buttonColor));
-            signUp.setStrokeColor(getResources().getColor(R.color.buttonColor));
-            signUp.setText("SIGN UP");
-            count = 0;
+          signUp.setProgress(0);
         } else {
-            signUp.setBackgroundColor(Color.RED);
-            signUp.setStrokeColor(Color.RED);
-            signUp.setText("No Internet Connection");
+            signUp.setProgress(-1);
         }
     }
 
@@ -111,18 +100,14 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, V
         int id = view.getId();
         switch (id) {
             case R.id.loginButton:
-                if (!(signUp.getText().equals("No Internet Connection"))) {
-                    //this counter value is not required for normal button but the progress button limitation make me do this
-                    if (count == 0) {
+                if (!(signUp.getProgress()==-1)) {
                         if (!new LoginValidation(username, password, retypePassword, email).validateSignUp()) {
                             signUp.setProgress(50);
-                            count++;
                             SignUpDTO signUpDTO = new SignUpDTO();
                             signUpDTO.setUsername(username.getText().toString());
                             signUpDTO.setPassword(username.getText().toString());
                             signUpDTO.setEmail(email.getText().toString());
-                            new UsernamePasswordSender(getApplicationContext(),signUp, signUpDTO).execute();
-                        }
+                            new SignUpJSON(SignUp.this,signUp, signUpDTO).execute();
                     }
                 }
                 break;

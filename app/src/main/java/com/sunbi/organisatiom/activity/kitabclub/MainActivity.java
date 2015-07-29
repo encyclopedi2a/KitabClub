@@ -3,7 +3,6 @@ package com.sunbi.organisatiom.activity.kitabclub;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,11 +13,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dd.CircularProgressButton;
 import com.sunbi.organisatiom.activity.kitabclub.classes.LoginValidation;
-import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionManager;
 import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionLoginReceiver;
+import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionManager;
+import com.sunbi.organisatiom.activity.kitabclub.interfaces.LoginInterface;
+import com.sunbi.organisatiom.activity.kitabclub.json.LoginJSON;
+import com.sunbi.organisatiom.activity.kitabclub.models.SignUpDTO;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ViewTreeObserver.OnGlobalLayoutListener {
     private TextView signup;
@@ -28,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static MainActivity mainActivityInstance;
     private RelativeLayout relativeLayout;
     private ConnectionLoginReceiver receiver;
-    private static int count = 0;
     public static final String preference_value = "username_preference";
     private SharedPreferences sharedPreferences;
 
@@ -60,13 +62,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setLoginButtonInitialState() {
         if (new ConnectionManager(getApplicationContext()).isConnectionToInternet()) {
-            loginButton.setBackgroundColor(getResources().getColor(R.color.buttonColor));
-            loginButton.setStrokeColor(getResources().getColor(R.color.buttonColor));
-            loginButton.setText("LOGIN");
+            loginButton.setProgress(0);
         } else {
-            loginButton.setBackgroundColor(Color.RED);
-            loginButton.setStrokeColor(Color.RED);
-            loginButton.setText("No Internet Connection");
+            loginButton.setProgress(-1);
         }
     }
 
@@ -98,36 +96,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.guestlogin:
                 guestLogin.setBackgroundResource(R.drawable.selector_state);
                 if (!(loginButton.getText().equals("No Internet Connection"))) {
-                    //this counter value is not required for normal button but the progress button limitation make me do this
-                    if (count == 0) {
-                        loginButton.setProgress(50);
-                        count++;
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                holdLoginDataInSharedPreference("<b>guest</b>");
-                                callHomepage();
-                            }
-                        }, 3000);
+                    loginButton.setProgress(50);
 
-                    }
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            holdLoginDataInSharedPreference("<b>guest</b>");
+                            callHomepage();
+                        }
+                    }, 3000);
+
                 }
                 break;
             case R.id.loginButton:
-                if (!(loginButton.getText().equals("No Internet Connection"))) {
-                    //this counter value is not required for normal button but the progress button limitation make me do this
-                    if (count == 0) {
-                        if (!new LoginValidation(username, password, null,null).validateLogin()) {
-                            loginButton.setProgress(50);
-                            count++;
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
+                if (!(loginButton.getProgress() == -1)) {
+                    if (!new LoginValidation(username, password, null, null).validateLogin()) {
+                        loginButton.setProgress(50);
+                        SignUpDTO signUpDTO = new SignUpDTO();
+                        signUpDTO.setUsername(username.getText().toString());
+                        signUpDTO.setPassword(username.getText().toString());
+                        new LoginJSON(MainActivity.this, loginButton, signUpDTO, new LoginInterface() {
+                            @Override
+                            public void result(boolean result) {
+                                if (result == true) {
                                     holdLoginDataInSharedPreference(username.getText().toString());
-                                    callHomepage();
+                                    loginButton.setProgress(100);
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            callHomepage();
+                                        }
+                                    },2000);
+                                } else {
+                                    Toast.makeText(MainActivity.this, "Invalid username and password. Try Again!", Toast.LENGTH_LONG).show();
+                                    loginButton.setProgress(0);
                                 }
-                            }, 3000);
-                        }
+                            }
+                        }).execute();
                     }
                 }
                 break;
@@ -151,14 +156,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void updateTheLoginButton(final boolean state) {
 
         if (state) {
-            loginButton.setBackgroundColor(getResources().getColor(R.color.buttonColor));
-            loginButton.setStrokeColor(getResources().getColor(R.color.buttonColor));
-            loginButton.setText("LOGIN");
-            count = 0;
+            loginButton.setProgress(0);
         } else {
-            loginButton.setBackgroundColor(Color.RED);
-            loginButton.setStrokeColor(Color.RED);
-            loginButton.setText("No Internet Connection");
+            loginButton.setProgress(-1);
         }
     }
 
@@ -186,5 +186,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
         finish();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
     }
 }

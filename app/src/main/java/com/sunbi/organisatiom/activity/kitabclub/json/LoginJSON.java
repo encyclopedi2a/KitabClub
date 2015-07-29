@@ -2,12 +2,9 @@ package com.sunbi.organisatiom.activity.kitabclub.json;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.widget.Toast;
 
 import com.dd.CircularProgressButton;
-import com.sunbi.organisatiom.activity.kitabclub.R;
-import com.sunbi.organisatiom.activity.kitabclub.SignUp;
+import com.sunbi.organisatiom.activity.kitabclub.interfaces.LoginInterface;
 import com.sunbi.organisatiom.activity.kitabclub.models.SignUpDTO;
 
 import org.apache.http.HttpResponse;
@@ -25,32 +22,33 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- * Created by gokarna on 7/27/15.
+ * Created by gokarna on 7/29/15.
  */
-public class UsernamePasswordSender extends AsyncTask<Void, Void, Void> {
-    private String text = "";
-    private CircularProgressButton signUpButton;
-    private SignUpDTO signUp;
+public class LoginJSON extends AsyncTask<Void, Void, Boolean> {
+    private LoginInterface loginInterface;
     private Context context;
+    private SignUpDTO signUpDTO;
+    private CircularProgressButton circularProgressButton;
+    private Boolean result;
+    private String text;
 
-    public UsernamePasswordSender(Context context,CircularProgressButton signUpBotton, SignUpDTO signUp) {
-        this.signUpButton = signUpBotton;
-        this.signUp = signUp;
-        this.context=context;
+    public LoginJSON(Context context, CircularProgressButton circularProgressButton, SignUpDTO signUpDTO, LoginInterface loginInterface) {
+        this.context = context;
+        this.circularProgressButton = circularProgressButton;
+        this.signUpDTO = signUpDTO;
+        this.loginInterface = loginInterface;
     }
 
     @Override
-    protected Void doInBackground(Void... params) {
-        // Create a new HttpClient and Post Header
+    protected Boolean doInBackground(Void... params) {
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost("http://gokarna.byethost31.com/signup.php");
+        HttpPost httppost = new HttpPost("http://gokarna.byethost31.com/login.php");
         JSONObject json = new JSONObject();
 
         try {
             // JSON data:
-            json.put("username", signUp.getUsername());
-            json.put("password", signUp.getPassword());
-            json.put("email", signUp.getEmail());
+            json.put("username", signUpDTO.getUsername());
+            json.put("password", signUpDTO.getPassword());
 
             JSONArray postjson = new JSONArray();
             postjson.put(json);
@@ -83,7 +81,6 @@ public class UsernamePasswordSender extends AsyncTask<Void, Void, Void> {
                     }
                 }
                 text = sb.toString();
-
             }
 
         } catch (ClientProtocolException e) {
@@ -97,20 +94,13 @@ public class UsernamePasswordSender extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
-        if (text.equals("success")) {
-            signUpButton.setProgress(100);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ((SignUp)(context)).finish();
-                }
-            },2000);
-        }else{
-            Toast.makeText(context,"Error!",Toast.LENGTH_LONG).show();
-            signUpButton.setBackgroundColor(context.getResources().getColor(R.color.buttonColor));
-            signUpButton.setStrokeColor(context.getResources().getColor(R.color.buttonColor));
-            signUpButton.setText("SIGN UP");
+    protected void onPostExecute(Boolean result) {
+        if (loginInterface != null) {
+            if (text.trim().equalsIgnoreCase("success")) {
+                loginInterface.result(true);
+            } else {
+                loginInterface.result(false);
+            }
         }
     }
 }
