@@ -3,7 +3,11 @@ package com.sunbi.organisatiom.activity.kitabclub;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,18 +15,23 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.sunbi.organisatiom.activity.kitabclub.classes.SharedPreferenceValueProvider;
+import com.sunbi.organisatiom.activity.kitabclub.fragments.About;
+import com.sunbi.organisatiom.activity.kitabclub.fragments.Feedback;
 
-public class Homepage extends AppCompatActivity implements View.OnClickListener {
+public class Homepage extends AppCompatActivity implements View.OnClickListener, ListView.OnItemClickListener {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    private int[] imageTitle = {R.drawable.guy, R.drawable.book1, R.drawable.book1, R.drawable.book1, R.drawable.book1, R.drawable.book1, R.drawable.book1, R.drawable.book1, R.drawable.book1};
+    private int[] imageTitle = {R.drawable.guy, R.drawable.thistle, R.drawable.guy, R.drawable.thistle, R.drawable.guy, R.drawable.thistle, R.drawable.book1, R.drawable.book1, R.drawable.book1};
     private TextView username, titleText;
     private LinearLayout bookList;
     private ImageView logOut;
@@ -54,10 +63,12 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener 
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
-        username.setText(Html.fromHtml("Welcome<b> " +(new SharedPreferenceValueProvider(getApplicationContext()).returnPreferenceValue())));
+        username.setText(Html.fromHtml("Welcome<b> " + (new SharedPreferenceValueProvider(getApplicationContext()).returnPreferenceValue())));
+        prepareDrawerList();
         setImageInLinerLayout(linearLayout);
         bookList.setOnClickListener(this);
         logOut.setOnClickListener(this);
+        mDrawerList.setOnItemClickListener(this);
     }
 
     private void initialiseLayout() {
@@ -85,6 +96,20 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener 
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    private void prepareDrawerList() {
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1
+                , new String[]{"  My Books", "  Book List", "  Updates", "  About", "  Contact", "  Feedback", "  Notification", "  Facebook", "  Messages", " "}) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView textView = (TextView) view.findViewById(android.R.id.text1);
+                textView.setTextColor(Color.parseColor("#767676"));
+                return view;
+            }
+        };
+        mDrawerList.setAdapter(arrayAdapter);
+    }
+
     private void setImageInLinerLayout(LinearLayout linearLayout) {
         for (int i = 0; i < imageTitle.length; i++) {
             ImageView imageView = new ImageView(this);
@@ -101,8 +126,8 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener 
             imageView.setLayoutParams(lp);
             imageView.setBackgroundResource(imageTitle[i]);
             imageView.setAdjustViewBounds(true);
-            imageView.getLayoutParams().height=200;
-            imageView.getLayoutParams().width=150;
+            imageView.getLayoutParams().height = 220;
+            imageView.getLayoutParams().width = 150;
             imageView.requestLayout();
             linearLayout.addView(imageView);
         }
@@ -120,9 +145,42 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean("isFirstTime", true);
                 editor.commit();
-                Intent intents =new Intent(Homepage.this,MainActivity.class);
+                Intent intents = new Intent(Homepage.this, MainActivity.class);
                 startActivity(intents);
                 finish();
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment activeFragment = getSupportFragmentManager().findFragmentByTag("FRAGMENT_FEEDBACK");
+        if (activeFragment != null) {
+            getSupportFragmentManager().beginTransaction().remove(activeFragment).commit();
+        }
+        switch (position) {
+            case 0:
+                Fragment fragment = new Feedback();
+                fragmentTransaction.add(R.id.content_frame, fragment, "FRAGMENT_FEEDBACK");
+                break;
+            case 1:
+                Fragment fragment1 = new About();
+                fragmentTransaction.add(R.id.content_frame, fragment1, "FRAGMENT_FEEDBACK");
+                break;
+        }
+        fragmentTransaction.commit();
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag("FRAGMENT_FEEDBACK");
+        if (fragment != null) {
+            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        } else {
+            super.onBackPressed();
+        }
+
     }
 }
