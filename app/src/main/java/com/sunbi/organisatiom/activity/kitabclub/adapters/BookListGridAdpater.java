@@ -1,6 +1,7 @@
 package com.sunbi.organisatiom.activity.kitabclub.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.sunbi.organisatiom.activity.kitabclub.BookCart;
 import com.sunbi.organisatiom.activity.kitabclub.R;
 
 /**
@@ -56,6 +58,14 @@ public class BookListGridAdpater extends BaseAdapter {
             ImageView imageView = (ImageView) grid.findViewById(R.id.gridImage);
             textView.setText(web[position]);
             imageView.setImageResource(Imageid[position]);
+            ImageView cartImage=(ImageView)grid.findViewById(R.id.cart);
+            cartImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(mContext, BookCart.class);
+                    mContext.startActivity(intent);
+                }
+            });
         } else {
             grid = (View) convertView;
         }

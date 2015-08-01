@@ -38,7 +38,7 @@ public class BookList extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         gridView = (GridView) findViewById(R.id.gridView);
-        BookListGridAdpater gridAdpater=new BookListGridAdpater(getApplicationContext(),web,imageId);
+        BookListGridAdpater gridAdpater=new BookListGridAdpater(this,web,imageId);
         gridView.setAdapter(gridAdpater);
     }
 

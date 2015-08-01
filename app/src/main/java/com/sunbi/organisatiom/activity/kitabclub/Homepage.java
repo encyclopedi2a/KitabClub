@@ -1,9 +1,12 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
+import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -34,10 +38,12 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
     private int[] imageTitle = {R.drawable.guy, R.drawable.thistle, R.drawable.guy, R.drawable.thistle, R.drawable.guy, R.drawable.thistle, R.drawable.book1, R.drawable.book1, R.drawable.book1};
     private TextView username, titleText;
     private LinearLayout bookList;
-    private ImageView logOut;
+    private ImageView logOut, faceBook;
     private Toolbar toolbar;
     private LinearLayout linearLayout;
+    private HorizontalScrollView scrollView;
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,10 +72,16 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         username.setText(Html.fromHtml("Welcome<b> " + (new SharedPreferenceValueProvider(getApplicationContext()).returnPreferenceValue())));
         prepareDrawerList();
         setImageInLinerLayout(linearLayout);
+        ObjectAnimator animator = ObjectAnimator.ofInt(scrollView, "scrollX", 810);
+        animator.setDuration(15000);
+        animator.setRepeatCount(100);
+        animator.start();
         bookList.setOnClickListener(this);
         logOut.setOnClickListener(this);
+        faceBook.setOnClickListener(this);
         mDrawerList.setOnItemClickListener(this);
     }
+
 
     private void initialiseLayout() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -80,21 +92,10 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         bookList = (LinearLayout) findViewById(R.id.bookList);
         linearLayout = (LinearLayout) findViewById(R.id.bookContainer);
         logOut = (ImageView) findViewById(R.id.messages);
+        faceBook = (ImageView) findViewById(R.id.facebook);
+        scrollView = (HorizontalScrollView) findViewById(R.id.scrollView);
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
 
     private void prepareDrawerList() {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1
@@ -112,7 +113,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
 
     private void setImageInLinerLayout(LinearLayout linearLayout) {
         for (int i = 0; i < imageTitle.length; i++) {
-            ImageView imageView = new ImageView(this);
+            final ImageView imageView = new ImageView(this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
             lp.gravity = Gravity.CENTER;
             int screenSize = getResources().getConfiguration().screenLayout &
@@ -126,11 +127,25 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
             imageView.setLayoutParams(lp);
             imageView.setBackgroundResource(imageTitle[i]);
             imageView.setAdjustViewBounds(true);
-            imageView.getLayoutParams().height = 220;
+            imageView.getLayoutParams().height = 200;
             imageView.getLayoutParams().width = 150;
             imageView.requestLayout();
             linearLayout.addView(imageView);
         }
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -148,6 +163,12 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
                 Intent intents = new Intent(Homepage.this, MainActivity.class);
                 startActivity(intents);
                 finish();
+                break;
+            case R.id.facebook:
+                Intent facebookIntent = new Intent(Homepage.this, Facebook.class);
+                startActivity(facebookIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                break;
         }
     }
 
@@ -183,4 +204,5 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         }
 
     }
+
 }

@@ -17,4 +17,6 @@
     <string name="fictionbooks">31 books</string>
     <string name="title_activity_book_catagories">BookCatagories</string>
     <string name="title_activity_sign_up">SignUp</string>
+    <string name="title_activity_facebook">Facebook</string>
+    <string name="title_activity_book_cart">BookCart</string>
 </resources>
