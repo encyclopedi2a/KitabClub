@@ -107,7 +107,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
 
     private void prepareDrawerList() {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1
-                , new String[]{"  Home", "  About Us", "  Contact", "  Location", "  Sign Out"}) {
+                , new String[]{"  Home", "  About Us", "  Location", "  Sign Out"}) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -203,10 +203,6 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
                 fragmentTransaction.add(R.id.content_frame, fragment2, "FRAGMENT_FEEDBACK");
                 break;
             case 3:
-                Fragment fragment3 = new About();
-                fragmentTransaction.add(R.id.content_frame, fragment3, "FRAGMENT_FEEDBACK");
-                break;
-            case 4:
                 SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.preference_value, MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean("isFirstTime", true);

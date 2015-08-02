@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="12 Books"
                 android:layout_marginTop="-5dp"
-                android:textColor="#e6e6e9"
+                android:textColor="#DCDCDC"
                 android:textSize="15sp" />
 
         </LinearLayout>

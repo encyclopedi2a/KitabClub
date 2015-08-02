@@ -1,5 +1,6 @@
 package com.sunbi.organisatiom.activity.kitabclub.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -9,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.andexert.library.RippleView;
-import com.sunbi.organisatiom.activity.kitabclub.BookList;
+import com.sunbi.organisatiom.activity.kitabclub.BookSubCategory;
 import com.sunbi.organisatiom.activity.kitabclub.R;
 
 /**
@@ -63,7 +64,8 @@ public class BookCategoriesGridAdpater extends BaseAdapter implements RippleView
 
     @Override
     public void onComplete(RippleView rippleView) {
-        Intent intent=new Intent(mContext, BookList.class);
+        Intent intent=new Intent(mContext, BookSubCategory.class);
         mContext.startActivity(intent);
+        ((Activity)mContext).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

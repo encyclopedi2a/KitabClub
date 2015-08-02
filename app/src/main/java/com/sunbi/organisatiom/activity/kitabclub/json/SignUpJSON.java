@@ -43,7 +43,7 @@ public class SignUpJSON extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... params) {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost("http://gokarna.byethost31.com/signup.php");
+        HttpPost httppost = new HttpPost("http://thesunbihosting.com/demo/book_store/json/register");
         JSONObject json = new JSONObject();
 
         try {

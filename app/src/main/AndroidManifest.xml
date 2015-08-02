@@ -50,6 +50,10 @@
             android:name=".BookCart"
             android:label="@string/title_activity_book_cart" >
         </activity>
+        <activity
+            android:name=".BookSubCategory"
+            android:label="@string/title_activity_book_sub_category" >
+        </activity>
     </application>
 
 </manifest>

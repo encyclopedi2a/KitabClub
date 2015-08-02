@@ -8,29 +8,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.sunbi.organisatiom.activity.kitabclub.BookCart;
+import com.andexert.library.RippleView;
+import com.sunbi.organisatiom.activity.kitabclub.BookList;
 import com.sunbi.organisatiom.activity.kitabclub.R;
 
 /**
  * Created by gokarna on 7/18/15.
  */
-public class BookListGridAdpater extends BaseAdapter {
+public class BookSubCategoriesGridAdpater extends BaseAdapter implements RippleView.OnRippleCompleteListener {
     private Context mContext;
-    private final String[] web;
     private final int[] Imageid;
 
-    public BookListGridAdpater(Context c, String[] web, int[] Imageid) {
+    public BookSubCategoriesGridAdpater(Context c, int[] Imageid) {
         mContext = c;
         this.Imageid = Imageid;
-        this.web = web;
     }
 
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return web.length;
+        return Imageid.length;
     }
 
     @Override
@@ -53,24 +51,21 @@ public class BookListGridAdpater extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null) {
-            grid = new View(mContext);
-            grid = inflater.inflate(R.layout.book_list_grid_item, null);
-            TextView textView = (TextView) grid.findViewById(R.id.gridText);
+            grid = inflater.inflate(R.layout.book_categories_grid_item, null);
             ImageView imageView = (ImageView) grid.findViewById(R.id.gridImage);
-            textView.setText(web[position]);
-            imageView.setImageResource(Imageid[position]);
-            ImageView cartImage = (ImageView) grid.findViewById(R.id.cart);
-            cartImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(mContext, BookCart.class);
-                    mContext.startActivity(intent);
-                    ((Activity) mContext).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                }
-            });
+            RippleView rippleView=(RippleView)grid.findViewById(R.id.arrowRippleEffect);
+            rippleView.setOnRippleCompleteListener(this);
+            imageView.setBackgroundResource(Imageid[position]);
         } else {
             grid = (View) convertView;
         }
         return grid;
+    }
+
+    @Override
+    public void onComplete(RippleView rippleView) {
+        Intent intent=new Intent(mContext, BookList.class);
+        mContext.startActivity(intent);
+        ((Activity)mContext).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

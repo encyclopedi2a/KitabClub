@@ -20,12 +20,10 @@
             android:orientation="vertical">
 
             <FrameLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:background="#ffffff">
-
                 <include layout="@layout/toolbar" />
 
                 <ImageView
@@ -141,7 +139,7 @@
                     </LinearLayout>
 
                     <View
-                        android:layout_width="2dp"
+                        android:layout_width="1dp"
                         android:layout_height="match_parent"
                         android:background="#DCDCDC" />
 
@@ -172,7 +170,7 @@
                     </LinearLayout>
 
                     <View
-                        android:layout_width="2dp"
+                        android:layout_width="1dp"
                         android:layout_height="match_parent"
                         android:background="#DCDCDC" />
 
@@ -307,7 +305,7 @@
                 android:layout_gravity="start"
                 android:layout_margin="5dp"
                 android:choiceMode="singleChoice"
-                android:divider="@color/buttonColor"
+                android:divider="#DCDCDC"
                 android:dividerHeight="0.5dp"
                 android:scrollbars="none" />
         </LinearLayout>

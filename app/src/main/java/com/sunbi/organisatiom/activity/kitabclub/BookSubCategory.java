@@ -1,18 +1,18 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sunbi.organisatiom.activity.kitabclub.adapters.BookCategoriesGridAdpater;
+import com.sunbi.organisatiom.activity.kitabclub.adapters.BookSubCategoriesGridAdpater;
 
-public class BookCatagories extends AppCompatActivity implements View.OnClickListener {
+public class BookSubCategory extends AppCompatActivity {
     private GridView gridView;
     private ImageView arrowImage;
     int[] imageId = {
@@ -26,24 +26,24 @@ public class BookCatagories extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_catagories);
+        setContentView(R.layout.activity_book_sub_category);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(getResources().getColor(R.color.toolbarcolor));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         TextView titleText = (TextView) findViewById(R.id.titletext);
-        titleText.setText("Book Categories");
+        titleText.setText("Book Sub-Categories");
+        titleText.setTypeface(null, Typeface.BOLD);
         gridView = (GridView) findViewById(R.id.gridView);
-        BookCategoriesGridAdpater gridAdpater = new BookCategoriesGridAdpater(BookCatagories.this, imageId);
+        BookSubCategoriesGridAdpater gridAdpater = new BookSubCategoriesGridAdpater(BookSubCategory.this, imageId);
         gridView.setAdapter(gridAdpater);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_book_catagories, menu);
+        getMenuInflater().inflate(R.menu.menu_book_sub_category, menu);
         return true;
     }
 
@@ -62,11 +62,5 @@ public class BookCatagories extends AppCompatActivity implements View.OnClickLis
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View view) {
-
-
     }
 }
