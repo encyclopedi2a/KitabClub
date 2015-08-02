@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.HorizontalScrollView;
@@ -27,9 +30,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import com.sunbi.organisatiom.activity.kitabclub.classes.SharedPreferenceValueProvider;
 import com.sunbi.organisatiom.activity.kitabclub.fragments.About;
-import com.sunbi.organisatiom.activity.kitabclub.fragments.Feedback;
 
 public class Homepage extends AppCompatActivity implements View.OnClickListener, ListView.OnItemClickListener {
     private DrawerLayout mDrawerLayout;
@@ -42,6 +45,8 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
     private Toolbar toolbar;
     private LinearLayout linearLayout;
     private HorizontalScrollView scrollView;
+    private WebView webView;
+    private CircleProgressBar progressBar;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -71,6 +76,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         mDrawerToggle.syncState();
         username.setText(Html.fromHtml("Welcome<b> " + (new SharedPreferenceValueProvider(getApplicationContext()).returnPreferenceValue())));
         prepareDrawerList();
+        prepareFacebookDrawer();
         setImageInLinerLayout(linearLayout);
         ObjectAnimator animator = ObjectAnimator.ofInt(scrollView, "scrollX", 810);
         animator.setDuration(15000);
@@ -94,12 +100,14 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         logOut = (ImageView) findViewById(R.id.messages);
         faceBook = (ImageView) findViewById(R.id.facebook);
         scrollView = (HorizontalScrollView) findViewById(R.id.scrollView);
+        webView = (WebView) findViewById(R.id.webview);
+        progressBar = (CircleProgressBar) findViewById(R.id.progressBar);
     }
 
 
     private void prepareDrawerList() {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1
-                , new String[]{"  My Books", "  Book List", "  Updates", "  About", "  Contact", "  Feedback", "  Notification", "  Facebook", "  Messages", " "}) {
+                , new String[]{"  Home", "  About Us", "  Contact", "  Location", "  Sign Out"}) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -109,6 +117,17 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
             }
         };
         mDrawerList.setAdapter(arrayAdapter);
+    }
+
+    private void prepareFacebookDrawer() {
+        webView.getSettings().setSupportZoom(true);
+        webView.setInitialScale(1);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.setWebViewClient(new MyWebViewClient());
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl("http://www.facebook.com");
     }
 
     private void setImageInLinerLayout(LinearLayout linearLayout) {
@@ -156,18 +175,9 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
                 startActivity(intent);
                 break;
             case R.id.messages:
-                SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.preference_value, MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("isFirstTime", true);
-                editor.commit();
-                Intent intents = new Intent(Homepage.this, MainActivity.class);
-                startActivity(intents);
-                finish();
                 break;
             case R.id.facebook:
-                Intent facebookIntent = new Intent(Homepage.this, Facebook.class);
-                startActivity(facebookIntent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                mDrawerLayout.openDrawer(Gravity.RIGHT);
                 break;
         }
     }
@@ -182,12 +192,28 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         }
         switch (position) {
             case 0:
-                Fragment fragment = new Feedback();
-                fragmentTransaction.add(R.id.content_frame, fragment, "FRAGMENT_FEEDBACK");
+               //display simply a hove by removing the active fragment
                 break;
             case 1:
                 Fragment fragment1 = new About();
                 fragmentTransaction.add(R.id.content_frame, fragment1, "FRAGMENT_FEEDBACK");
+                break;
+            case 2:
+                Fragment fragment2 = new About();
+                fragmentTransaction.add(R.id.content_frame, fragment2, "FRAGMENT_FEEDBACK");
+                break;
+            case 3:
+                Fragment fragment3 = new About();
+                fragmentTransaction.add(R.id.content_frame, fragment3, "FRAGMENT_FEEDBACK");
+                break;
+            case 4:
+                SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.preference_value, MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("isFirstTime", true);
+                editor.commit();
+                Intent intents = new Intent(Homepage.this, MainActivity.class);
+                startActivity(intents);
+                finish();
                 break;
         }
         fragmentTransaction.commit();
@@ -205,4 +231,27 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
 
     }
 
+    public class MyWebViewClient extends WebViewClient {
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            // TODO Auto-generated method stub
+            super.onPageStarted(view, url, favicon);
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            // TODO Auto-generated method stub
+            progressBar.setVisibility(View.VISIBLE);
+            view.loadUrl(url);
+            return true;
+
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            // TODO Auto-generated method stub
+            super.onPageFinished(view, url);
+            progressBar.setVisibility(View.GONE);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,6 +35,7 @@ public class BookCatagories extends AppCompatActivity implements View.OnClickLis
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         TextView titleText = (TextView) findViewById(R.id.titletext);
         titleText.setText("Book Categories");
+        titleText.setTypeface(null,Typeface.BOLD);
         gridView = (GridView) findViewById(R.id.gridView);
         BookCategoriesGridAdpater gridAdpater = new BookCategoriesGridAdpater(BookCatagories.this, imageId);
         gridView.setAdapter(gridAdpater);

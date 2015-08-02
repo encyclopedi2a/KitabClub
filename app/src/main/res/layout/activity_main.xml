@@ -49,7 +49,7 @@
             android:hint="USERNAME"
             android:padding="15dp"
             android:layout_marginBottom="10dp"
-            android:textSize="20sp" />
+            android:textSize="17sp" />
 
         <EditText
             android:id="@+id/password"
@@ -62,14 +62,14 @@
             android:inputType="textPassword"
             android:padding="15dp"
             android:layout_marginBottom="10dp"
-            android:textSize="20sp" />
+            android:textSize="17sp" />
 
         <com.dd.CircularProgressButton
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#ffffff"
-            android:textSize="20sp"
+            android:textSize="17sp"
             android:layout_marginTop="30dp"
             app:cpb_colorIndicator="@color/buttonColor"
             app:cpb_colorIndicatorBackground="#ffffff"

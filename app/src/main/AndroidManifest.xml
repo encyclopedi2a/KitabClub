@@ -47,10 +47,6 @@
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
-            android:name=".Facebook"
-            android:label="@string/title_activity_facebook" >
-        </activity>
-        <activity
             android:name=".BookCart"
             android:label="@string/title_activity_book_cart" >
         </activity>

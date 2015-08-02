@@ -35,15 +35,15 @@
                 android:layout_height="wrap_content"
                 android:text="Non Fiction"
                 android:textColor="#767676"
-                android:textSize="20sp" />
+                android:textSize="17sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="12 Books"
                 android:layout_marginTop="-5dp"
-                android:textColor="#e6e6e6"
-                android:textSize="17sp" />
+                android:textColor="#e6e6e9"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
