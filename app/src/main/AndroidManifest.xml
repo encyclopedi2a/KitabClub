@@ -54,6 +54,10 @@
             android:name=".BookSubCategory"
             android:label="@string/title_activity_book_sub_category" >
         </activity>
+        <activity
+            android:name=".MyBooks"
+            android:label="@string/title_activity_my_books" >
+        </activity>
     </application>
 
 </manifest>

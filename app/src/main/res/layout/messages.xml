@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/messagelayout"
+    android:layout_width="250dp"
+    android:background="#d3d3d3"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/rectangle_background_edittext"
+        android:hint="NAME"
+        android:padding="10dp"
+        android:textSize="15sp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/rectangle_background_edittext"
+        android:hint="EMAIL"
+        android:padding="10dp"
+        android:textSize="15sp" />
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/rectangle_background_edittext"
+        android:hint="TYPE YOUR MESSAGES HERE"
+        android:textSize="15sp" />
+
+    <com.dd.CircularProgressButton
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        app:cpb_colorIndicator="@color/buttonColor"
+        app:cpb_colorIndicatorBackground="#ffffff"
+        app:cpb_iconComplete="@drawable/accept"
+        app:cpb_selectorComplete="@drawable/circular_button_idle_state"
+        app:cpb_selectorError="@drawable/circular_button_error_state"
+        app:cpb_selectorIdle="@drawable/circular_button_idle_state"
+        app:cpb_textError="No internet Connection!"
+        app:cpb_textIdle="SEND" />
+</LinearLayout>

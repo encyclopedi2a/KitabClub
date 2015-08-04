@@ -14,7 +14,7 @@ import com.dd.CircularProgressButton;
 import com.sunbi.organisatiom.activity.kitabclub.classes.LoginValidation;
 import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionManager;
 import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionSignUpReceiver;
-import com.sunbi.organisatiom.activity.kitabclub.json.SignUpJSON;
+import com.sunbi.organisatiom.activity.kitabclub.json.SignUpVolleyJson;
 import com.sunbi.organisatiom.activity.kitabclub.models.SignUpDTO;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener, ViewTreeObserver.OnGlobalLayoutListener {
@@ -39,7 +39,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, V
         if (new ConnectionManager(getApplicationContext()).isConnectionToInternet()) {
             signUp.setProgress(0);
         } else {
-           signUp.setProgress(-1);
+            signUp.setProgress(-1);
         }
         registerBroadCastReceiver();
         signUp.setOnClickListener(this);
@@ -69,7 +69,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, V
     public void updateTheLoginButton(final boolean state) {
 
         if (state) {
-          signUp.setProgress(0);
+            signUp.setProgress(0);
         } else {
             signUp.setProgress(-1);
         }
@@ -100,14 +100,17 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, V
         int id = view.getId();
         switch (id) {
             case R.id.loginButton:
-                if (!(signUp.getProgress()==-1)) {
-                        if (!new LoginValidation(username, password, retypePassword, email).validateSignUp()) {
-                            signUp.setProgress(50);
-                            SignUpDTO signUpDTO = new SignUpDTO();
-                            signUpDTO.setUsername(username.getText().toString());
-                            signUpDTO.setPassword(username.getText().toString());
-                            signUpDTO.setEmail(email.getText().toString());
-                            new SignUpJSON(SignUp.this,signUp, signUpDTO).execute();
+                if (!(signUp.getProgress() == -1)) {
+                    if (!new LoginValidation(username, password, retypePassword, email).validateSignUp()) {
+                        signUp.setProgress(50);
+                        SignUpDTO signUpDTO = new SignUpDTO();
+                        signUpDTO.setUsername(username.getText().toString());
+                        signUpDTO.setPassword(username.getText().toString());
+                        signUpDTO.setEmail(email.getText().toString());
+                        // new SignUpJSON(SignUp.this,signUp, signUpDTO).execute();
+
+                        new SignUpVolleyJson(getApplicationContext(), signUpDTO).checkLogin();
+
                     }
                 }
                 break;

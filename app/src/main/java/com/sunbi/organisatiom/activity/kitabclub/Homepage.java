@@ -40,10 +40,10 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
     private ActionBarDrawerToggle mDrawerToggle;
     private int[] imageTitle = {R.drawable.guy, R.drawable.thistle, R.drawable.guy, R.drawable.thistle, R.drawable.guy, R.drawable.thistle, R.drawable.book1, R.drawable.book1, R.drawable.book1};
     private TextView username, titleText;
-    private LinearLayout bookList;
-    private ImageView logOut, faceBook;
+    private LinearLayout bookList,myBooks;
+    private ImageView logOut, faceBook, messages;
     private Toolbar toolbar;
-    private LinearLayout linearLayout;
+    private LinearLayout linearLayout, messageLayout;
     private HorizontalScrollView scrollView;
     private WebView webView;
     private CircleProgressBar progressBar;
@@ -85,6 +85,8 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         bookList.setOnClickListener(this);
         logOut.setOnClickListener(this);
         faceBook.setOnClickListener(this);
+        messages.setOnClickListener(this);
+        myBooks.setOnClickListener(this);
         mDrawerList.setOnItemClickListener(this);
     }
 
@@ -96,12 +98,15 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         titleText = (TextView) findViewById(R.id.titletext);
         username = (TextView) findViewById(R.id.username);
         bookList = (LinearLayout) findViewById(R.id.bookList);
+        myBooks=(LinearLayout)findViewById(R.id.mybooks);
         linearLayout = (LinearLayout) findViewById(R.id.bookContainer);
+        messageLayout = (LinearLayout) findViewById(R.id.messagelayout);
         logOut = (ImageView) findViewById(R.id.messages);
         faceBook = (ImageView) findViewById(R.id.facebook);
         scrollView = (HorizontalScrollView) findViewById(R.id.scrollView);
         webView = (WebView) findViewById(R.id.webview);
         progressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        messages = (ImageView) findViewById(R.id.messages);
     }
 
 
@@ -174,10 +179,19 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
                 Intent intent = new Intent(Homepage.this, BookCatagories.class);
                 startActivity(intent);
                 break;
+            case R.id.mybooks:
+                Intent mybooksIntent = new Intent(Homepage.this, MyBooks.class);
+                startActivity(mybooksIntent);
+                break;
             case R.id.messages:
+                mDrawerLayout.openDrawer(Gravity.RIGHT);
+                webView.setVisibility(View.GONE);
+                messageLayout.setVisibility(View.VISIBLE);
                 break;
             case R.id.facebook:
                 mDrawerLayout.openDrawer(Gravity.RIGHT);
+                messageLayout.setVisibility(View.GONE);
+                webView.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -192,7 +206,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         }
         switch (position) {
             case 0:
-               //display simply a hove by removing the active fragment
+                //display simply a hove by removing the active fragment
                 break;
             case 1:
                 Fragment fragment1 = new About();
@@ -221,7 +235,10 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         Fragment fragment = getSupportFragmentManager().findFragmentByTag("FRAGMENT_FEEDBACK");
         if (fragment != null) {
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-        } else {
+        } else if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)||mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            mDrawerLayout.closeDrawer(Gravity.RIGHT);
+        }else{
             super.onBackPressed();
         }
 

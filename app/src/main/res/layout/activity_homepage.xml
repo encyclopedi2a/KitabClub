@@ -114,6 +114,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/mybooks"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -311,9 +312,12 @@
         </LinearLayout>
         <!-- The right navigation drawer -->
         <RelativeLayout
+            android:id="@+id/rightDrawerContent"
             android:layout_width="250dp"
             android:layout_height="match_parent"
             android:layout_gravity="end">
+
+            <include layout="@layout/messages"/>
 
             <WebView
                 android:id="@+id/webview"
