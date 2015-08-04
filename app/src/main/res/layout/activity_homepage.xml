@@ -24,6 +24,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:background="#ffffff">
+
                 <include layout="@layout/toolbar" />
 
                 <ImageView
@@ -290,14 +291,25 @@
             android:background="#ffffff"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/title_activity_homepage"
-                android:maxHeight="150dp"
-                android:src="@drawable/sign_up_logo" />
+                android:background="@drawable/headerimage">
+
+                <FrameLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/circleimageview">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:maxHeight="100sp" />
+                </FrameLayout>
+            </RelativeLayout>
 
             <ListView
                 android:id="@+id/left_drawer"
@@ -317,14 +329,14 @@
             android:layout_height="match_parent"
             android:layout_gravity="end">
 
-            <include layout="@layout/messages"/>
+            <include layout="@layout/messages" />
 
             <WebView
                 android:id="@+id/webview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbars="none"
-                android:background="#ffffff" />
+                android:background="#ffffff"
+                android:scrollbars="none" />
 
             <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
                 android:id="@+id/progressBar"
