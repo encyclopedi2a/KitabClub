@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         SignUpDTO signUpDTO = new SignUpDTO();
                         signUpDTO.setUsername(username.getText().toString());
                         signUpDTO.setPassword(username.getText().toString());
-                        new LoginJSON(MainActivity.this, loginButton, signUpDTO, new LoginInterface() {
+                        new LoginJSON(MainActivity.this, signUpDTO, loginButton, new LoginInterface() {
                             @Override
                             public void result(boolean result) {
                                 if (result == true) {
@@ -126,13 +126,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         public void run() {
                                             callHomepage();
                                         }
-                                    },2000);
+                                    }, 2000);
                                 } else {
                                     Toast.makeText(MainActivity.this, "Invalid username and password. Try Again!", Toast.LENGTH_LONG).show();
                                     loginButton.setProgress(0);
                                 }
                             }
-                        }).execute();
+                        }).postJsonValue();
                     }
                 }
                 break;

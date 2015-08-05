@@ -1,6 +1,8 @@
 package com.sunbi.organisatiom.activity.kitabclub.json;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -11,7 +13,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.dd.CircularProgressButton;
 import com.sunbi.organisatiom.activity.kitabclub.Helper.AppController;
-import com.sunbi.organisatiom.activity.kitabclub.interfaces.LoginInterface;
+import com.sunbi.organisatiom.activity.kitabclub.SignUp;
 import com.sunbi.organisatiom.activity.kitabclub.models.SignUpDTO;
 
 import org.json.JSONException;
@@ -21,25 +23,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by gokarna on 8/5/15.
+ * Created by gokarna on 8/3/15.
  */
-public class LoginJSON {
+public class SignUpJson {
     private Context context;
     private SignUpDTO signUpDTO;
     private StringRequest signInRequest;
     private CircularProgressButton signUpButton;
-    private LoginInterface loginInterface;
 
-    public LoginJSON(Context context, SignUpDTO signUpDTO, CircularProgressButton signUpButton, LoginInterface loginInterface) {
+    public SignUpJson(Context context, SignUpDTO signUpDTO, CircularProgressButton signUpButton) {
         this.context = context;
         this.signUpDTO = signUpDTO;
         this.signUpButton = signUpButton;
-        this.loginInterface = loginInterface;
     }
 
     String tag_json_obj = "json_obj_req";
 
-    String url = "http://thesunbihosting.com/demo/book_store/json/login";
+    String url = "http://thesunbihosting.com/demo/book_store/json/register";
 
 
     public void postJsonValue() {
@@ -49,20 +49,22 @@ public class LoginJSON {
                 Log.d("Login Response", response.toString());
                 try {
                     JSONObject responseValue = new JSONObject(response);
-                    final String status = responseValue.getString("status");
-                    final String message = responseValue.getString("message");
+                    String status = responseValue.getString("status");
+                    String message = responseValue.getString("message");
                     Log.d("Login Response", status);
-
-                    signUpButton.setProgress(100);
-
-                    if (loginInterface != null) {
-                        if (status.equals("true") && message.equals("login successfull")) {
-                            loginInterface.result(true);
-                        } else {
-                            loginInterface.result(false);
-                        }
+                    if (status.equals("true") && message.equals("success")) {
+                        signUpButton.setProgress(100);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((SignUp) (context)).finish();
+                                ((Activity) context).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            }
+                        }, 1500);
+                    } else {
+                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                        signUpButton.setProgress(0);
                     }
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -81,6 +83,7 @@ public class LoginJSON {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", signUpDTO.getUsername());
                 params.put("password", signUpDTO.getPassword());
+                params.put("email", signUpDTO.getEmail());
                 return params;
             }
         };
@@ -88,3 +91,4 @@ public class LoginJSON {
 
     }
 }
+

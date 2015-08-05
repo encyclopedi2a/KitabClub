@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.sunbi.organisatiom.activity.kitabclub" >
 
-    <uses-sdk tools:overrideLibrary="com.andexert.library,com.dd.circular.progress.button,me.neavo.volley,com.lsjwzh.widget.materialloadingprogressbar" />
+    <uses-sdk tools:overrideLibrary="com.andexert.library,com.dd.circular.progress.button,com.facebook,me.neavo.volley,com.lsjwzh.widget.materialloadingprogressbar,com.sromku.simple.fb" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Enable to check if the wifi is available -->

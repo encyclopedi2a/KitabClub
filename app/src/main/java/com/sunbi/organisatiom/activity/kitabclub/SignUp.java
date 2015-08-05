@@ -14,7 +14,7 @@ import com.dd.CircularProgressButton;
 import com.sunbi.organisatiom.activity.kitabclub.classes.LoginValidation;
 import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionManager;
 import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionSignUpReceiver;
-import com.sunbi.organisatiom.activity.kitabclub.json.SignUpVolleyJson;
+import com.sunbi.organisatiom.activity.kitabclub.json.SignUpJson;
 import com.sunbi.organisatiom.activity.kitabclub.models.SignUpDTO;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener, ViewTreeObserver.OnGlobalLayoutListener {
@@ -107,9 +107,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, V
                         signUpDTO.setUsername(username.getText().toString());
                         signUpDTO.setPassword(username.getText().toString());
                         signUpDTO.setEmail(email.getText().toString());
-                        // new SignUpJSON(SignUp.this,signUp, signUpDTO).execute();
-
-                        new SignUpVolleyJson(getApplicationContext(), signUpDTO).checkLogin();
+                        new SignUpJson(SignUp.this, signUpDTO,signUp).postJsonValue();
 
                     }
                 }
