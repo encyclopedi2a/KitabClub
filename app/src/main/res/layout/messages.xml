@@ -31,6 +31,7 @@
         android:layout_height="0dp"
         android:layout_margin="10dp"
         android:layout_weight="1"
+        android:gravity="top|center"
         android:background="@drawable/rectangle_background_edittext"
         android:hint="TYPE YOUR MESSAGES HERE"
         android:textSize="15sp" />
