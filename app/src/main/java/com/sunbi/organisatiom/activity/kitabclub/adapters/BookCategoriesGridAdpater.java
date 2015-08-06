@@ -8,54 +8,66 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.andexert.library.RippleView;
+import com.squareup.picasso.Picasso;
 import com.sunbi.organisatiom.activity.kitabclub.BookSubCategory;
 import com.sunbi.organisatiom.activity.kitabclub.R;
+import com.sunbi.organisatiom.activity.kitabclub.models.GridRow;
+
+import java.util.List;
 
 /**
  * Created by gokarna on 7/18/15.
  */
 public class BookCategoriesGridAdpater extends BaseAdapter implements RippleView.OnRippleCompleteListener {
-    private Context mContext;
-    private final int[] Imageid;
+    private Context context;
+    private List<GridRow> list;
+    private static final int id = 0;
 
-    public BookCategoriesGridAdpater(Context c, int[] Imageid) {
-        mContext = c;
-        this.Imageid = Imageid;
+    public BookCategoriesGridAdpater(Context c, List<GridRow> list) {
+        context = c;
+        this.list = list;
     }
 
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return Imageid.length;
+        return list.size();
     }
 
     @Override
     public Object getItem(int position) {
         // TODO Auto-generated method stub
-        return null;
+        return list.get(position);
     }
 
     @Override
     public long getItemId(int position) {
         // TODO Auto-generated method stub
-        return 0;
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
         View grid;
-        LayoutInflater inflater = (LayoutInflater) mContext
+        LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        GridRow gridRow = (GridRow) getItem(position);
         if (convertView == null) {
             grid = inflater.inflate(R.layout.book_categories_grid_item, null);
-            ImageView imageView = (ImageView) grid.findViewById(R.id.gridImage);
-            RippleView rippleView=(RippleView)grid.findViewById(R.id.arrowRippleEffect);
+            final ImageView imageView = (ImageView) grid.findViewById(R.id.gridImage);
+            Picasso.with(context)
+                    .load("http://thesunbihosting.com/demo/book_store/uploads/book_cover/bxvOIKgfGaE7.jpg")
+            .placeholder(R.drawable.imagebackground).into(imageView);
+            TextView title = (TextView) grid.findViewById(R.id.title);
+            title.setText(gridRow.getName());
+            TextView bookNumber = (TextView) grid.findViewById(R.id.totalBooks);
+            bookNumber.setText(gridRow.getTotal_books());
+            RippleView rippleView = (RippleView) grid.findViewById(R.id.arrowRippleEffect);
             rippleView.setOnRippleCompleteListener(this);
-            imageView.setBackgroundResource(Imageid[position]);
         } else {
             grid = (View) convertView;
         }
@@ -64,8 +76,8 @@ public class BookCategoriesGridAdpater extends BaseAdapter implements RippleView
 
     @Override
     public void onComplete(RippleView rippleView) {
-        Intent intent=new Intent(mContext, BookSubCategory.class);
-        mContext.startActivity(intent);
-        ((Activity)mContext).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        Intent intent = new Intent(context, BookSubCategory.class);
+        context.startActivity(intent);
+        ((Activity) context).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

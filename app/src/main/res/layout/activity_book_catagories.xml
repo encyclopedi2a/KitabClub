@@ -2,21 +2,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.sunbi.organisatiom.activity.kitabclub.BookCatagories">
 
     <include layout="@layout/toolbar" />
 
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:horizontalSpacing="8dp"
-        android:numColumns="2"
-        android:scrollbars="none"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="8dp"></GridView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:horizontalSpacing="8dp"
+            android:numColumns="2"
+            android:scrollbars="none"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="8dp"></GridView>
+
+        <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:layout_centerInParent="true"
+            app:mlpb_arrow_height="5dp"
+            app:mlpb_arrow_width="10dp"
+            app:mlpb_enable_circle_background="false"
+            app:mlpb_progress_color="@color/buttonColor"
+            app:mlpb_progress_stoke_width="5dp"
+            app:mlpb_progress_text_color="#ffffff"
+            app:mlpb_progress_text_size="0dip"
+            app:mlpb_progress_text_visibility="visible"
+            app:mlpb_show_arrow="false" />
+
+    </RelativeLayout>
 </LinearLayout>

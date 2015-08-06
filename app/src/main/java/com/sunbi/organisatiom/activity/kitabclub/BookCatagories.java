@@ -10,19 +10,13 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sunbi.organisatiom.activity.kitabclub.adapters.BookCategoriesGridAdpater;
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.sunbi.organisatiom.activity.kitabclub.json.BookCategoriesJSON;
 
 public class BookCatagories extends AppCompatActivity implements View.OnClickListener {
     private GridView gridView;
     private ImageView arrowImage;
-    int[] imageId = {
-            R.drawable.categories,
-            R.drawable.categories,
-            R.drawable.categories,
-            R.drawable.categories,
-            R.drawable.categories,
-    };
-
+    private CircleProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,10 +27,11 @@ public class BookCatagories extends AppCompatActivity implements View.OnClickLis
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         TextView titleText = (TextView) findViewById(R.id.titletext);
+        progressBar=(CircleProgressBar)findViewById(R.id.progressBar);
         titleText.setText("Book Categories");
         gridView = (GridView) findViewById(R.id.gridView);
-        BookCategoriesGridAdpater gridAdpater = new BookCategoriesGridAdpater(BookCatagories.this, imageId);
-        gridView.setAdapter(gridAdpater);
+        BookCategoriesJSON bookCategoriesJSON=new BookCategoriesJSON(BookCatagories.this,progressBar,gridView);
+        bookCategoriesJSON.makeJsonArrayRequest();
     }
 
 

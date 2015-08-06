@@ -31,8 +31,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.squareup.picasso.Picasso;
 import com.sunbi.organisatiom.activity.kitabclub.classes.SharedPreferenceValueProvider;
 import com.sunbi.organisatiom.activity.kitabclub.fragments.About;
+import com.sunbi.organisatiom.activity.kitabclub.interfaces.LatestAdditionInterface;
+import com.sunbi.organisatiom.activity.kitabclub.json.LatestAdditionJSON;
 
 public class Homepage extends AppCompatActivity implements View.OnClickListener, ListView.OnItemClickListener {
     private DrawerLayout mDrawerLayout;
@@ -40,7 +43,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
     private ActionBarDrawerToggle mDrawerToggle;
     private int[] imageTitle = {R.drawable.guy, R.drawable.thistle, R.drawable.guy, R.drawable.thistle, R.drawable.guy, R.drawable.thistle, R.drawable.book1, R.drawable.book1, R.drawable.book1};
     private TextView username, titleText;
-    private LinearLayout bookList,myBooks;
+    private LinearLayout bookList, myBooks;
     private ImageView logOut, faceBook, messages;
     private Toolbar toolbar;
     private LinearLayout linearLayout, messageLayout;
@@ -48,7 +51,6 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
     private WebView webView;
     private CircleProgressBar progressBar;
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,37 +59,15 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
         titleText.setText("");
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                toolbar,  /* nav drawer image to replace 'Up' caret */
-                R.string.drawer_open,  /* "open drawer" description for accessibility */
-                R.string.drawer_close  /* "close drawer" description for accessibility */
-        ) {
-            public void onDrawerClosed(View view) {
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
         username.setText(Html.fromHtml("Welcome<b> " + (new SharedPreferenceValueProvider(getApplicationContext()).returnPreferenceValue())));
         prepareDrawerList();
         prepareFacebookDrawer();
-        setImageInLinerLayout(linearLayout);
-        ObjectAnimator animator = ObjectAnimator.ofInt(scrollView, "scrollX", 810);
-        animator.setDuration(15000);
-        animator.setRepeatCount(100);
-        animator.start();
-        bookList.setOnClickListener(this);
-        logOut.setOnClickListener(this);
-        faceBook.setOnClickListener(this);
-        messages.setOnClickListener(this);
-        myBooks.setOnClickListener(this);
-        mDrawerList.setOnItemClickListener(this);
+        setLatestAdditionBook(linearLayout);
+        animateLatestAdditionBook();
+        initialiseListener();
     }
 
 
@@ -98,7 +78,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         titleText = (TextView) findViewById(R.id.titletext);
         username = (TextView) findViewById(R.id.username);
         bookList = (LinearLayout) findViewById(R.id.bookList);
-        myBooks=(LinearLayout)findViewById(R.id.mybooks);
+        myBooks = (LinearLayout) findViewById(R.id.mybooks);
         linearLayout = (LinearLayout) findViewById(R.id.bookContainer);
         messageLayout = (LinearLayout) findViewById(R.id.messagelayout);
         logOut = (ImageView) findViewById(R.id.messages);
@@ -112,7 +92,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
 
     private void prepareDrawerList() {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1
-                , new String[]{"  Home", "  About Us", "  Location", "  Sign Out"}) {
+                , new String[]{"  Home", "  About Us", "  Sign Out"}) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -122,6 +102,15 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
             }
         };
         mDrawerList.setAdapter(arrayAdapter);
+    }
+
+    private void initialiseListener() {
+        bookList.setOnClickListener(this);
+        logOut.setOnClickListener(this);
+        faceBook.setOnClickListener(this);
+        messages.setOnClickListener(this);
+        myBooks.setOnClickListener(this);
+        mDrawerList.setOnItemClickListener(this);
     }
 
     private void prepareFacebookDrawer() {
@@ -135,27 +124,44 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         webView.loadUrl("http://www.facebook.com");
     }
 
-    private void setImageInLinerLayout(LinearLayout linearLayout) {
-        for (int i = 0; i < imageTitle.length; i++) {
-            final ImageView imageView = new ImageView(this);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            lp.gravity = Gravity.CENTER;
-            int screenSize = getResources().getConfiguration().screenLayout &
-                    Configuration.SCREENLAYOUT_SIZE_MASK;
-            switch (screenSize) {
-                case Configuration.SCREENLAYOUT_SIZE_NORMAL:
-                    lp.setMargins(15, 3, 5, 3);
-                    break;
-                default:
+    private void setLatestAdditionBook(final LinearLayout linearLayout) {
+
+        new LatestAdditionJSON(getApplicationContext(), new LatestAdditionInterface() {
+            @Override
+            public void result(String result) {
+                for (int i = 0; i < 10; i++) {
+                    final ImageView imageView = new ImageView(Homepage.this);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    lp.gravity = Gravity.CENTER;
+                    int screenSize = getResources().getConfiguration().screenLayout &
+                            Configuration.SCREENLAYOUT_SIZE_MASK;
+                    switch (screenSize) {
+                        case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                            lp.setMargins(15, 3, 5, 3);
+                            break;
+                        default:
+                    }
+                    imageView.setLayoutParams(lp);
+                    imageView.setAdjustViewBounds(true);
+                    imageView.getLayoutParams().height = 200;
+                    imageView.getLayoutParams().width = 150;
+                    imageView.requestLayout();
+                    Picasso.with(getApplicationContext())
+                            .load(result)
+                            .placeholder(R.drawable.imagebackground).fit().centerCrop().into(imageView);
+                    linearLayout.addView(imageView);
+                }
             }
-            imageView.setLayoutParams(lp);
-            imageView.setBackgroundResource(imageTitle[i]);
-            imageView.setAdjustViewBounds(true);
-            imageView.getLayoutParams().height = 200;
-            imageView.getLayoutParams().width = 150;
-            imageView.requestLayout();
-            linearLayout.addView(imageView);
-        }
+        }).makeJsonArrayRequest();
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void animateLatestAdditionBook() {
+        ObjectAnimator animator = ObjectAnimator.ofInt(scrollView, "scrollX", 810);
+        animator.setDuration(15000);
+        animator.setRepeatCount(1000);
+        animator.start();
     }
 
     @Override
@@ -235,10 +241,10 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         Fragment fragment = getSupportFragmentManager().findFragmentByTag("FRAGMENT_FEEDBACK");
         if (fragment != null) {
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-        } else if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)||mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+        } else if (mDrawerLayout.isDrawerOpen(Gravity.LEFT) || mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             mDrawerLayout.closeDrawer(Gravity.RIGHT);
-        }else{
+        } else {
             super.onBackPressed();
         }
 
