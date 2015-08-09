@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.sunbi.organisatiom.activity.kitabclub" >
+    package="com.sunbi.organisatiom.activity.kitabclub">
 
-    <uses-sdk tools:overrideLibrary="com.andexert.library,com.dd.circular.progress.button,com.facebook,me.neavo.volley,com.lsjwzh.widget.materialloadingprogressbar,com.sromku.simple.fb" />
+    <uses-sdk tools:overrideLibrary="com.andexert.library,com.dd.circular.progress.button,com.facebook,
+    com.pkmmte.view,me.neavo.volley,com.lsjwzh.widget.materialloadingprogressbar,com.sromku.simple.fb" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Enable to check if the wifi is available -->
@@ -19,18 +20,24 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".Homepage"
             android:label="@string/title_activity_homepage"
@@ -44,20 +51,16 @@
         <activity
             android:name=".SignUp"
             android:label="@string/title_activity_sign_up"
-            android:windowSoftInputMode="adjustResize" >
-        </activity>
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".BookCart"
-            android:label="@string/title_activity_book_cart" >
-        </activity>
+            android:label="@string/title_activity_book_cart"/>
         <activity
             android:name=".BookSubCategory"
-            android:label="@string/title_activity_book_sub_category" >
-        </activity>
+            android:label="@string/title_activity_book_sub_category"/>
         <activity
             android:name=".MyBooks"
-            android:label="@string/title_activity_my_books" >
-        </activity>
+            android:label="@string/title_activity_my_books"/>
     </application>
 
 </manifest>

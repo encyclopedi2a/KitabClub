@@ -3,16 +3,19 @@ package com.sunbi.organisatiom.activity.kitabclub.json;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.sunbi.organisatiom.activity.kitabclub.Helper.AppController;
 import com.sunbi.organisatiom.activity.kitabclub.interfaces.LatestAdditionInterface;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gokarna on 8/5/15.
@@ -21,29 +24,31 @@ public class LatestAdditionJSON {
     private Context context;
     private String arrayUrl = "http://thesunbihosting.com/demo/book_store/json/latestBook";
     private LatestAdditionInterface latestAdditionInterface;
-    public LatestAdditionJSON(Context context,LatestAdditionInterface latestAdditionInterface) {
+    private List<String> imagePathContainer;
+
+    public LatestAdditionJSON(Context context, LatestAdditionInterface latestAdditionInterface) {
         this.context = context;
-        this.latestAdditionInterface=latestAdditionInterface;
+        this.latestAdditionInterface = latestAdditionInterface;
     }
 
     public void makeJsonArrayRequest() {
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                arrayUrl, null, new Response.Listener<JSONObject>() {
+        JsonArrayRequest jsonArrayReq = new JsonArrayRequest(arrayUrl,new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
                 try {
-                    // Parsing json object response
-                    // response will be a json object
-                    String imagePath = response.getString("cover_image");
-                    if(latestAdditionInterface!=null){
-                        latestAdditionInterface.result(imagePath);
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject responseJSONObject = (JSONObject) response
+                                .getJSONObject(i);
+                        String imagePath = responseJSONObject.getString("cover_image");
+                        imagePathContainer = new ArrayList<String>();
+                        imagePathContainer.add(imagePath);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(context,
-                            "Error: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
+                }
+                if (latestAdditionInterface != null) {
+                    latestAdditionInterface.result(imagePathContainer);
                 }
             }
         }, new Response.ErrorListener() {
@@ -53,9 +58,8 @@ public class LatestAdditionJSON {
                 VolleyLog.d("TAG", "Error: " + error.getMessage());
                 Toast.makeText(context,
                         error.getMessage(), Toast.LENGTH_SHORT).show();
-                // hide the progress dialog
             }
         });
-        AppController.getInstance().addToRequestQueue(jsonObjReq);
+        AppController.getInstance().addToRequestQueue(jsonArrayReq);
     }
 }
