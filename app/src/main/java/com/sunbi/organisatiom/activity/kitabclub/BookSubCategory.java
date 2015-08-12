@@ -1,5 +1,6 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,19 +11,13 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sunbi.organisatiom.activity.kitabclub.adapters.BookSubCategoriesGridAdpater;
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.sunbi.organisatiom.activity.kitabclub.json.BookSubCategoriesJSON;
 
 public class BookSubCategory extends AppCompatActivity {
     private GridView gridView;
     private ImageView arrowImage;
-    int[] imageId = {
-            R.drawable.categories,
-            R.drawable.categories,
-            R.drawable.categories,
-            R.drawable.categories,
-            R.drawable.categories,
-    };
-
+    private CircleProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,9 +30,12 @@ public class BookSubCategory extends AppCompatActivity {
         TextView titleText = (TextView) findViewById(R.id.titletext);
         titleText.setText("Book Sub-Categories");
         titleText.setTypeface(null, Typeface.BOLD);
+        progressBar=(CircleProgressBar)findViewById(R.id.progressBar);
+        Intent intent=getIntent();
+        String bookCategoryId=intent.getStringExtra("BookCategoryId");
         gridView = (GridView) findViewById(R.id.gridView);
-        BookSubCategoriesGridAdpater gridAdpater = new BookSubCategoriesGridAdpater(BookSubCategory.this, imageId);
-        gridView.setAdapter(gridAdpater);
+        BookSubCategoriesJSON bookSubCategoriesJSON=new BookSubCategoriesJSON(BookSubCategory.this,gridView,progressBar,bookCategoryId);
+        bookSubCategoriesJSON.postJsonValue();
     }
 
     @Override

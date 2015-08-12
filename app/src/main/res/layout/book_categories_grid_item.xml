@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:ripple="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
-    android:padding="10dp"
     android:background="#F5F5F5"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/gridImage"
@@ -19,8 +19,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:layout_gravity="bottom"
+        android:layout_margin="10dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -42,37 +42,38 @@
                 android:id="@+id/totalBooks"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12 Books"
                 android:layout_marginTop="-5dp"
+                android:text="12 Books"
                 android:textColor="#DCDCDC"
                 android:textSize="15sp" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/arrowLayout"
-            android:layout_width="wrap_content"
+        <com.andexert.library.RippleView
+            android:id="@+id/arrowRippleEffect"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="bottom"
-            >
-            <com.andexert.library.RippleView
-                android:id="@+id/arrowRippleEffect"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                ripple:rv_type="rectangle"
-                ripple:rv_color="#E67A0A"
-                >
-            <ImageView
-                android:id="@+id/arrowImage"
+            ripple:rv_color="#E67A0A"
+            ripple:rv_type="rectangle">
+
+            <LinearLayout
+                android:id="@+id/arrowLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:padding="5dp"
-                android:maxHeight="30dp"
-                android:src="@drawable/orangearrow"
-                android:baselineAlignBottom="true" />
-            </com.andexert.library.RippleView>
-        </LinearLayout>
+                android:gravity="bottom">
+
+                <ImageView
+                    android:id="@+id/arrowImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:baselineAlignBottom="true"
+                    android:maxHeight="30dp"
+                    android:padding="5dp"
+                    android:src="@drawable/orangearrow" />
+
+            </LinearLayout>
+        </com.andexert.library.RippleView>
     </LinearLayout>
 
 

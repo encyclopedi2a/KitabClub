@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sunbi.organisatiom.activity.kitabclub.R;
-import com.sunbi.organisatiom.activity.kitabclub.models.ListRow;
 
 import java.util.List;
 
@@ -17,10 +16,10 @@ import java.util.List;
  * Created by gokarna on 8/4/15.
  */
 public class CustomMyBooksListAdapter extends BaseAdapter {
-    private List<ListRow> mAppList;
+    private List<String> mAppList;
     private Context context;
 
-    public CustomMyBooksListAdapter(List<ListRow> mAppList, Context context) {
+    public CustomMyBooksListAdapter(List<String> mAppList, Context context) {
         this.mAppList = mAppList;
         this.context = context;
     }
@@ -44,16 +43,12 @@ public class CustomMyBooksListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = View.inflate(context.getApplicationContext(),
-                    R.layout.item_list_app, null);
+                    R.layout.mybooks_list_item, null);
             new ViewHolder(convertView);
         }
         ViewHolder holder = (ViewHolder) convertView.getTag();
-        ListRow listRow = (ListRow) getItem(position);
-       // Picasso.with(context)
-         //       .load(listRow.getImagePath())
-           //     .placeholder(R.drawable.imagebackground).fit().centerCrop().into(holder.iv_icon);
+       // ListRow listRow = (ListRow) getItem(position);
         holder.iv_icon.setImageResource(R.drawable.guy);
-        holder.tv_name.setText(listRow.getBookName());
         holder.tv_name.setBackgroundColor(Color.WHITE);
         holder.tv_name.setBackgroundResource(R.drawable.selector_state);
         return convertView;

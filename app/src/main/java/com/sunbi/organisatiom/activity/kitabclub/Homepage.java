@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,11 +19,9 @@ import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,10 +38,13 @@ import com.sromku.simple.fb.listeners.OnLoginListener;
 import com.sromku.simple.fb.listeners.OnProfileListener;
 import com.sromku.simple.fb.utils.PictureAttributes;
 import com.sunbi.organisatiom.activity.kitabclub.Helper.FacebookConfiguration;
+import com.sunbi.organisatiom.activity.kitabclub.adapters.DrawerListAdapter;
 import com.sunbi.organisatiom.activity.kitabclub.classes.SharedPreferenceValueProvider;
+import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionManager;
 import com.sunbi.organisatiom.activity.kitabclub.fragments.About;
 import com.sunbi.organisatiom.activity.kitabclub.interfaces.LatestAdditionInterface;
 import com.sunbi.organisatiom.activity.kitabclub.json.LatestAdditionJSON;
+import com.sunbi.organisatiom.activity.kitabclub.models.ListItem;
 
 import java.util.List;
 
@@ -52,14 +52,13 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    private int[] imageTitle = {R.drawable.guy, R.drawable.thistle, R.drawable.guy, R.drawable.thistle, R.drawable.guy, R.drawable.thistle, R.drawable.book1, R.drawable.book1, R.drawable.book1};
-    private TextView username, titleText;
+    private TextView username, titleText, profileName, profileEmail;
     private LinearLayout bookList, myBooks;
     private ImageView logOut, faceBook, messages;
     private CircularImageView profilePicture;
     private Toolbar toolbar;
     private SimpleFacebook mSimpleFacebook;
-    private LinearLayout linearLayout, messageLayout;
+    private LinearLayout bookContainer, messageLayout;
     private HorizontalScrollView scrollView;
     private WebView webView;
     private CircleProgressBar progressBar;
@@ -78,7 +77,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         username.setText(Html.fromHtml("Welcome<b> " + (new SharedPreferenceValueProvider(getApplicationContext()).returnPreferenceValue())));
         prepareDrawerList();
         prepareFacebookDrawer();
-        setLatestAdditionBook(linearLayout);
+        setLatestAdditionBook(bookContainer);
         animateLatestAdditionBook();
         initialiseListener();
         setFacebookProfile();
@@ -91,9 +90,11 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         titleText = (TextView) findViewById(R.id.titletext);
         username = (TextView) findViewById(R.id.username);
+        profileName = (TextView) findViewById(R.id.profileName);
+        profileEmail = (TextView) findViewById(R.id.profileEmail);
         bookList = (LinearLayout) findViewById(R.id.bookList);
         myBooks = (LinearLayout) findViewById(R.id.mybooks);
-        linearLayout = (LinearLayout) findViewById(R.id.bookContainer);
+        bookContainer = (LinearLayout) findViewById(R.id.bookContainer);
         messageLayout = (LinearLayout) findViewById(R.id.messagelayout);
         logOut = (ImageView) findViewById(R.id.messages);
         faceBook = (ImageView) findViewById(R.id.facebook);
@@ -106,21 +107,16 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
 
 
     private void prepareDrawerList() {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1
-                , new String[]{"  Home", "  About Us", "  Sign Out"}) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView textView = (TextView) view.findViewById(android.R.id.text1);
-                textView.setTextColor(Color.parseColor("#767676"));
-                return view;
-            }
-        };
-        mDrawerList.setAdapter(arrayAdapter);
+        ListItem listItems[] = new ListItem[]{
+                        new ListItem(R.mipmap.home, "Home"),
+                        new ListItem(R.mipmap.about, "About"),
+                        new ListItem(R.mipmap.signout, "Sign Out"),
+                };
+        DrawerListAdapter drawerListAdapter = new DrawerListAdapter(Homepage.this,R.layout.custom_drawer_list_view,listItems);
+        mDrawerList.setAdapter(drawerListAdapter);
     }
 
     private void initialiseListener() {
-        bookList.setOnClickListener(this);
         logOut.setOnClickListener(this);
         faceBook.setOnClickListener(this);
         messages.setOnClickListener(this);
@@ -142,7 +138,9 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
     private void setFacebookProfile() {
         SimpleFacebook.setConfiguration(new FacebookConfiguration().getConfiguration());
         mSimpleFacebook = SimpleFacebook.getInstance(this);
-        login();
+        if (new ConnectionManager(getApplicationContext()).isConnectionToInternet()) {
+            login();
+        }
     }
 
     private void login() {
@@ -191,10 +189,9 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
             Picasso.with(getApplicationContext())
                     .load(profileUrl).placeholder(R.drawable.orangearrow)
                     .into(profilePicture);
-            Log.i("Facebook::: username", username);
-            Log.i("Facebook::: userId", userId);
-            Log.i("Facebook::: profile pic", profileUrl);
-            Log.i("Facebook::: email", email);
+            profileName.setText(username);
+            profileEmail.setText(email);
+
 
         }
 
@@ -230,34 +227,34 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void setLatestAdditionBook(final LinearLayout linearLayout) {
+    private void setLatestAdditionBook(final LinearLayout bookContainer) {
 
         new LatestAdditionJSON(getApplicationContext(), new LatestAdditionInterface() {
             @Override
             public void result(List<String> imagePathContainer) {
                 for (String imagePath : imagePathContainer) {
-                        final ImageView imageView = new ImageView(Homepage.this);
-                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                        lp.gravity = Gravity.CENTER;
-                        int screenSize = getResources().getConfiguration().screenLayout &
-                                Configuration.SCREENLAYOUT_SIZE_MASK;
-                        switch (screenSize) {
-                            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
-                                lp.setMargins(15, 3, 5, 3);
-                                break;
-                            default:
-                        }
-                        imageView.setLayoutParams(lp);
-                        imageView.setAdjustViewBounds(true);
-                        imageView.getLayoutParams().height = 200;
-                        imageView.getLayoutParams().width = 150;
-                        imageView.requestLayout();
-                        Picasso.with(getApplicationContext())
-                                .load(imagePath)
-                                .placeholder(R.drawable.imagebackground).into(imageView);
-                        linearLayout.addView(imageView);
+                    final ImageView imageView = new ImageView(Homepage.this);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    lp.gravity = Gravity.CENTER;
+                    int screenSize = getResources().getConfiguration().screenLayout &
+                            Configuration.SCREENLAYOUT_SIZE_MASK;
+                    switch (screenSize) {
+                        case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                            lp.setMargins(15, 3, 5, 3);
+                            break;
+                        default:
                     }
+                    imageView.setLayoutParams(lp);
+                    imageView.setAdjustViewBounds(true);
+                    imageView.getLayoutParams().height = bookContainer.getHeight() - 20;
+                    imageView.getLayoutParams().width = 150;
+                    imageView.requestLayout();
+                    Picasso.with(getApplicationContext())
+                            .load(imagePath)
+                            .placeholder(R.drawable.imagebackground).into(imageView);
+                    bookContainer.addView(imageView);
                 }
+            }
         }).makeJsonArrayRequest();
 
     }
@@ -325,10 +322,6 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
                 fragmentTransaction.add(R.id.content_frame, fragment1, "FRAGMENT_FEEDBACK");
                 break;
             case 2:
-                Fragment fragment2 = new About();
-                fragmentTransaction.add(R.id.content_frame, fragment2, "FRAGMENT_FEEDBACK");
-                break;
-            case 3:
                 SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.preference_value, MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean("isFirstTime", true);

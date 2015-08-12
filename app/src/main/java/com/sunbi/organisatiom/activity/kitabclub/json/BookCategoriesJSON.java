@@ -29,7 +29,6 @@ public class BookCategoriesJSON {
     private GridView gridView;
     private List<GridRow> gridItems;
     private static final String URL = "http://thesunbihosting.com/demo/book_store/json/book_category";
-
     public BookCategoriesJSON(Context context, CircleProgressBar progressBar, GridView gridView) {
         this.context = context;
         this.progressBar = progressBar;
@@ -62,8 +61,6 @@ public class BookCategoriesJSON {
                             "Error: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();
                 }
-
-                //hidepDialog();
             }
         }, new Response.ErrorListener() {
             @Override

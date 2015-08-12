@@ -24,11 +24,13 @@ import java.util.List;
 public class BookCategoriesGridAdpater extends BaseAdapter implements RippleView.OnRippleCompleteListener {
     private Context context;
     private List<GridRow> list;
-    private static final int id = 0;
-
+    private static String id = null;
+    private String TAG;
+    private RippleView rippleView;
     public BookCategoriesGridAdpater(Context c, List<GridRow> list) {
         context = c;
         this.list = list;
+
     }
 
     @Override
@@ -65,8 +67,10 @@ public class BookCategoriesGridAdpater extends BaseAdapter implements RippleView
             TextView title = (TextView) grid.findViewById(R.id.title);
             title.setText(gridRow.getName());
             TextView bookNumber = (TextView) grid.findViewById(R.id.totalBooks);
-            bookNumber.setText(gridRow.getTotal_books());
-            RippleView rippleView = (RippleView) grid.findViewById(R.id.arrowRippleEffect);
+            bookNumber.setText(gridRow.getTotal_books()+" books");
+            //Assign the value to the field so that the id can be transferred to sub category class by iterating through hashmap
+            rippleView = (RippleView) grid.findViewById(R.id.arrowRippleEffect);
+            rippleView.setTag(gridRow.getId());
             rippleView.setOnRippleCompleteListener(this);
         } else {
             grid = (View) convertView;
@@ -77,6 +81,7 @@ public class BookCategoriesGridAdpater extends BaseAdapter implements RippleView
     @Override
     public void onComplete(RippleView rippleView) {
         Intent intent = new Intent(context, BookSubCategory.class);
+        intent.putExtra("BookCategoryId",rippleView.getTag().toString());
         context.startActivity(intent);
         ((Activity) context).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
