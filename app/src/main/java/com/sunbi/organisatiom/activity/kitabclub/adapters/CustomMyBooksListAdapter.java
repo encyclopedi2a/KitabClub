@@ -49,6 +49,7 @@ public class CustomMyBooksListAdapter extends BaseAdapter {
         ViewHolder holder = (ViewHolder) convertView.getTag();
        // ListRow listRow = (ListRow) getItem(position);
         holder.iv_icon.setImageResource(R.drawable.guy);
+        holder.tv_name.setText(mAppList.get(0));
         holder.tv_name.setBackgroundColor(Color.WHITE);
         holder.tv_name.setBackgroundResource(R.drawable.selector_state);
         return convertView;

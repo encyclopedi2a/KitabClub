@@ -117,6 +117,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void initialiseListener() {
+        bookList.setOnClickListener(this);
         logOut.setOnClickListener(this);
         faceBook.setOnClickListener(this);
         messages.setOnClickListener(this);

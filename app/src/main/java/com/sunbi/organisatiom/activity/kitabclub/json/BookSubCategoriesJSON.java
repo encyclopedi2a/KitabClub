@@ -28,7 +28,7 @@ import java.util.Map;
  * Created by gokarna on 8/4/15.
  */
 public class BookSubCategoriesJSON {
-    private String arrayUrl = "http://thesunbihosting.com/demo/book_store/json/getSubCat/6";
+    private String arrayUrl = "http://thesunbihosting.com/demo/book_store/json/book_sub_category";
     private StringRequest bokSubCategoryRequest;
     private Context context;
     private  CircleProgressBar progressBar;
@@ -57,9 +57,9 @@ public class BookSubCategoriesJSON {
                                     .getJSONObject(i);
                             String id = responseJSONObject.getString("id");
                             String bookName = responseJSONObject.getString("name");
-                            //String imageURL = responseJSONObject.getString("image");
-                            //String totalBooks = responseJSONObject.getString("totalBooks");
-                            GridRow item = new GridRow(id,bookName,null,"10");
+                            String imageURL = responseJSONObject.getString("name");
+                            String totalBooks = responseJSONObject.getString("totalBooks");
+                            GridRow item = new GridRow(id,bookName,imageURL,totalBooks);
                             gridItems.add(item);
                         }
                         BookSubCategoriesGridAdpater gridAdpater = new BookSubCategoriesGridAdpater(context,gridItems);

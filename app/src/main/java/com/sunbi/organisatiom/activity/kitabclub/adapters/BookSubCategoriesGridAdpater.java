@@ -65,7 +65,6 @@ public class BookSubCategoriesGridAdpater extends BaseAdapter implements RippleV
             title.setText(gridRow.getName());
             TextView bookNumber = (TextView) grid.findViewById(R.id.totalBooks);
             bookNumber.setText(gridRow.getTotal_books()+" books");
-            //Assign the value to the field so that the id can be transferred to sub category class
             RippleView rippleView = (RippleView) grid.findViewById(R.id.arrowRippleEffect);
             rippleView.setOnRippleCompleteListener(this);
         } else {
