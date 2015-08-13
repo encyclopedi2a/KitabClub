@@ -16,22 +16,24 @@ import java.util.List;
  * Created by gokarna on 8/4/15.
  */
 public class CustomMyBooksListAdapter extends BaseAdapter {
-    private List<String> mAppList;
+    private List<String> bookName;
+    private List<String> bookPath;
     private Context context;
 
-    public CustomMyBooksListAdapter(List<String> mAppList, Context context) {
-        this.mAppList = mAppList;
+    public CustomMyBooksListAdapter(List<String> bookName,List<String> bookPath, Context context) {
+        this.bookName = bookName;
+        this.bookPath=bookPath;
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return mAppList.size();
+        return bookName.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mAppList.get(position);
+        return bookName.get(position);
     }
 
     @Override
@@ -47,21 +49,23 @@ public class CustomMyBooksListAdapter extends BaseAdapter {
             new ViewHolder(convertView);
         }
         ViewHolder holder = (ViewHolder) convertView.getTag();
-       // ListRow listRow = (ListRow) getItem(position);
-        holder.iv_icon.setImageResource(R.drawable.guy);
-        holder.tv_name.setText(mAppList.get(0));
-        holder.tv_name.setBackgroundColor(Color.WHITE);
-        holder.tv_name.setBackgroundResource(R.drawable.selector_state);
+        holder.bookImage.setImageResource(R.drawable.guy);
+        holder.bookName.setText(bookName.get(position));
+        holder.bookPath.setText(bookPath.get(position));
+        holder.bookName.setBackgroundColor(Color.WHITE);
+        holder.bookName.setBackgroundResource(R.drawable.selector_state);
         return convertView;
     }
 
     class ViewHolder {
-        ImageView iv_icon;
-        TextView tv_name;
+        ImageView bookImage;
+        TextView bookName;
+        TextView bookPath;
 
         public ViewHolder(View view) {
-            iv_icon = (ImageView) view.findViewById(R.id.bookimage);
-            tv_name = (TextView) view.findViewById(R.id.bookname);
+            bookImage = (ImageView) view.findViewById(R.id.bookimage);
+            bookName = (TextView) view.findViewById(R.id.bookname);
+            bookPath=(TextView)view.findViewById(R.id.bookpath);
             view.setTag(this);
         }
     }

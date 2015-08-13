@@ -1,28 +1,31 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
-import android.annotation.TargetApi;
-import android.os.Build;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import com.sunbi.organisatiom.activity.kitabclub.adapters.CustomMyBooksListAdapter;
 import com.sunbi.organisatiom.activity.kitabclub.classes.PurchaseBookList;
+import com.sunbi.organisatiom.activity.kitabclub.interfaces.MyBooksInterface;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
-public class MyBooks extends AppCompatActivity {
+public class MyBooks extends AppCompatActivity implements ListView.OnItemClickListener {
     private ListView listView;
-    private CircleProgressBar progressBar;
-    private File myInternalFile;
-
+    private static ArrayList<String> bookName;
+    private static ArrayList<String> bookPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,14 +39,20 @@ public class MyBooks extends AppCompatActivity {
         TextView titleText = (TextView) findViewById(R.id.titletext);
         titleText.setText("My Books");
         listView = (ListView) findViewById(R.id.listView);
-        List<String> mAppList = new PurchaseBookList(getApplicationContext()).searchFolderRecursive();
-        CustomMyBooksListAdapter adapter = new CustomMyBooksListAdapter(mAppList, getApplicationContext());
-        listView.setAdapter(adapter);
-    }
+        List<String> mAppList = new PurchaseBookList(getApplicationContext(), new MyBooksInterface() {
+            @Override
+            public void bookName(ArrayList<String> bookName) {
+                MyBooks.bookName=bookName;
+            }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private boolean isSDCardAvailable() {
-        return android.os.Environment.isExternalStorageEmulated();
+            @Override
+            public void bookPath(ArrayList<String> bookPath) {
+                MyBooks.bookPath=bookPath;
+            }
+        }).searchFolderRecursive();
+        CustomMyBooksListAdapter adapter = new CustomMyBooksListAdapter(bookName,bookPath, getApplicationContext());
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(this);
     }
 
     @Override
@@ -68,5 +77,20 @@ public class MyBooks extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        File file=new File(MyBooks.bookPath.get(position));
+        Intent target = new Intent(Intent.ACTION_VIEW);
+        target.setDataAndType(Uri.fromFile(file),"application/epub");
+        target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+        Intent intent = Intent.createChooser(target, "Open File");
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            // Instruct the user to install a PDF reader here, or something
+        }
     }
 }

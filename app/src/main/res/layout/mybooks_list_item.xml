@@ -33,20 +33,11 @@
             android:textSize="17sp" />
 
         <TextView
-            android:id="@+id/booksubname"
+            android:id="@+id/bookpath"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:text="C:users//pantha"
-            android:textColor="@android:color/black"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/booksize"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:text="size:32 KB"
             android:textColor="@android:color/black"
             android:textSize="15sp" />
     </LinearLayout>
