@@ -10,66 +10,81 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.sunbi.organisatiom.activity.kitabclub.BookCart;
 import com.sunbi.organisatiom.activity.kitabclub.R;
+import com.sunbi.organisatiom.activity.kitabclub.models.GridRow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gokarna on 7/18/15.
  */
 public class BookListGridAdpater extends BaseAdapter {
-    private Context mContext;
-    private final String[] web;
-    private final int[] Imageid;
+    private Context context;
+    private List<GridRow> list;
 
-    public BookListGridAdpater(Context c, String[] web, int[] Imageid) {
-        mContext = c;
-        this.Imageid = Imageid;
-        this.web = web;
+    public BookListGridAdpater(Context context, List<GridRow> list) {
+        this.context = context;
+        this.list = list;
     }
 
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return web.length;
+        return list.size();
     }
 
     @Override
     public Object getItem(int position) {
         // TODO Auto-generated method stub
-        return null;
+        return list.get(position);
     }
 
     @Override
     public long getItemId(int position) {
         // TODO Auto-generated method stub
-        return 0;
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
         View grid;
-        LayoutInflater inflater = (LayoutInflater) mContext
+        LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        GridRow gridRow = (GridRow) getItem(position);
         if (convertView == null) {
-            grid = new View(mContext);
             grid = inflater.inflate(R.layout.book_list_grid_item, null);
             TextView textView = (TextView) grid.findViewById(R.id.gridText);
+            textView.setText(gridRow.getName());
             ImageView imageView = (ImageView) grid.findViewById(R.id.gridImage);
-            textView.setText(web[position]);
-            imageView.setImageResource(Imageid[position]);
+            Picasso.with(context)
+                    .load(gridRow.getImage_path())
+                    .placeholder(R.drawable.imagebackground).into(imageView);
+            final ArrayList<String> parameters = new ArrayList<>();
+            parameters.add(gridRow.getId());
+            parameters.add(gridRow.getName());
+            parameters.add(gridRow.getImage_path());
+            parameters.add(gridRow.getBookPath());
+            parameters.add(gridRow.getAuthorName());
+            parameters.add(gridRow.getPrice());
+            parameters.add(gridRow.getDiscount());
+            parameters.add(gridRow.getType());
+            parameters.add(gridRow.getDescription());
             ImageView cartImage = (ImageView) grid.findViewById(R.id.cart);
             cartImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, BookCart.class);
-                    mContext.startActivity(intent);
-                    ((Activity) mContext).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    Intent intent = new Intent(context, BookCart.class);
+                    intent.putStringArrayListExtra("parameters", parameters);
+                    context.startActivity(intent);
+                    ((Activity) context).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
             });
         } else {
-            grid = (View) convertView;
+            grid = convertView;
         }
         return grid;
     }

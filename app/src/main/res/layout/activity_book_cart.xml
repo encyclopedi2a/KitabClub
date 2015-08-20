@@ -15,6 +15,7 @@
         >
 
     <ImageView
+        android:id="@+id/bookimage"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_gravity="top|center_horizontal"
@@ -29,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.2"
+        android:paddingBottom="5dp"
         android:background="#E67A0A"
         android:orientation="horizontal">
 
@@ -40,6 +42,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/bookname"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -51,6 +54,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/bookprice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
@@ -62,7 +66,6 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
             android:background="#000000" />
 
@@ -102,6 +105,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/bookdescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"

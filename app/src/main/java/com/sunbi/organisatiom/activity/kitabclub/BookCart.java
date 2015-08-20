@@ -8,10 +8,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
 public class BookCart extends AppCompatActivity {
     private ImageView favourite;
-    private ImageView cart;
-    private TextView cartCount;
+    private ImageView cart, bookImage;
+    private TextView cartCount, bookName, bookPrice, bookDescription;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,13 +29,17 @@ public class BookCart extends AppCompatActivity {
         titleText.setTypeface(null, Typeface.BOLD);
         initialiseView();
         prepareToolbar();
+        setContent();
     }
 
     private void initialiseView() {
         favourite = (ImageView) findViewById(R.id.favourite);
         cart = (ImageView) findViewById(R.id.cart);
-        cartCount=(TextView)findViewById(R.id.countcart);
-
+        cartCount = (TextView) findViewById(R.id.countcart);
+        bookImage = (ImageView) findViewById(R.id.bookimage);
+        bookName = (TextView) findViewById(R.id.bookname);
+        bookPrice = (TextView) findViewById(R.id.bookprice);
+        bookDescription = (TextView) findViewById(R.id.bookdescription);
     }
 
     private void prepareToolbar() {
@@ -42,5 +51,15 @@ public class BookCart extends AppCompatActivity {
         cart.setMaxHeight(60);
         cart.setPadding(0, 0, 30, 0);
         cartCount.setVisibility(View.VISIBLE);
+    }
+
+    private void setContent() {
+        ArrayList<String> content = getIntent().getStringArrayListExtra("parameters");
+        bookName.setText(content.get(1));
+        Picasso.with(this)
+                .load(content.get(2))
+                .placeholder(R.drawable.imagebackground).into(bookImage);
+        bookPrice.setText("$"+content.get(5));
+        bookDescription.setText(content.get(8));
     }
 }

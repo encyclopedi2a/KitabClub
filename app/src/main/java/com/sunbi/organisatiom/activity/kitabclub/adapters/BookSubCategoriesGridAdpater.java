@@ -66,9 +66,10 @@ public class BookSubCategoriesGridAdpater extends BaseAdapter implements RippleV
             TextView bookNumber = (TextView) grid.findViewById(R.id.totalBooks);
             bookNumber.setText(gridRow.getTotal_books()+" books");
             RippleView rippleView = (RippleView) grid.findViewById(R.id.arrowRippleEffect);
+            rippleView.setTag(gridRow.getId());
             rippleView.setOnRippleCompleteListener(this);
         } else {
-            grid = (View) convertView;
+            grid = convertView;
         }
         return grid;
     }
@@ -76,6 +77,7 @@ public class BookSubCategoriesGridAdpater extends BaseAdapter implements RippleV
     @Override
     public void onComplete(RippleView rippleView) {
         Intent intent=new Intent(context, BookList.class);
+        intent.putExtra("BookSubCategoryId",rippleView.getTag().toString());
         context.startActivity(intent);
         ((Activity)context).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }

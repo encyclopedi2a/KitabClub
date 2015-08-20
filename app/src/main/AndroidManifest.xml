@@ -68,6 +68,10 @@
             android:name=".BookReader"
             android:label="@string/title_activity_book_reader" >
         </activity>
+        <activity
+            android:name=".TableContent"
+            android:label="@string/title_activity_table_content" >
+        </activity>
     </application>
 
 </manifest>

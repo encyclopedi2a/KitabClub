@@ -1,10 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#F0F0F0"
+    android:orientation="vertical"
     tools:context="com.sunbi.organisatiom.activity.kitabclub.BookList">
+
     <include layout="@layout/toolbar" />
 
     <LinearLayout
@@ -25,16 +27,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fiction"
-                android:textSize="20sp"
                 android:textColor="#000000"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="3dp"
-                android:textColor="#000000"
                 android:text="@string/fictionbooks"
+                android:textColor="#000000"
                 android:textSize="17sp" />
 
         </LinearLayout>
@@ -59,18 +61,36 @@
         </LinearLayout>
     </LinearLayout>
 
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:numColumns="2"
-        android:scrollbars="none"
-        android:layout_margin="10dp"
-        android:horizontalSpacing="8dp"
-        android:verticalSpacing="8dp"
-        android:stretchMode="columnWidth"
-        >
-    </GridView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:horizontalSpacing="8dp"
+            android:numColumns="2"
+            android:scrollbars="none"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="8dp" />
+
+        <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:layout_centerInParent="true"
+            app:mlpb_arrow_height="5dp"
+            app:mlpb_arrow_width="10dp"
+            app:mlpb_enable_circle_background="false"
+            app:mlpb_progress_color="@color/buttonColor"
+            app:mlpb_progress_stoke_width="5dp"
+            app:mlpb_progress_text_color="#ffffff"
+            app:mlpb_progress_text_size="0dip"
+            app:mlpb_progress_text_visibility="visible"
+            app:mlpb_show_arrow="false" />
+    </RelativeLayout>
 </LinearLayout>

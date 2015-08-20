@@ -23,4 +23,5 @@
     <string name="title_activity_my_books">MyBooks</string>
     <string name="app_id">1450305465278640</string>
     <string name="title_activity_book_reader">BookReader</string>
+    <string name="title_activity_table_content">TableContent</string>
 </resources>

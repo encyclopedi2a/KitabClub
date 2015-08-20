@@ -43,8 +43,9 @@
                 android:layout_height="19sp"
                 android:visibility="invisible"
                 android:gravity="center"
+                android:textColor="#ffffff"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="9dp"
                 android:background="@drawable/circletextview"
                 android:text="0"
                 android:textSize="10sp" />

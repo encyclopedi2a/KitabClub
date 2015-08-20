@@ -43,7 +43,7 @@ public class BookCategoriesJSON {
             public void onResponse(JSONArray response) {
                 try {
                     for (int i = 0; i < response.length(); i++) {
-                        JSONObject responseJSONObject = (JSONObject) response
+                        JSONObject responseJSONObject = response
                                 .getJSONObject(i);
                         String id = responseJSONObject.getString("id");
                         String bookName = responseJSONObject.getString("name");

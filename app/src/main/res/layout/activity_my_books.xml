@@ -16,10 +16,8 @@
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:dividerHeight="10dp"
-            android:background="#ffffff"
-            android:divider="#d3d3d3"
+            android:divider="@drawable/partition"
             android:scrollbars="none" />
     </RelativeLayout>
 </LinearLayout>

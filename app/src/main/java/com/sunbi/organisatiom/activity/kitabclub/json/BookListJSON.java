@@ -12,7 +12,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import com.sunbi.organisatiom.activity.kitabclub.Helper.AppController;
-import com.sunbi.organisatiom.activity.kitabclub.adapters.BookSubCategoriesGridAdpater;
+import com.sunbi.organisatiom.activity.kitabclub.adapters.BookListGridAdpater;
 import com.sunbi.organisatiom.activity.kitabclub.models.GridRow;
 
 import org.json.JSONArray;
@@ -25,18 +25,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by gokarna on 8/4/15.
+ * Created by gokarna on 8/19/15.
  */
-public class BookSubCategoriesJSON {
-    private String arrayUrl = "http://thesunbihosting.com/demo/book_store/json/book_sub_category";
+public class BookListJSON {
+    private String arrayUrl = "http://thesunbihosting.com/demo/book_store/json/book_list";
     private StringRequest bokSubCategoryRequest;
     private Context context;
-    private  CircleProgressBar progressBar;
+    private CircleProgressBar progressBar;
     private GridView gridView;
     private List<GridRow> gridItems;
     private String id=null;
     private static final String tag_json_obj="TAG_REQUEST";
-    public BookSubCategoriesJSON(Context context, GridView gridView, CircleProgressBar progressBar,String id) {
+    public BookListJSON(Context context, GridView gridView, CircleProgressBar progressBar,String id) {
         this.context=context;
         this.gridView=gridView;
         this.progressBar=progressBar;
@@ -56,18 +56,23 @@ public class BookSubCategoriesJSON {
                             JSONObject responseJSONObject = responseValue
                                     .getJSONObject(i);
                             String id = responseJSONObject.getString("id");
-                            String bookName = responseJSONObject.getString("name");
-                            String imageURL = responseJSONObject.getString("name");
-                            String totalBooks = responseJSONObject.getString("totalBooks");
-                            GridRow item = new GridRow(id,bookName,imageURL,totalBooks);
+                            String bookName = responseJSONObject.getString("book_name");
+                            String imageURL = responseJSONObject.getString("cover_image");
+                            String bookPdf = responseJSONObject.getString("book_pdf");
+                            String authorName=responseJSONObject.getString("author_name");
+                            String price=responseJSONObject.getString("price");
+                            String discount=responseJSONObject.getString("discount");
+                            String type=responseJSONObject.getString("type");
+                            String description=responseJSONObject.getString("description");
+                            GridRow item = new GridRow(id,bookName,imageURL,bookPdf,authorName,price,discount,type,description);
                             gridItems.add(item);
                         }
-                        BookSubCategoriesGridAdpater gridAdpater = new BookSubCategoriesGridAdpater(context,gridItems);
+                        BookListGridAdpater gridAdpater = new BookListGridAdpater(context,gridItems);
                         gridView.setAdapter(gridAdpater);
                         progressBar.setVisibility(View.GONE);
                     } catch (JSONException e) {
                         e.printStackTrace();
-                       Log.d("Message:",e.getMessage());
+                        Log.d("Message:",e.getMessage());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -83,7 +88,7 @@ public class BookSubCategoriesJSON {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("category_id",id);
+                params.put("sub_category_id",id);
                 return params;
             }
         };

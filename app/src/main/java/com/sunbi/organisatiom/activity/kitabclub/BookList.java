@@ -1,5 +1,6 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,25 +9,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 
-import com.sunbi.organisatiom.activity.kitabclub.adapters.BookListGridAdpater;
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.sunbi.organisatiom.activity.kitabclub.json.BookListJSON;
 
 public class BookList extends AppCompatActivity {
     private GridView gridView;
-    String[] web = {
-            "Google",
-            "Github",
-            "Instagram",
-            "Facebook",
-            "Flickr",
-    };
-    int[] imageId = {
-            R.drawable.book1,
-            R.drawable.book1,
-            R.drawable.book1,
-            R.drawable.book1,
-            R.drawable.book1,
-    };
-
+    private CircleProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +25,12 @@ public class BookList extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        progressBar=(CircleProgressBar)findViewById(R.id.progressBar);
         gridView = (GridView) findViewById(R.id.gridView);
-        BookListGridAdpater gridAdpater=new BookListGridAdpater(this,web,imageId);
-        gridView.setAdapter(gridAdpater);
+        Intent intent=getIntent();
+        String bookSubCategoryId=intent.getStringExtra("BookSubCategoryId");
+        BookListJSON bookListJSON=new BookListJSON(BookList.this,gridView,progressBar,bookSubCategoryId);
+        bookListJSON.postJsonValue();
     }
 
     @Override

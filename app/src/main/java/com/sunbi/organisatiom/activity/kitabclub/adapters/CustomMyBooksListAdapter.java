@@ -51,21 +51,17 @@ public class CustomMyBooksListAdapter extends BaseAdapter {
         ViewHolder holder = (ViewHolder) convertView.getTag();
         holder.bookImage.setImageResource(R.drawable.guy);
         holder.bookName.setText(bookName.get(position));
-        holder.bookPath.setText(bookPath.get(position));
-        holder.bookName.setBackgroundColor(Color.WHITE);
-        holder.bookName.setBackgroundResource(R.drawable.selector_state);
+        holder.bookName.setTextColor(Color.WHITE);
         return convertView;
     }
 
     class ViewHolder {
         ImageView bookImage;
         TextView bookName;
-        TextView bookPath;
 
         public ViewHolder(View view) {
             bookImage = (ImageView) view.findViewById(R.id.bookimage);
             bookName = (TextView) view.findViewById(R.id.bookname);
-            bookPath=(TextView)view.findViewById(R.id.bookpath);
             view.setTag(this);
         }
     }

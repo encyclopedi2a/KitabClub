@@ -22,12 +22,14 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.dd.CircularProgressButton;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Picasso;
@@ -62,6 +64,8 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
     private HorizontalScrollView scrollView;
     private WebView webView;
     private CircleProgressBar progressBar;
+    private CircularProgressButton sendMail;
+    private EditText name,email,description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +107,10 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         webView = (WebView) findViewById(R.id.webview);
         progressBar = (CircleProgressBar) findViewById(R.id.progressBar);
         messages = (ImageView) findViewById(R.id.messages);
+        sendMail=(CircularProgressButton)findViewById(R.id.sendMail);
+        name=(EditText)findViewById(R.id.name);
+        email=(EditText)findViewById(R.id.email);
+        description=(EditText)findViewById(R.id.description);
     }
 
 
@@ -123,6 +131,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         messages.setOnClickListener(this);
         myBooks.setOnClickListener(this);
         mDrawerList.setOnItemClickListener(this);
+        sendMail.setOnClickListener(this);
     }
 
     private void prepareFacebookDrawer() {
@@ -302,6 +311,14 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
                 mDrawerLayout.openDrawer(Gravity.RIGHT);
                 messageLayout.setVisibility(View.GONE);
                 webView.setVisibility(View.VISIBLE);
+                break;
+            case R.id.sendMail:
+                Intent emails = new Intent(Intent.ACTION_SEND);
+                emails.putExtra(Intent.EXTRA_EMAIL,new String[]{email.getText().toString()});
+                emails.putExtra(Intent.EXTRA_SUBJECT, name.getText().toString());
+                emails.putExtra(Intent.EXTRA_TEXT, description.getText().toString());
+                emails.setType("message/rfc822");
+                startActivity(Intent.createChooser(emails, "Choose an Email client :"));
                 break;
         }
     }

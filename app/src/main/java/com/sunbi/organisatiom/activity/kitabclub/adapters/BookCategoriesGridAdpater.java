@@ -73,7 +73,7 @@ public class BookCategoriesGridAdpater extends BaseAdapter implements RippleView
             rippleView.setTag(gridRow.getId());
             rippleView.setOnRippleCompleteListener(this);
         } else {
-            grid = (View) convertView;
+            grid = convertView;
         }
         return grid;
     }
