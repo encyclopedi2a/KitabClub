@@ -36,7 +36,7 @@ public class DatabaseOperation extends SQLiteOpenHelper {
 
     public DatabaseOperation(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context=context;
+        this.context = context;
     }
 
     @Override
@@ -68,8 +68,17 @@ public class DatabaseOperation extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
+    public int countDataEntryFromDataBase() {
+        String countQuery = "SELECT  * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int cnt = cursor.getCount();
+        cursor.close();
+        return cnt;
+    }
+
     // Getting All Data
-    public List<SQLiteData> getAllContacts() {
+    public List<SQLiteData> getAllData() {
         List<SQLiteData> dataList = new ArrayList<SQLiteData>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_NAME;
@@ -83,13 +92,13 @@ public class DatabaseOperation extends SQLiteOpenHelper {
                 SQLiteData data = new SQLiteData();
                 data.setId(Integer.parseInt(cursor.getString(0)));
                 data.setBookName(cursor.getString(1));
-                Log.d("Book_Name",cursor.getString(1));
+                Log.d("Book_Name", cursor.getString(1));
                 data.setBookImage(cursor.getString(2));
-                Log.d("Book_Image",cursor.getString(2));
+                Log.d("Book_Image", cursor.getString(2));
                 data.setBookQuantity(cursor.getString(3));
-                Log.d("Book_Quantity",cursor.getString(3));
+                Log.d("Book_Quantity", cursor.getString(3));
                 data.setBookPrice(cursor.getString(4));
-                Log.d("Book_Price",cursor.getString(4));
+                Log.d("Book_Price", cursor.getString(4));
                 // Adding data to list
                 dataList.add(data);
             } while (cursor.moveToNext());

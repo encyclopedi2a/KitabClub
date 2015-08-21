@@ -72,6 +72,10 @@
             android:name=".TableContent"
             android:label="@string/title_activity_table_content" >
         </activity>
+        <activity
+            android:name=".CartView"
+            android:label="@string/title_activity_cart_view" >
+        </activity>
     </application>
 
 </manifest>

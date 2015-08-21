@@ -1,5 +1,6 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -64,6 +65,9 @@ public class BookCart extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void setContent() {
+        //set the cartCount by counting thhe number of record in android
+        int count=new DatabaseOperation(BookCart.this).countDataEntryFromDataBase();
+        cartCount.setText(String.valueOf(count));
         bookName.setText(content.get(1));
         Picasso.with(this)
                 .load(content.get(2))
@@ -77,6 +81,8 @@ public class BookCart extends AppCompatActivity implements View.OnClickListener 
         int id=view.getId();
         switch (id){
             case R.id.cart:
+                Intent intent=new Intent(BookCart.this,CartView.class);
+                startActivity(intent);
                break;
             case R.id.addcard:
                 new TotalBookValueProvider(this,bookPrice.getText().toString().substring(1), new BooksPriceProvider() {
@@ -89,10 +95,12 @@ public class BookCart extends AppCompatActivity implements View.OnClickListener 
                         sqLiteData.setBookQuantity(quantity);
                         sqLiteData.setBookPrice(price);
                         new DatabaseOperation(BookCart.this).addRecord(sqLiteData);
+                        int count=new DatabaseOperation(BookCart.this).countDataEntryFromDataBase();
+                        cartCount.setText(String.valueOf(count));
                     }
                 }).returnTotalNumberofBooks();
-                cartCount.setText(String.valueOf(Integer.parseInt(cartCount.getText().toString())+1));
                 break;
         }
+
     }
 }
