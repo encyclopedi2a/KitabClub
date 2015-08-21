@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.sunbi.organisatiom.activity.kitabclub.models.SQLiteData;
 
@@ -92,16 +91,13 @@ public class DatabaseOperation extends SQLiteOpenHelper {
                 SQLiteData data = new SQLiteData();
                 data.setId(Integer.parseInt(cursor.getString(0)));
                 data.setBookName(cursor.getString(1));
-                Log.d("Book_Name", cursor.getString(1));
                 data.setBookImage(cursor.getString(2));
-                Log.d("Book_Image", cursor.getString(2));
                 data.setBookQuantity(cursor.getString(3));
-                Log.d("Book_Quantity", cursor.getString(3));
                 data.setBookPrice(cursor.getString(4));
-                Log.d("Book_Price", cursor.getString(4));
                 // Adding data to list
                 dataList.add(data);
             } while (cursor.moveToNext());
+            db.close();
         }
 
         // return contact list

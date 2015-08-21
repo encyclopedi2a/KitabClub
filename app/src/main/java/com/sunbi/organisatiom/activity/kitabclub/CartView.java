@@ -16,6 +16,7 @@ import java.util.List;
 public class CartView extends AppCompatActivity {
     private ListView cartListView;
     private List<SQLiteData> list;
+    private TextView total;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,5 +33,15 @@ public class CartView extends AppCompatActivity {
         list=new DatabaseOperation(this).getAllData();
         CartListAdapter cartListAdapter=new CartListAdapter(getApplicationContext(),list);
         cartListView.setAdapter(cartListAdapter);
+        total=(TextView)findViewById(R.id.total);
+        setTotalValue(total,list);
+    }
+    private void setTotalValue(TextView total,List<SQLiteData> list){
+        int totalSum=0;
+        for(int i=0; i<list.size();i++){
+            SQLiteData data=(SQLiteData)list.get(i);
+            totalSum=totalSum+(Integer.parseInt(data.getBookQuantity())*Integer.parseInt(data.getBookPrice()));
+            total.setText(String.valueOf("$"+totalSum));
+        }
     }
 }
