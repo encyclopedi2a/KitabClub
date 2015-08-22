@@ -30,10 +30,10 @@ public class CartView extends AppCompatActivity {
         titleText.setText("Cart List");
         titleText.setTypeface(null, Typeface.BOLD);
         cartListView=(ListView)findViewById(R.id.cartlist);
-        list=new DatabaseOperation(this).getAllData();
-        CartListAdapter cartListAdapter=new CartListAdapter(getApplicationContext(),list);
-        cartListView.setAdapter(cartListAdapter);
         total=(TextView)findViewById(R.id.total);
+        list=new DatabaseOperation(this).getAllData();
+        CartListAdapter cartListAdapter=new CartListAdapter(getApplicationContext(),list,cartListView,total);
+        cartListView.setAdapter(cartListAdapter);
         setTotalValue(total,list);
     }
     private void setTotalValue(TextView total,List<SQLiteData> list){
@@ -41,7 +41,7 @@ public class CartView extends AppCompatActivity {
         for(int i=0; i<list.size();i++){
             SQLiteData data=(SQLiteData)list.get(i);
             totalSum=totalSum+(Integer.parseInt(data.getBookQuantity())*Integer.parseInt(data.getBookPrice()));
-            total.setText(String.valueOf("$"+totalSum));
         }
+        total.setText(String.valueOf("$"+totalSum));
     }
 }

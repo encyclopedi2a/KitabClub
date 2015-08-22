@@ -93,7 +93,7 @@ public class BookCart extends AppCompatActivity implements View.OnClickListener 
                         sqLiteData.setBookName(content.get(1));
                         sqLiteData.setBookImage(content.get(2));
                         sqLiteData.setBookQuantity(quantity);
-                        sqLiteData.setBookPrice(price);
+                        sqLiteData.setBookPrice(content.get(5));
                         new DatabaseOperation(BookCart.this).addRecord(sqLiteData);
                         int count=new DatabaseOperation(BookCart.this).countDataEntryFromDataBase();
                         cartCount.setText(String.valueOf(count));
