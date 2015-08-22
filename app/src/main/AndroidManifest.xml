@@ -56,7 +56,7 @@
             android:label="@string/title_activity_sign_up"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".BookCart"
+            android:name=".BookDetail"
             android:label="@string/title_activity_book_cart" />
         <activity
             android:name=".BookSubCategory"

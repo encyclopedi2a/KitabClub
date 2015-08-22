@@ -18,12 +18,13 @@ import com.sunbi.organisatiom.activity.kitabclub.sqlitedatabase.DatabaseOperatio
 
 import java.util.ArrayList;
 
-public class BookCart extends AppCompatActivity implements View.OnClickListener {
+public class BookDetail extends AppCompatActivity implements View.OnClickListener {
     private ImageView favourite;
     private ImageView cart, bookImage;
     private TextView cartCount, bookName, bookPrice, bookDescription;
     private LinearLayout addCard;
     private ArrayList<String> content;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +46,7 @@ public class BookCart extends AppCompatActivity implements View.OnClickListener 
     private void initialiseView() {
         favourite = (ImageView) findViewById(R.id.favourite);
         cart = (ImageView) findViewById(R.id.cart);
-        addCard=(LinearLayout)findViewById(R.id.addcard);
+        addCard = (LinearLayout) findViewById(R.id.addcard);
         cartCount = (TextView) findViewById(R.id.countcart);
         bookImage = (ImageView) findViewById(R.id.bookimage);
         bookName = (TextView) findViewById(R.id.bookname);
@@ -66,41 +67,48 @@ public class BookCart extends AppCompatActivity implements View.OnClickListener 
 
     private void setContent() {
         //set the cartCount by counting thhe number of record in android
-        int count=new DatabaseOperation(BookCart.this).countDataEntryFromDataBase();
+        int count = new DatabaseOperation(BookDetail.this).countDataEntryFromDataBase();
         cartCount.setText(String.valueOf(count));
         bookName.setText(content.get(1));
         Picasso.with(this)
                 .load(content.get(2))
                 .placeholder(R.drawable.imagebackground).into(bookImage);
-        bookPrice.setText("$"+content.get(5));
+        bookPrice.setText("$" + content.get(5));
         bookDescription.setText(content.get(8));
     }
 
     @Override
     public void onClick(View view) {
-        int id=view.getId();
-        switch (id){
+        int id = view.getId();
+        switch (id) {
             case R.id.cart:
-                Intent intent=new Intent(BookCart.this,CartView.class);
+                Intent intent = new Intent(BookDetail.this, CartView.class);
                 startActivity(intent);
-               break;
+                break;
             case R.id.addcard:
-                new TotalBookValueProvider(this,bookPrice.getText().toString().substring(1), new BooksPriceProvider() {
+                new TotalBookValueProvider(this, bookPrice.getText().toString().substring(1), new BooksPriceProvider() {
                     @Override
-                    public void setTotalPrice(String price,String quantity) {
-                           //sending the value in the database for showing in the cart list
-                        SQLiteData sqLiteData=new SQLiteData();
+                    public void setTotalPrice(String price, String quantity) {
+                        //sending the value in the database for showing in the cart list
+                        SQLiteData sqLiteData = new SQLiteData();
                         sqLiteData.setBookName(content.get(1));
                         sqLiteData.setBookImage(content.get(2));
                         sqLiteData.setBookQuantity(quantity);
                         sqLiteData.setBookPrice(content.get(5));
-                        new DatabaseOperation(BookCart.this).addRecord(sqLiteData);
-                        int count=new DatabaseOperation(BookCart.this).countDataEntryFromDataBase();
+                        new DatabaseOperation(BookDetail.this).addRecord(sqLiteData);
+                        int count = new DatabaseOperation(BookDetail.this).countDataEntryFromDataBase();
                         cartCount.setText(String.valueOf(count));
                     }
                 }).returnTotalNumberofBooks();
                 break;
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        int count = new DatabaseOperation(BookDetail.this).countDataEntryFromDataBase();
+        cartCount.setText(String.valueOf(count));
+        super.onResume();
     }
 }

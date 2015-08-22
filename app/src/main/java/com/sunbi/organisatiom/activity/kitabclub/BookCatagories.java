@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
@@ -15,7 +14,6 @@ import com.sunbi.organisatiom.activity.kitabclub.json.BookCategoriesJSON;
 
 public class BookCatagories extends AppCompatActivity implements View.OnClickListener {
     private GridView gridView;
-    private ImageView arrowImage;
     private CircleProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

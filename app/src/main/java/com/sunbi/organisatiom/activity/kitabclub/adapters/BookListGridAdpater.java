@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.sunbi.organisatiom.activity.kitabclub.BookCart;
+import com.sunbi.organisatiom.activity.kitabclub.BookDetail;
 import com.sunbi.organisatiom.activity.kitabclub.R;
 import com.sunbi.organisatiom.activity.kitabclub.models.GridRow;
 
@@ -77,7 +77,7 @@ public class BookListGridAdpater extends BaseAdapter {
             cartImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, BookCart.class);
+                    Intent intent = new Intent(context, BookDetail.class);
                     intent.putStringArrayListExtra("parameters", parameters);
                     context.startActivity(intent);
                     ((Activity) context).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

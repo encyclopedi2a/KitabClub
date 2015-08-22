@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="vertical"
-    tools:context="com.sunbi.organisatiom.activity.kitabclub.BookCart">
+    tools:context="com.sunbi.organisatiom.activity.kitabclub.BookDetail">
 
     <include layout="@layout/toolbar"/>
 
