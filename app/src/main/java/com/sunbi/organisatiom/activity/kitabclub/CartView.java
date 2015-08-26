@@ -1,9 +1,12 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -13,10 +16,11 @@ import com.sunbi.organisatiom.activity.kitabclub.sqlitedatabase.DatabaseOperatio
 
 import java.util.List;
 
-public class CartView extends AppCompatActivity {
+public class CartView extends AppCompatActivity implements View.OnClickListener {
     private ListView cartListView;
     private List<SQLiteData> list;
     private TextView total;
+    private Button checkOut;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +39,8 @@ public class CartView extends AppCompatActivity {
         CartListAdapter cartListAdapter=new CartListAdapter(getApplicationContext(),list,cartListView,total);
         cartListView.setAdapter(cartListAdapter);
         setTotalValue(total,list);
+        checkOut=(Button)findViewById(R.id.checkout);
+        checkOut.setOnClickListener(this);
     }
     private void setTotalValue(TextView total,List<SQLiteData> list){
         int totalSum=0;
@@ -43,5 +49,16 @@ public class CartView extends AppCompatActivity {
             totalSum=totalSum+(Integer.parseInt(data.getBookQuantity())*Integer.parseInt(data.getBookPrice()));
         }
         total.setText(String.valueOf("$"+totalSum));
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id=view.getId();
+        switch (id){
+        case R.id.checkout:
+            Intent intent=new Intent(this,WalletFormActivity.class);
+            startActivity(intent);
+            break;
+        }
     }
 }

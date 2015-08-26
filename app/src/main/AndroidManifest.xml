@@ -76,6 +76,10 @@
             android:name=".CartView"
             android:label="@string/title_activity_cart_view" >
         </activity>
+        <activity
+            android:name=".WalletFormActivity"
+            android:label="@string/title_activity_wallet_form" >
+        </activity>
     </application>
 
 </manifest>
