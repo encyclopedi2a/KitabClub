@@ -8,4 +8,5 @@ import java.util.ArrayList;
 public interface MyBooksInterface {
     public void bookName(ArrayList<String> bookName);
     public void bookPath(ArrayList<String> bookPath);
+    public void imagePath(ArrayList<String> imagePath);
 }

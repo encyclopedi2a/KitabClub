@@ -16,11 +16,12 @@ public class BookReader extends AppCompatActivity {
         webview.getSettings().setJavaScriptEnabled(true);
         webview.getSettings().setAllowFileAccess(true);
         webview.getSettings().getLoadsImagesAutomatically();
+        webview.getSettings().setSupportZoom(true);
         webview.getSettings().setBuiltInZoomControls(true);
         webview.getSettings().setLoadsImagesAutomatically(true);
         webview.getSettings().setDefaultTextEncodingName("utf-8");
         String text = "<html><body style=\"text-align:justify\"> %s </body></Html>";
         if (displayString != null)
-            webview.loadDataWithBaseURL("", String.format(text, displayString), "text/html", "utf-8","");
+            webview.loadDataWithBaseURL(null, String.format(text, displayString), "text/html", "utf-8",null);
     }
   }

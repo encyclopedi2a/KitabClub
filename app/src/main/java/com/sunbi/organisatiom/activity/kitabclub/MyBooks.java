@@ -23,7 +23,7 @@ public class MyBooks extends AppCompatActivity implements ListView.OnItemClickLi
     private ListView listView;
     private static ArrayList<String> bookName;
     private static ArrayList<String> bookPath;
-
+    private static ArrayList<String> imagePath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +47,13 @@ public class MyBooks extends AppCompatActivity implements ListView.OnItemClickLi
             public void bookPath(ArrayList<String> bookPath) {
                 MyBooks.bookPath = bookPath;
             }
+
+            @Override
+            public void imagePath(ArrayList<String> imagePath) {
+                MyBooks.imagePath=imagePath;
+            }
         }).searchFolderRecursive();
-        CustomMyBooksListAdapter adapter = new CustomMyBooksListAdapter(bookName, bookPath, getApplicationContext());
+        CustomMyBooksListAdapter adapter = new CustomMyBooksListAdapter(bookName, bookPath,imagePath,getApplicationContext());
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
     }

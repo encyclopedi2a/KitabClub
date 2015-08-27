@@ -5,6 +5,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +35,8 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(getResources().getColor(R.color.toolbarcolor));
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         TextView titleText = (TextView) findViewById(R.id.titletext);
         titleText.setText("Book Detail");
         titleText.setTypeface(null, Typeface.BOLD);
@@ -44,7 +48,6 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
     }
 
     private void initialiseView() {
-        favourite = (ImageView) findViewById(R.id.favourite);
         cart = (ImageView) findViewById(R.id.cart);
         addCard = (LinearLayout) findViewById(R.id.addcard);
         cartCount = (TextView) findViewById(R.id.countcart);
@@ -55,9 +58,6 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
     }
 
     private void prepareToolbar() {
-        favourite.setImageResource(R.drawable.favourite);
-        favourite.setAdjustViewBounds(true);
-        favourite.setMaxHeight(60);
         cart.setImageResource(R.drawable.cart);
         cart.setAdjustViewBounds(true);
         cart.setMaxHeight(60);
@@ -110,5 +110,24 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
         int count = new DatabaseOperation(BookDetail.this).countDataEntryFromDataBase();
         cartCount.setText(String.valueOf(count));
         super.onResume();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_book_sub_category, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

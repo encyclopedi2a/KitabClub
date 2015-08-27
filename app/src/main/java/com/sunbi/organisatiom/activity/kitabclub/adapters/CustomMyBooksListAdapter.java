@@ -1,6 +1,8 @@
 package com.sunbi.organisatiom.activity.kitabclub.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +20,13 @@ import java.util.List;
 public class CustomMyBooksListAdapter extends BaseAdapter {
     private List<String> bookName;
     private List<String> bookPath;
+    private List<String> imagePath;
     private Context context;
 
-    public CustomMyBooksListAdapter(List<String> bookName,List<String> bookPath, Context context) {
+    public CustomMyBooksListAdapter(List<String> bookName, List<String> bookPath, List<String> imagePath, Context context) {
         this.bookName = bookName;
-        this.bookPath=bookPath;
+        this.bookPath = bookPath;
+        this.imagePath = imagePath;
         this.context = context;
     }
 
@@ -41,6 +45,7 @@ public class CustomMyBooksListAdapter extends BaseAdapter {
         return position;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
@@ -49,7 +54,9 @@ public class CustomMyBooksListAdapter extends BaseAdapter {
             new ViewHolder(convertView);
         }
         ViewHolder holder = (ViewHolder) convertView.getTag();
-        holder.bookImage.setImageResource(R.drawable.guy);
+        String imagepath = imagePath.get(position) + "/.cover.png";
+        Bitmap myBitmap = BitmapFactory.decodeFile(imagepath);
+        holder.bookImage.setImageBitmap(myBitmap);
         holder.bookName.setText(bookName.get(position));
         holder.bookName.setTextColor(Color.WHITE);
         return convertView;
