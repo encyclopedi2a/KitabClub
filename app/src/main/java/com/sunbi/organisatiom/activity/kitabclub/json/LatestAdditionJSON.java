@@ -32,7 +32,7 @@ public class LatestAdditionJSON {
     }
 
     public void makeJsonArrayRequest() {
-
+        imagePathContainer = new ArrayList<String>();
         JsonArrayRequest jsonArrayReq = new JsonArrayRequest(arrayUrl,new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -41,8 +41,8 @@ public class LatestAdditionJSON {
                         JSONObject responseJSONObject = (JSONObject) response
                                 .getJSONObject(i);
                         String imagePath = responseJSONObject.getString("cover_image");
-                        imagePathContainer = new ArrayList<String>();
                         imagePathContainer.add(imagePath);
+                        imagePathContainer.add("http://thesunbihosting.com/demo/book_store/uploads/book_cover/bxvOIKgfGaE7.jpg");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -57,7 +57,7 @@ public class LatestAdditionJSON {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("TAG", "Error: " + error.getMessage());
                 Toast.makeText(context,
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                        "Unable to fetch file from server, Check your internet connection and try again", Toast.LENGTH_SHORT).show();
             }
         });
         AppController.getInstance().addToRequestQueue(jsonArrayReq);

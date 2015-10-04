@@ -88,7 +88,7 @@ public class BookListJSON {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("sub_category_id",id);
+                params.put("category_id",id);
                 return params;
             }
         };

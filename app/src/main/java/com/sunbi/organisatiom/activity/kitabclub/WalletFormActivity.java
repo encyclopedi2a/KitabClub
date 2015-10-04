@@ -1,6 +1,5 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -35,9 +34,9 @@ public class WalletFormActivity extends AppCompatActivity implements View.OnClic
         int id = view.getId();
         switch (id) {
             case R.id.payment:
-                Intent intent = new Intent(this, WalletTransaction.class);
-                startActivity(intent);
-                break;
+             //   Intent intent = new Intent(this, WalletTransaction.class);
+              //  startActivity(intent);
+               // break;
         }
     }
 

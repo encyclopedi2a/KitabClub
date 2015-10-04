@@ -6,12 +6,14 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sunbi.organisatiom.activity.kitabclub.R;
 
 public class About extends Fragment {
     private TextView textView;
+    private ImageView aboutUs;
     private View view;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,9 +34,16 @@ public class About extends Fragment {
         super.onActivityCreated(savedInstanceState);
         textView=(TextView)view.findViewById(R.id.description);
         textView.setText(Html.fromHtml(descriptionContent()));
+        aboutUs=(ImageView)view.findViewById(R.id.aboutus);
+        aboutUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().remove(About.this).commit();
+            }
+        });
     }
     private String descriptionContent(){
-        String description="<b>KitabClub</b><br><br>In the business for over many years , we at Kitabclub specialize in attaining exclusive watches at incredible prices. We are also members of the internatonal " +
+        String description="<b>KitabClub</b><br><br>In the business for over many years , we at Kitabclub specialize in attaining exclusive books at incredible prices. We are also members of the internatonal " +
                 "books Association which provides us access to the most luxurious and exclusive books nt he world.";
         return description;
     }

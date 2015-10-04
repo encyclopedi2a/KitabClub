@@ -27,4 +27,5 @@
     <string name="title_activity_cart_view">CartView</string>
     <string name="title_activity_wallet_form">WalletFormActivity</string>
     <string name="title_activity_wallet_transaction">WalletTransaction</string>
+    <string name="gcm_defaultSenderId">1049</string>
 </resources>

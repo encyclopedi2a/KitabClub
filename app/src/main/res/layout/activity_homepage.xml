@@ -74,36 +74,6 @@
                         android:textColor="@color/buttonColor"
                         android:textSize="17sp" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            tools:ignore="UselessParent">
-
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center"
-                                android:contentDescription="@string/title_activity_homepage"
-                                android:src="@mipmap/notification" />
-
-                            <TextView
-                                android:layout_width="20sp"
-                                android:layout_height="20sp"
-                                android:layout_gravity="center"
-                                android:layout_marginBottom="5dp"
-                                android:layout_marginLeft="12dp"
-                                android:background="@drawable/circletextview"
-                                android:gravity="center"
-                                android:text="@string/notificationNumber"
-                                android:textColor="#ffffff"
-                                android:textSize="12sp" />
-                        </FrameLayout>
-                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -183,13 +153,32 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-                        <ImageView
+                        <FrameLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:adjustViewBounds="true"
-                            android:maxHeight="70dp"
-                            android:src="@drawable/updates" />
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:maxHeight="70dp"
+                                android:src="@drawable/updates" />
+
+                            <TextView
+                                android:id="@+id/countcart"
+                                android:layout_width="25sp"
+                                android:layout_height="25sp"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="12dp"
+                                android:background="@drawable/circletextview"
+                                android:gravity="center"
+                                android:text="0"
+                                android:layout_marginBottom="15dp"
+                                android:textColor="#ffffff"
+                                android:textSize="17sp"
+                                 />
+                        </FrameLayout>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -249,10 +238,10 @@
                         android:id="@+id/footer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"
                         android:layout_alignParentBottom="true"
                         android:layout_marginBottom="2dp"
-                        android:background="#ffffff">
+                        android:background="#ffffff"
+                        android:padding="5dp">
 
                         <ImageView
                             android:id="@+id/messages"
@@ -291,36 +280,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/headerimage">
+
                 <com.pkmmte.view.CircularImageView
                     android:id="@+id/profilePicture"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/guy"
                     app:border="true"
                     app:border_color="#EEEEEE"
                     app:border_width="4dp"
                     app:shadow="true" />
+
                 <TextView
                     android:id="@+id/profileName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="17sp"
+                    android:layout_below="@+id/profilePicture"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:textColor="#ffffff"
-                    android:layout_below="@+id/profilePicture"
-                    />
+                    android:textSize="17sp" />
+
                 <TextView
                     android:id="@+id/profileEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textColor="#ffffff"
                     android:layout_below="@+id/profileName"
                     android:layout_marginLeft="10dp"
-                    />
+                    android:textColor="#ffffff"
+                    android:textSize="12sp" />
             </RelativeLayout>
 
             <ListView

@@ -61,7 +61,7 @@ public class CartListAdapter extends BaseAdapter {
             viewHolder.bookImage=(ImageView)grid.findViewById(R.id.bookimage);
             Picasso.with(context)
                     .load(data.getBookImage())
-                    .placeholder(R.drawable.imagebackground).into(viewHolder.bookImage);
+                    .into(viewHolder.bookImage);
             viewHolder.bookName=(TextView)grid.findViewById(R.id.bookname);
             viewHolder.bookName.setText(data.getBookName());
             viewHolder.counter=(TextView)grid.findViewById(R.id.counter);

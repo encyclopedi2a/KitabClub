@@ -88,7 +88,6 @@ public class SignUpJson {
             }
         };
         AppController.getInstance().addToRequestQueue(signInRequest, tag_json_obj);
-
     }
 }
 

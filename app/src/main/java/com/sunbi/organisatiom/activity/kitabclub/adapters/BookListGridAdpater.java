@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.andexert.library.RippleView;
 import com.squareup.picasso.Picasso;
 import com.sunbi.organisatiom.activity.kitabclub.BookDetail;
 import com.sunbi.organisatiom.activity.kitabclub.R;
@@ -54,7 +55,7 @@ public class BookListGridAdpater extends BaseAdapter {
         View grid;
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        GridRow gridRow = (GridRow) getItem(position);
+        final GridRow gridRow = (GridRow) getItem(position);
         if (convertView == null) {
             grid = inflater.inflate(R.layout.book_list_grid_item, null);
             TextView textView = (TextView) grid.findViewById(R.id.gridText);
@@ -62,7 +63,9 @@ public class BookListGridAdpater extends BaseAdapter {
             ImageView imageView = (ImageView) grid.findViewById(R.id.gridImage);
             Picasso.with(context)
                     .load(gridRow.getImage_path())
-                    .placeholder(R.drawable.imagebackground).into(imageView);
+                    .into(imageView);
+            TextView priceText=(TextView)grid.findViewById(R.id.price);
+            priceText.setText(gridRow.getPrice());
             final ArrayList<String> parameters = new ArrayList<>();
             parameters.add(gridRow.getId());
             parameters.add(gridRow.getName());
@@ -73,14 +76,19 @@ public class BookListGridAdpater extends BaseAdapter {
             parameters.add(gridRow.getDiscount());
             parameters.add(gridRow.getType());
             parameters.add(gridRow.getDescription());
-            ImageView cartImage = (ImageView) grid.findViewById(R.id.cart);
-            cartImage.setOnClickListener(new View.OnClickListener() {
+            RippleView rippleView = (RippleView) grid.findViewById(R.id.arrowRippleEffect);
+            rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
                 @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, BookDetail.class);
-                    intent.putStringArrayListExtra("parameters", parameters);
-                    context.startActivity(intent);
-                    ((Activity) context).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                public void onComplete(RippleView v) {
+                    if ((gridRow.getType().equals("paid"))) {
+                        Intent intent = new Intent(context, BookDetail.class);
+                        intent.putStringArrayListExtra("parameters", parameters);
+                        context.startActivity(intent);
+                        ((Activity) context).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    }
+                    else{
+                        //code to download books and images fro free books
+                    }
                 }
             });
         } else {

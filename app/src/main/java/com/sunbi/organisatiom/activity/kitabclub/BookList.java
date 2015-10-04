@@ -28,8 +28,8 @@ public class BookList extends AppCompatActivity {
         progressBar=(CircleProgressBar)findViewById(R.id.progressBar);
         gridView = (GridView) findViewById(R.id.gridView);
         Intent intent=getIntent();
-        String bookSubCategoryId=intent.getStringExtra("BookSubCategoryId");
-        BookListJSON bookListJSON=new BookListJSON(BookList.this,gridView,progressBar,bookSubCategoryId);
+        String bookCategoryId=intent.getStringExtra("BookCategoryId");
+        BookListJSON bookListJSON=new BookListJSON(BookList.this,gridView,progressBar,bookCategoryId);
         bookListJSON.postJsonValue();
     }
 

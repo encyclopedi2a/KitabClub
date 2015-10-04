@@ -22,29 +22,30 @@
             android:textColor="#000000"
             android:textSize="17sp"
             android:textStyle="bold" />
+        <!--temprarily removed
+                <FrameLayout
+                    android:id="@+id/cartView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/cartView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/cart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-            <ImageView
-                android:id="@+id/cart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/countcart"
-                android:layout_width="19sp"
-                android:layout_height="19sp"
-                android:visibility="invisible"
-                android:gravity="center"
-                android:textColor="#ffffff"
-                android:layout_gravity="center"
-                android:layout_marginLeft="7dp"
-                android:background="@drawable/circletextview"
-                android:text="0"
-                android:textSize="10sp" />
-        </FrameLayout>
+                    <TextView
+                        android:id="@+id/countcart"
+                        android:layout_width="19sp"
+                        android:layout_height="19sp"
+                        android:visibility="invisible"
+                        android:gravity="center"
+                        android:textColor="#ffffff"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="7dp"
+                        android:background="@drawable/circletextview"
+                        android:text="0"
+                        android:textSize="10sp" />
+                </FrameLayout>
+                -->
     </LinearLayout>
 </android.support.v7.widget.Toolbar>

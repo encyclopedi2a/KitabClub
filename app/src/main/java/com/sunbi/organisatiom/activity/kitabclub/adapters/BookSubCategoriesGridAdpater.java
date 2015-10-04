@@ -60,7 +60,7 @@ public class BookSubCategoriesGridAdpater extends BaseAdapter implements RippleV
             final ImageView imageView = (ImageView) grid.findViewById(R.id.gridImage);
             Picasso.with(context)
                     .load("http://thesunbihosting.com/demo/book_store/uploads/book_cover/bxvOIKgfGaE7.jpg")
-                    .placeholder(R.drawable.imagebackground).into(imageView);
+                    .into(imageView);
             TextView title = (TextView) grid.findViewById(R.id.title);
             title.setText(gridRow.getName());
             TextView bookNumber = (TextView) grid.findViewById(R.id.totalBooks);

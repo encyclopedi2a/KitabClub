@@ -1,22 +1,25 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.sunbi.organisatiom.activity.kitabclub.classes.TotalBookValueProvider;
-import com.sunbi.organisatiom.activity.kitabclub.interfaces.BooksPriceProvider;
-import com.sunbi.organisatiom.activity.kitabclub.models.SQLiteData;
-import com.sunbi.organisatiom.activity.kitabclub.sqlitedatabase.DatabaseOperation;
+import com.sunbi.organisatiom.activity.kitabclub.classes.ImageDownloader;
+import com.sunbi.organisatiom.activity.kitabclub.interfaces.PromoCodeResultHolder;
+import com.sunbi.organisatiom.activity.kitabclub.json.PromoCodeJSON;
 
 import java.util.ArrayList;
 
@@ -24,7 +27,7 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
     private ImageView favourite;
     private ImageView cart, bookImage;
     private TextView cartCount, bookName, bookPrice, bookDescription;
-    private LinearLayout addCard;
+    private Button addCard;
     private ArrayList<String> content;
 
     @Override
@@ -41,51 +44,66 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
         titleText.setText("Book Detail");
         titleText.setTypeface(null, Typeface.BOLD);
         initialiseView();
-        prepareToolbar();
         setContent();
-        cart.setOnClickListener(this);
         addCard.setOnClickListener(this);
     }
 
     private void initialiseView() {
-        cart = (ImageView) findViewById(R.id.cart);
-        addCard = (LinearLayout) findViewById(R.id.addcard);
-        cartCount = (TextView) findViewById(R.id.countcart);
+        addCard = (Button) findViewById(R.id.addCard);
         bookImage = (ImageView) findViewById(R.id.bookimage);
         bookName = (TextView) findViewById(R.id.bookname);
         bookPrice = (TextView) findViewById(R.id.bookprice);
         bookDescription = (TextView) findViewById(R.id.bookdescription);
     }
 
-    private void prepareToolbar() {
-        cart.setImageResource(R.drawable.cart);
-        cart.setAdjustViewBounds(true);
-        cart.setMaxHeight(60);
-        cart.setPadding(0, 0, 30, 0);
-        cartCount.setVisibility(View.VISIBLE);
-    }
-
     private void setContent() {
         //set the cartCount by counting thhe number of record in android
-        int count = new DatabaseOperation(BookDetail.this).countDataEntryFromDataBase();
-        cartCount.setText(String.valueOf(count));
         bookName.setText(content.get(1));
         Picasso.with(this)
                 .load(content.get(2))
-                .placeholder(R.drawable.imagebackground).into(bookImage);
-        bookPrice.setText("$" + content.get(5));
+                .into(bookImage);
+        bookPrice.setText(content.get(5));
         bookDescription.setText(content.get(8));
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
-            case R.id.cart:
-                Intent intent = new Intent(BookDetail.this, CartView.class);
-                startActivity(intent);
-                break;
-            case R.id.addcard:
+            case R.id.addCard:
+                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                View dialog = getLayoutInflater().inflate(R.layout.get_books_layout, null);
+                alertDialogBuilder.setView(dialog);
+                final AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+                final Button usePromoDialog = (Button) dialog.findViewById(R.id.usepromocode);
+                Button buyWithGoogle = (Button) dialog.findViewById(R.id.buywithgoogle);
+                final EditText promoCode = (EditText) dialog.findViewById(R.id.promocode);
+                usePromoDialog.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new PromoCodeJSON(getApplicationContext(), promoCode.getText().toString(), new PromoCodeResultHolder() {
+                            @Override
+                            public void result(String status) {
+                                if (status.equals("false")) {
+                                    alertDialog.dismiss();
+                                    new ImageDownloader(BookDetail.this,content.get(1),content.get(2),content.get(3)).execute();
+                                }
+                            }
+                        }).postJsonValue();
+                    }
+                });
+                buyWithGoogle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(BookDetail.this, WalletTransaction.class);
+                        startActivity(intent);
+
+                    }
+                });
+
+                /*
                 new TotalBookValueProvider(this, bookPrice.getText().toString().substring(1), new BooksPriceProvider() {
                     @Override
                     public void setTotalPrice(String price, String quantity) {
@@ -99,7 +117,7 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
                         int count = new DatabaseOperation(BookDetail.this).countDataEntryFromDataBase();
                         cartCount.setText(String.valueOf(count));
                     }
-                }).returnTotalNumberofBooks();
+                }).returnTotalNumberofBooks();*/
                 break;
         }
 
@@ -107,15 +125,13 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
 
     @Override
     protected void onResume() {
-        int count = new DatabaseOperation(BookDetail.this).countDataEntryFromDataBase();
-        cartCount.setText(String.valueOf(count));
         super.onResume();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_book_sub_category, menu);
+        getMenuInflater().inflate(R.menu.menu_book_list, menu);
         return true;
     }
 
@@ -127,6 +143,10 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
         int id = item.getItemId();
         if (id == android.R.id.home) {
             finish();
+        }
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

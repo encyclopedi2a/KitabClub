@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.andexert.library.RippleView;
 import com.squareup.picasso.Picasso;
-import com.sunbi.organisatiom.activity.kitabclub.BookSubCategory;
+import com.sunbi.organisatiom.activity.kitabclub.BookList;
 import com.sunbi.organisatiom.activity.kitabclub.R;
 import com.sunbi.organisatiom.activity.kitabclub.models.GridRow;
 
@@ -63,7 +63,7 @@ public class BookCategoriesGridAdpater extends BaseAdapter implements RippleView
             final ImageView imageView = (ImageView) grid.findViewById(R.id.gridImage);
             Picasso.with(context)
                     .load("http://thesunbihosting.com/demo/book_store/uploads/book_cover/bxvOIKgfGaE7.jpg")
-            .placeholder(R.drawable.imagebackground).into(imageView);
+            .into(imageView);
             TextView title = (TextView) grid.findViewById(R.id.title);
             title.setText(gridRow.getName());
             TextView bookNumber = (TextView) grid.findViewById(R.id.totalBooks);
@@ -80,7 +80,7 @@ public class BookCategoriesGridAdpater extends BaseAdapter implements RippleView
 
     @Override
     public void onComplete(RippleView rippleView) {
-        Intent intent = new Intent(context, BookSubCategory.class);
+        Intent intent = new Intent(context, BookList.class);
         intent.putExtra("BookCategoryId",rippleView.getTag().toString());
         context.startActivity(intent);
         ((Activity) context).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
