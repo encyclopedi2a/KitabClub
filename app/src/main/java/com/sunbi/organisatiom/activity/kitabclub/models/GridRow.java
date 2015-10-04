@@ -14,6 +14,7 @@ public class GridRow {
     private String discount;
     private String type;
     private String description;
+    private String category_id;
     public GridRow(String id, String name, String image_path, String total_Books) {
         this.id = id;
         this.name = name;
@@ -25,8 +26,18 @@ public class GridRow {
         return description;
     }
 
-    public GridRow(String id, String name, String image_path, String bookPath,
+    public String getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(String category_id) {
+        this.category_id = category_id;
+    }
+
+    public GridRow(String category_id,String id, String name, String image_path, String bookPath,
                    String authorName, String price, String discount, String type,String description) {
+        this.category_id=category_id;
+
         this.id = id;
         this.name = name;
         this.image_path = image_path;

@@ -28,7 +28,7 @@ import java.util.Map;
  * Created by gokarna on 8/19/15.
  */
 public class BookListJSON {
-    private String arrayUrl = "http://thesunbihosting.com/demo/book_store/json/book_list";
+    private String arrayUrl ="http://thesunbihosting.com/demo/book_store/json/getBook/1";
     private StringRequest bokSubCategoryRequest;
     private Context context;
     private CircleProgressBar progressBar;
@@ -41,6 +41,7 @@ public class BookListJSON {
         this.gridView=gridView;
         this.progressBar=progressBar;
         this.id=id;
+        arrayUrl ="http://thesunbihosting.com/demo/book_store/json/getBook/"+id;
         gridItems=new ArrayList<>();
     }
 
@@ -55,6 +56,7 @@ public class BookListJSON {
                         for (int i = 0; i < responseValue.length(); i++) {
                             JSONObject responseJSONObject = responseValue
                                     .getJSONObject(i);
+                            String category_id=responseJSONObject.getString("category_id");
                             String id = responseJSONObject.getString("id");
                             String bookName = responseJSONObject.getString("book_name");
                             String imageURL = responseJSONObject.getString("cover_image");
@@ -64,7 +66,7 @@ public class BookListJSON {
                             String discount=responseJSONObject.getString("discount");
                             String type=responseJSONObject.getString("type");
                             String description=responseJSONObject.getString("description");
-                            GridRow item = new GridRow(id,bookName,imageURL,bookPdf,authorName,price,discount,type,description);
+                            GridRow item = new GridRow(category_id,id,bookName,imageURL,bookPdf,authorName,price,discount,type,description);
                             gridItems.add(item);
                         }
                         BookListGridAdpater gridAdpater = new BookListGridAdpater(context,gridItems);

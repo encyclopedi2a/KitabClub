@@ -64,7 +64,7 @@ public class BookListGridAdpater extends BaseAdapter {
             Picasso.with(context)
                     .load(gridRow.getImage_path())
                     .into(imageView);
-            TextView priceText=(TextView)grid.findViewById(R.id.price);
+            TextView priceText = (TextView) grid.findViewById(R.id.price);
             priceText.setText(gridRow.getPrice());
             final ArrayList<String> parameters = new ArrayList<>();
             parameters.add(gridRow.getId());
@@ -76,20 +76,18 @@ public class BookListGridAdpater extends BaseAdapter {
             parameters.add(gridRow.getDiscount());
             parameters.add(gridRow.getType());
             parameters.add(gridRow.getDescription());
+            parameters.add(gridRow.getCategory_id());
             RippleView rippleView = (RippleView) grid.findViewById(R.id.arrowRippleEffect);
             rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
                 @Override
                 public void onComplete(RippleView v) {
-                    if ((gridRow.getType().equals("paid"))) {
-                        Intent intent = new Intent(context, BookDetail.class);
-                        intent.putStringArrayListExtra("parameters", parameters);
-                        context.startActivity(intent);
-                        ((Activity) context).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    }
-                    else{
-                        //code to download books and images fro free books
-                    }
+
+                    Intent intent = new Intent(context, BookDetail.class);
+                    intent.putStringArrayListExtra("parameters", parameters);
+                    context.startActivity(intent);
+                    ((Activity) context).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
+
             });
         } else {
             grid = convertView;

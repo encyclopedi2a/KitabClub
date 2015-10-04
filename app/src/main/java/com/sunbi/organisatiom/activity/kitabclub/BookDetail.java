@@ -45,6 +45,9 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
         titleText.setTypeface(null, Typeface.BOLD);
         initialiseView();
         setContent();
+        if(content.get(9).equals("8")){
+            addCard.setText("DOWNLOAD");
+        }
         addCard.setOnClickListener(this);
     }
 
@@ -72,36 +75,41 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
         int id = view.getId();
         switch (id) {
             case R.id.addCard:
-                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                View dialog = getLayoutInflater().inflate(R.layout.get_books_layout, null);
-                alertDialogBuilder.setView(dialog);
-                final AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-                final Button usePromoDialog = (Button) dialog.findViewById(R.id.usepromocode);
-                Button buyWithGoogle = (Button) dialog.findViewById(R.id.buywithgoogle);
-                final EditText promoCode = (EditText) dialog.findViewById(R.id.promocode);
-                usePromoDialog.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new PromoCodeJSON(getApplicationContext(), promoCode.getText().toString(), new PromoCodeResultHolder() {
-                            @Override
-                            public void result(String status) {
-                                if (status.equals("false")) {
-                                    alertDialog.dismiss();
-                                    new ImageDownloader(BookDetail.this,content.get(1),content.get(2),content.get(3)).execute();
+                if((addCard.getText().toString().equalsIgnoreCase("GET BOOKS"))){
+                    final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                    View dialog = getLayoutInflater().inflate(R.layout.get_books_layout, null);
+                    alertDialogBuilder.setView(dialog);
+                    final AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                    final Button usePromoDialog = (Button) dialog.findViewById(R.id.usepromocode);
+                    Button buyWithGoogle = (Button) dialog.findViewById(R.id.buywithgoogle);
+                    final EditText promoCode = (EditText) dialog.findViewById(R.id.promocode);
+                    usePromoDialog.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            new PromoCodeJSON(getApplicationContext(), promoCode.getText().toString(), new PromoCodeResultHolder() {
+                                @Override
+                                public void result(String status) {
+                                    if (status.equals("false")) {
+                                        alertDialog.dismiss();
+                                        new ImageDownloader(BookDetail.this,content.get(1),content.get(2),content.get(3)).execute();
+                                    }
                                 }
-                            }
-                        }).postJsonValue();
-                    }
-                });
-                buyWithGoogle.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(BookDetail.this, WalletTransaction.class);
-                        startActivity(intent);
+                            }).postJsonValue();
+                        }
+                    });
+                    buyWithGoogle.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(BookDetail.this, WalletTransaction.class);
+                            startActivity(intent);
 
-                    }
-                });
+                        }
+                    });
+
+                }else{
+                    new ImageDownloader(BookDetail.this,content.get(1),content.get(2),content.get(3)).execute();
+                }
 
                 /*
                 new TotalBookValueProvider(this, bookPrice.getText().toString().substring(1), new BooksPriceProvider() {
