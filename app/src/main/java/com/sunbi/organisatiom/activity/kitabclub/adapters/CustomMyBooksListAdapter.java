@@ -54,7 +54,7 @@ public class CustomMyBooksListAdapter extends BaseAdapter {
             new ViewHolder(convertView);
         }
         ViewHolder holder = (ViewHolder) convertView.getTag();
-        String imagepath = imagePath.get(position) + "/.cover.png";
+        String imagepath = imagePath.get(position);
         Bitmap myBitmap = BitmapFactory.decodeFile(imagepath);
         holder.bookImage.setImageBitmap(myBitmap);
         holder.bookName.setText(bookName.get(position));

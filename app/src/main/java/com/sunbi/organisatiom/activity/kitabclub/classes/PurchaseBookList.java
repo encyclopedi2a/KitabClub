@@ -2,6 +2,7 @@ package com.sunbi.organisatiom.activity.kitabclub.classes;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 import com.sunbi.organisatiom.activity.kitabclub.interfaces.MyBooksInterface;
 
@@ -23,7 +24,7 @@ public class PurchaseBookList {
     public PurchaseBookList(Context context, MyBooksInterface booksInterface) {
         this.context = context;
         this.booksInterface = booksInterface;
-        MEDIA_PATH = new File(Environment.getExternalStorageDirectory() + "");
+        MEDIA_PATH = new File(Environment.getExternalStorageDirectory() + "/kitabclub/");
         folder = MEDIA_PATH;
         searchFolderRecursive();
     }
@@ -36,7 +37,8 @@ public class PurchaseBookList {
                         if (file.getName().contains(".epub")) {
                             epub_names.add(file.getName());
                             epub_paths.add(file.getPath());
-                            epub_image_path.add(file.getParent());
+                            epub_image_path.add(file.getParent()+"/"+"cover.jpg");
+                            Log.i("Image Path: ",file.getParent()+"/"+"cover.jpg");
                         }
                     } else {
                         folder = file;

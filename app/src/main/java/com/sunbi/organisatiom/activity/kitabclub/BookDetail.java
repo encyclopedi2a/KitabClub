@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.sunbi.organisatiom.activity.kitabclub.classes.ImageDownloader;
+import com.sunbi.organisatiom.activity.kitabclub.classes.DownloadFileManager;
 import com.sunbi.organisatiom.activity.kitabclub.interfaces.PromoCodeResultHolder;
 import com.sunbi.organisatiom.activity.kitabclub.json.PromoCodeJSON;
 
@@ -65,7 +65,7 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
         Picasso.with(this)
                 .load(content.get(2))
                 .into(bookImage);
-        bookPrice.setText(content.get(5));
+        bookPrice.setText("Price: "+content.get(5));
         bookDescription.setText(content.get(8));
     }
 
@@ -92,7 +92,7 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
                                 public void result(String status) {
                                     if (status.equals("false")) {
                                         alertDialog.dismiss();
-                                        new ImageDownloader(BookDetail.this,content.get(1),content.get(2),content.get(3)).execute();
+                                        new DownloadFileManager(BookDetail.this,content.get(1),content.get(2),content.get(3)).execute();
                                     }
                                 }
                             }).postJsonValue();
@@ -108,7 +108,7 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
                     });
 
                 }else{
-                    new ImageDownloader(BookDetail.this,content.get(1),content.get(2),content.get(3)).execute();
+                    new DownloadFileManager(BookDetail.this,content.get(1),content.get(2),content.get(3)).execute();
                 }
 
                 /*

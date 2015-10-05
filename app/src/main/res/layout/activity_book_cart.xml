@@ -1,111 +1,127 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:wallet="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:wallet="http://schemas.android.com/apk/res-auto"
     android:background="#ffffff"
     android:orientation="vertical"
     tools:context="com.sunbi.organisatiom.activity.kitabclub.BookDetail">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-
-    <ImageView
-        android:id="@+id/bookimage"
-        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_gravity="top|center_horizontal"
         android:layout_weight="0.7"
-        android:adjustViewBounds="true"
-        android:maxHeight="200dp"
-        android:padding="10dp"
-         />
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.2"
-        android:background="#E67A0A"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/bookname"
+            <ImageView
+                android:id="@+id/bookimage"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp"
-                android:text="Sumnina ko katha"
-                android:textColor="#000000"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-            <View
-                android:layout_width="2dp"
                 android:layout_height="match_parent"
-                android:background="#000000"
-                android:layout_marginRight="10dp"
-                />
-            <TextView
-                android:id="@+id/bookprice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:text="$400"
-                android:textStyle="bold"
-                android:layout_marginRight="10dp"
-                android:textColor="#000000"
-                android:textSize="17sp" />
-        </LinearLayout>
+                android:layout_gravity="top|left"
+                android:layout_weight="0.7"
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/ic_launcher" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:background="#000000" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingRight="10dp"
+                android:background="#ffffff"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/bookname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Fates and Furies"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:paddingTop="5dp"
+                    android:text="Fates and Furies"
+                    android:textSize="12sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/buttonColor" />
+
+                <TextView
+                    android:id="@+id/bookprice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="price Rs.443"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/buttonColor" />
+
+                <Button
+                    android:id="@+id/addCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@color/buttonColor"
+                    android:text="Get Books" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="1.3"
         android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp"
+            android:text="Description"
+            android:textColor="@color/buttonColor"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/buttonColor" />
 
         <TextView
             android:id="@+id/bookdescription"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@color/buttonColor"
-            android:padding="5dp"
-            android:text="Description"
-            android:textColor="#000000"
-            android:textSize="15sp"
-        />
-        <Button
-            android:id="@+id/addCard"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Get Books"
-            android:textSize="17sp"
-            android:layout_margin="2dp"
-            android:background="#E67A0A"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            />
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:paddingTop="5dp"
+            android:text="price Rs.443"
+            android:textSize="17sp" />
     </LinearLayout>
-    </LinearLayout>
+    <!--parent layout-->
 </LinearLayout>
