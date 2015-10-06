@@ -25,12 +25,14 @@ public class PromoCodeJSON {
     private StringRequest bokSubCategoryRequest;
     private Context context;
     private String promoCode = null;
+    private String bookId=null;
     private PromoCodeResultHolder promoCodeResultHolder;
     private static final String tag_json_obj = "TAG_REQUEST";
 
-    public PromoCodeJSON(Context context, String promoCode,PromoCodeResultHolder promoCodeResultHolder) {
+    public PromoCodeJSON(Context context, String bookId,String promoCode,PromoCodeResultHolder promoCodeResultHolder) {
         this.context = context;
         this.promoCode = promoCode;
+        this.bookId=bookId;
         this.promoCodeResultHolder=promoCodeResultHolder;
     }
 
@@ -38,11 +40,11 @@ public class PromoCodeJSON {
         bokSubCategoryRequest = new StringRequest(Request.Method.POST, arrayUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("Login Response", response.toString());
                 try {
                     JSONObject responseValue = new JSONObject(response);
                     final String status = responseValue.getString("status");
-                    if(status.equals("Code Matched")){
+                    Log.e("Status: ",status);
+                    if(status.equalsIgnoreCase("Code Matched")){
                         promoCodeResultHolder.result("true");
                     }else{
                         promoCodeResultHolder.result("false");
@@ -61,7 +63,8 @@ public class PromoCodeJSON {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("category_id", promoCode);
+                params.put("book_id",bookId);
+                params.put("promo_code", promoCode);
                 return params;
             }
         };

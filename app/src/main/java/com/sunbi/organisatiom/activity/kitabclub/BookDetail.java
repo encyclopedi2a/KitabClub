@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.sunbi.organisatiom.activity.kitabclub.classes.DownloadFileManager;
@@ -45,7 +46,7 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
         titleText.setTypeface(null, Typeface.BOLD);
         initialiseView();
         setContent();
-        if(content.get(9).equals("8")){
+        if (content.get(9).equals("8")) {
             addCard.setText("DOWNLOAD");
         }
         addCard.setOnClickListener(this);
@@ -65,7 +66,7 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
         Picasso.with(this)
                 .load(content.get(2))
                 .into(bookImage);
-        bookPrice.setText("Price: "+content.get(5));
+        bookPrice.setText("Price: " + content.get(5));
         bookDescription.setText(content.get(8));
     }
 
@@ -75,7 +76,7 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
         int id = view.getId();
         switch (id) {
             case R.id.addCard:
-                if((addCard.getText().toString().equalsIgnoreCase("GET BOOKS"))){
+                if ((addCard.getText().toString().equalsIgnoreCase("GET BOOKS"))) {
                     final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
                     View dialog = getLayoutInflater().inflate(R.layout.get_books_layout, null);
                     alertDialogBuilder.setView(dialog);
@@ -87,12 +88,15 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
                     usePromoDialog.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            new PromoCodeJSON(getApplicationContext(), promoCode.getText().toString(), new PromoCodeResultHolder() {
+                            new PromoCodeJSON(getApplicationContext(), content.get(0), promoCode.getText().toString(), new PromoCodeResultHolder() {
                                 @Override
                                 public void result(String status) {
-                                    if (status.equals("false")) {
+                                    if (status.equals("true")) {
+                                        Toast.makeText(getApplicationContext(), "Code Matched Successfully", Toast.LENGTH_SHORT).show();
                                         alertDialog.dismiss();
-                                        new DownloadFileManager(BookDetail.this,content.get(1),content.get(2),content.get(3)).execute();
+                                        new DownloadFileManager(BookDetail.this, content.get(1), content.get(2), content.get(3)).execute();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "Sorry, Invalid Promo Code", Toast.LENGTH_LONG).show();
                                     }
                                 }
                             }).postJsonValue();
@@ -107,8 +111,8 @@ public class BookDetail extends AppCompatActivity implements View.OnClickListene
                         }
                     });
 
-                }else{
-                    new DownloadFileManager(BookDetail.this,content.get(1),content.get(2),content.get(3)).execute();
+                } else {
+                    new DownloadFileManager(BookDetail.this, content.get(1), content.get(2), content.get(3)).execute();
                 }
 
                 /*

@@ -18,7 +18,7 @@ public class DownloadFileManager extends AsyncTask<Void, Void, Void> {
     private Context context;
     private ProgressDialog progressDialog;
     private String imagePath, bookPath, bookName;
-
+    private boolean downloadhecker=false;
     public DownloadFileManager(Context context, String bookName, String imagePath, String bookPath) {
         this.context = context;
         //this is done to filter the path in imagepath and bookpath
@@ -49,7 +49,11 @@ public class DownloadFileManager extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        progressDialog.dismiss();
+        if(downloadhecker){
+            Toast.makeText(context, "Already Downloaded,see in my books list section", Toast.LENGTH_LONG).show();
+        }
+            progressDialog.dismiss();
+
     }
 
     public void prepareRootFolder() {
@@ -58,11 +62,10 @@ public class DownloadFileManager extends AsyncTask<Void, Void, Void> {
         boolean success = true;
         if (!folder.exists()) {
             success = folder.mkdir();
+            downloadhecker=false;
         } else {
-            if (folder.listFiles().length < 2) {
-                Toast.makeText(context, "Already Downloaded", Toast.LENGTH_LONG).show();
-                return;
-            }
+            downloadhecker=true;
+            return;
         }
         if (success) {
             downloadImage();
