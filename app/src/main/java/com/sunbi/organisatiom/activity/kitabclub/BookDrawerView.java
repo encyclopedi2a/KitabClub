@@ -1,70 +1,64 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
-import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.GridView;
 import android.widget.TextView;
 
-import com.sunbi.organisatiom.activity.kitabclub.adapters.CustomMyBooksListAdapter;
+import com.sunbi.organisatiom.activity.kitabclub.adapters.BookDrawerViewGridAdpater;
 import com.sunbi.organisatiom.activity.kitabclub.classes.PurchaseBookList;
 import com.sunbi.organisatiom.activity.kitabclub.interfaces.MyBooksInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyBooks extends AppCompatActivity implements ListView.OnItemClickListener {
-    private ListView listView;
-    private static ArrayList<String> bookName;
-    private static ArrayList<String> bookPath;
+public class BookDrawerView extends AppCompatActivity {
+    private GridView bookDrwerView;
     private static ArrayList<String> imagePath;
+    private static ArrayList<String> bookPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_books);
+        setContentView(R.layout.activity_book_drawer_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(getResources().getColor(R.color.buttonColor));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         TextView titleText = (TextView) findViewById(R.id.titletext);
-        titleText.setText("My Books");
-        listView = (ListView) findViewById(R.id.listView);
+        titleText.setText("Book List");
+        titleText.setTypeface(null, Typeface.BOLD);
+        bookDrwerView = (GridView) findViewById(R.id.bookDrawerView);
         List<String> mAppList = new PurchaseBookList(getApplicationContext(), new MyBooksInterface() {
             @Override
             public void bookName(ArrayList<String> bookName) {
-                MyBooks.bookName = bookName;
             }
 
             @Override
             public void bookPath(ArrayList<String> bookPath) {
-                MyBooks.bookPath = bookPath;
+                BookDrawerView.bookPath=bookPath;
             }
 
             @Override
             public void imagePath(ArrayList<String> imagePath) {
-                MyBooks.imagePath=imagePath;
+                BookDrawerView.imagePath = imagePath;
             }
         }).searchFolderRecursive();
-        CustomMyBooksListAdapter adapter = new CustomMyBooksListAdapter(bookName, bookPath,imagePath,getApplicationContext());
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
+            BookDrawerViewGridAdpater gridAdpater = new BookDrawerViewGridAdpater(this, imagePath, bookPath);
+            bookDrwerView.setAdapter(gridAdpater);
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_book_sub_category, menu);
+        getMenuInflater().inflate(R.menu.menu_book_list, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -78,14 +72,6 @@ public class MyBooks extends AppCompatActivity implements ListView.OnItemClickLi
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, TableContent.class);
-        intent.putExtra("bookPath",bookPath.get(position).toString());
-        startActivity(intent);
     }
 }

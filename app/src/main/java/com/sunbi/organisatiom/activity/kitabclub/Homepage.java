@@ -57,21 +57,25 @@ import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionManager;
 import com.sunbi.organisatiom.activity.kitabclub.fragments.About;
 import com.sunbi.organisatiom.activity.kitabclub.interfaces.LatestAdditionInterface;
 import com.sunbi.organisatiom.activity.kitabclub.json.LatestAdditionJSON;
+import com.sunbi.organisatiom.activity.kitabclub.models.GridRow;
 import com.sunbi.organisatiom.activity.kitabclub.models.ListItem;
+import com.sunbi.organisatiom.activity.kitabclub.sqlitedatabase.PushNotificationData;
 
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+/*https://www.youtube.com/watch?v=CKLB6ihKDVQ*/
 public class Homepage extends AppCompatActivity implements View.OnClickListener, ListView.OnItemClickListener {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private TextView username, titleText, profileName, profileEmail;
-    private LinearLayout bookList, myBooks,contentFrame;
-    private ImageView logOut, faceBook, messages;
+    private LinearLayout bookList, myBooks, contentFrame;
+    private ImageView logOut, faceBook, messages, pushNotification;
     private CircularImageView profilePicture;
     private Toolbar toolbar;
     private SimpleFacebook mSimpleFacebook;
@@ -83,6 +87,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
     private EditText name, email, description;
     private GoogleCloudMessaging gcm;
     private String regid;
+    private TextView countCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +106,9 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         setLatestAdditionBook(bookContainer);
         animateLatestAdditionBook();
         initialiseListener();
-        setFacebookProfile();
+        //setting the push notification total count
+        countCart.setText(String.valueOf(new PushNotificationData(getApplicationContext()).countDataEntryFromDataBase()));
+        // setFacebookProfile();
         if (checkPlayServices()) {
             getRegId();
         }
@@ -112,7 +119,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
     private void initialiseLayout() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        contentFrame=(LinearLayout)findViewById(R.id.content_frame);
+        contentFrame = (LinearLayout) findViewById(R.id.content_frame);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         titleText = (TextView) findViewById(R.id.titletext);
         username = (TextView) findViewById(R.id.username);
@@ -133,6 +140,8 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         name = (EditText) findViewById(R.id.name);
         email = (EditText) findViewById(R.id.email);
         description = (EditText) findViewById(R.id.description);
+        pushNotification = (ImageView) findViewById(R.id.push_notification);
+        countCart = (TextView) findViewById(R.id.countcart);
     }
 
 
@@ -154,6 +163,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         myBooks.setOnClickListener(this);
         mDrawerList.setOnItemClickListener(this);
         sendMail.setOnClickListener(this);
+        pushNotification.setOnClickListener(this);
     }
 
     private void prepareFacebookDrawer() {
@@ -252,6 +262,8 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         super.onResume();
         mSimpleFacebook = SimpleFacebook.getInstance(this);
         checkPlayServices();
+        countCart.setText(String.valueOf(new PushNotificationData(getApplicationContext()).countDataEntryFromDataBase()));
+
     }
 
     @Override
@@ -264,9 +276,8 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
 
         new LatestAdditionJSON(getApplicationContext(), new LatestAdditionInterface() {
             @Override
-            public void result(List<String> imagePathContainer) {
-                for (String imagePath : imagePathContainer) {
-                    Log.i("Image Path",imagePath);
+            public void result(List<String> imagePathContainer, final List<GridRow> row) {
+                for (int i = 0; i < imagePathContainer.size(); i++) {
                     final ImageView imageView = new ImageView(Homepage.this);
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
                     lp.gravity = Gravity.CENTER;
@@ -283,8 +294,29 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
                     imageView.getLayoutParams().height = bookContainer.getHeight() - 20;
                     imageView.getLayoutParams().width = 150;
                     imageView.requestLayout();
+                    GridRow gridRow = row.get(i);
+                    final ArrayList<String> parameters = new ArrayList<>();
+                    parameters.add(gridRow.getId());
+                    Log.d("ID check", gridRow.getId());
+                    parameters.add(gridRow.getName());
+                    parameters.add(gridRow.getImage_path());
+                    parameters.add(gridRow.getBookPath());
+                    parameters.add(gridRow.getAuthorName());
+                    parameters.add(gridRow.getPrice());
+                    parameters.add(gridRow.getDiscount());
+                    parameters.add(gridRow.getType());
+                    parameters.add(gridRow.getDescription());
+                    parameters.add(gridRow.getCategory_id());
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Homepage.this, BookDetail.class);
+                            intent.putStringArrayListExtra("parameters", parameters);
+                            startActivity(intent);
+                        }
+                    });
                     Picasso.with(getApplicationContext())
-                            .load(imagePath)
+                            .load(gridRow.getImage_path())
                             .into(imageView);
                     bookContainer.addView(imageView);
                 }
@@ -320,15 +352,15 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bookList:
-                if(new ConnectionManager(getApplicationContext()).isConnectionToInternet()) {
+                if (new ConnectionManager(getApplicationContext()).isConnectionToInternet()) {
                     Intent intent = new Intent(Homepage.this, BookCatagories.class);
                     startActivity(intent);
-                }else{
-                    Toast.makeText(this,"No internet connection",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "No internet connection", Toast.LENGTH_LONG).show();
                 }
                 break;
             case R.id.mybooks:
-                Intent mybooksIntent = new Intent(Homepage.this, MyBooks.class);
+                Intent mybooksIntent = new Intent(Homepage.this, BookDrawerView.class);
                 startActivity(mybooksIntent);
                 break;
             case R.id.messages:
@@ -348,6 +380,10 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
                 emails.putExtra(Intent.EXTRA_TEXT, description.getText().toString());
                 emails.setType("message/rfc822");
                 startActivity(Intent.createChooser(emails, "Choose an Email client :"));
+                break;
+            case R.id.push_notification:
+                Intent pushNotification = new Intent(Homepage.this, PushNotification.class);
+                startActivity(pushNotification);
                 break;
         }
     }
@@ -464,6 +500,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
                 GooglePlayServicesUtil.getErrorDialog(resultCode, this, GooglePlayServicesUtil.GOOGLE_PLAY_SERVICES_VERSION_CODE).show();
+                Log.i("Device Support", "This device is supported");
             } else {
                 Log.i("Device Support", "This device is not supported.");
                 finish();
@@ -472,15 +509,15 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
         }
         return true;
     }
-    private void prepaeAppfolderInSDCard(){
+
+    private void prepaeAppfolderInSDCard() {
         File folder = new File(Environment.getExternalStorageDirectory() + "/kitabclub");
         boolean success = true;
         if (!folder.exists()) {
             success = folder.mkdir();
         }
-        if(!success){
-            Toast.makeText(this,"Failed to make a app folder",Toast.LENGTH_LONG).show();
+        if (!success) {
+            Toast.makeText(this, "Failed to make a app folder", Toast.LENGTH_LONG).show();
         }
     }
-
 }

@@ -9,6 +9,24 @@ public class SQLiteData {
     private String bookImage;
     private String bookQuantity;
     private String bookPrice;
+    private String title;
+    private String notification;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getNotification() {
+        return notification;
+    }
+
+    public void setNotification(String notification) {
+        this.notification = notification;
+    }
 
     public Integer getId() {
         return id;
