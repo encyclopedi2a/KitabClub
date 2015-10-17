@@ -281,14 +281,14 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener,
                     final ImageView imageView = new ImageView(Homepage.this);
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
                     lp.gravity = Gravity.CENTER;
-                    int screenSize = getResources().getConfiguration().screenLayout &
-                            Configuration.SCREENLAYOUT_SIZE_MASK;
-                    switch (screenSize) {
-                        case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+//                    int screenSize = getResources().getConfiguration().screenLayout &
+//                            Configuration.SCREENLAYOUT_SIZE_MASK;
+//                    switch (screenSize) {
+//                        case Configuration.SCREENLAYOUT_SIZE_NORMAL:
                             lp.setMargins(15, 3, 5, 3);
-                            break;
-                        default:
-                    }
+//                            break;
+//                        default:
+//                    }
                     imageView.setLayoutParams(lp);
                     imageView.setAdjustViewBounds(true);
                     imageView.getLayoutParams().height = bookContainer.getHeight() - 20;

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,14 +9,35 @@
     tools:context="com.sunbi.organisatiom.activity.kitabclub.PushNotification">
 
     <include layout="@layout/toolbar" />
-<ListView
-    android:id="@+id/push_notification"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="10dp"
-    android:background="#d3d3d3"
-    android:divider="#d3d3d3"
-    android:dividerHeight="10dp"
-    >
-</ListView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/push_notification"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:background="#d3d3d3"
+            android:divider="#d3d3d3"
+            android:dividerHeight="10dp"
+            android:scrollbars="none"></ListView>
+
+        <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:layout_centerInParent="true"
+            app:mlpb_arrow_height="5dp"
+            app:mlpb_arrow_width="10dp"
+            app:mlpb_enable_circle_background="false"
+            app:mlpb_progress_color="@color/buttonColor"
+            app:mlpb_progress_stoke_width="5dp"
+            app:mlpb_progress_text_color="#ffffff"
+            app:mlpb_progress_text_size="0dip"
+            app:mlpb_progress_text_visibility="visible"
+            app:mlpb_show_arrow="false" />
+
+    </RelativeLayout>
 </LinearLayout>

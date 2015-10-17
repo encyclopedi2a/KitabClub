@@ -55,10 +55,11 @@ public class PushNotificationData extends SQLiteOpenHelper {
     public void addRecord(SQLiteData data) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(ID,data.getId());
         values.put(TITLE,data.getTitle()); // book Name
         values.put(NOTIFICATION,data.getNotification()); // book image
         // Inserting Row
-        db.insert(TABLE_NAME, null, values);
+        db.insertWithOnConflict(TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
         db.close(); // Closing database connection
     }
 
@@ -68,7 +69,7 @@ public class PushNotificationData extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(countQuery, null);
         int cnt = cursor.getCount();
         cursor.close();
-        return cnt/2;
+        return cnt;
     }
     // Getting All Data
     public List<SQLiteData> getAllData() {

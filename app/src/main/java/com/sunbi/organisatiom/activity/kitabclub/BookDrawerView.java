@@ -41,6 +41,7 @@ public class BookDrawerView extends AppCompatActivity {
             @Override
             public void bookPath(ArrayList<String> bookPath) {
                 BookDrawerView.bookPath=bookPath;
+
             }
 
             @Override

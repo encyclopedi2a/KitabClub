@@ -8,15 +8,13 @@
     tools:context="com.sunbi.organisatiom.activity.kitabclub.BookDrawerView">
 
     <include layout="@layout/toolbar" />
-
-    <GridView
-        android:id="@+id/bookDrawerView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:numColumns="3"
-        android:scrollbars="none"
-        android:stretchMode="columnWidth"
-         />
+        <GridView
+            android:id="@+id/bookDrawerView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:numColumns="3"
+            android:scrollbars="none"
+            android:stretchMode="columnWidth" />
 </LinearLayout>

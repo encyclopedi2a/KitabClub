@@ -12,8 +12,6 @@ import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.sunbi.organisatiom.activity.kitabclub.PushNotification;
 import com.sunbi.organisatiom.activity.kitabclub.R;
-import com.sunbi.organisatiom.activity.kitabclub.models.SQLiteData;
-import com.sunbi.organisatiom.activity.kitabclub.sqlitedatabase.PushNotificationData;
 
 /**
  * Created by gokarna on 8/28/15.
@@ -47,10 +45,6 @@ public class GcmMessageHandler extends IntentService {
         Log.i("GCM",
                 "Received : Message (" + messageType + ")  "
                         + extras.getString("message"));
-        SQLiteData data=new SQLiteData();
-        data.setTitle("<b>"+title+"</b>");
-        data.setNotification(message);
-        new PushNotificationData(getApplicationContext()).addRecord(data);
         Intent intentCalled = new Intent(this, PushNotification.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0,
                 intentCalled, 0);

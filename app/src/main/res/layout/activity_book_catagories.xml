@@ -19,11 +19,11 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:horizontalSpacing="8dp"
+            android:horizontalSpacing="10dp"
             android:numColumns="2"
             android:scrollbars="none"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="8dp"></GridView>
+            android:verticalSpacing="10dp"></GridView>
 
         <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
             android:id="@+id/progressBar"

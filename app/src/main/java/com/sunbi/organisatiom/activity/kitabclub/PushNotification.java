@@ -1,6 +1,5 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,22 +13,22 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.sunbi.organisatiom.activity.kitabclub.connection.ConnectionManager;
+import com.sunbi.organisatiom.activity.kitabclub.json.PushNotificationJSON;
 import com.sunbi.organisatiom.activity.kitabclub.models.SQLiteData;
 import com.sunbi.organisatiom.activity.kitabclub.sqlitedatabase.PushNotificationData;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 public class PushNotification extends AppCompatActivity {
     private ListView pushNotification;
-
+    private CircleProgressBar progressBar;
+    private List<SQLiteData> data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_notification);
-        Intent intent = getIntent();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(getResources().getColor(R.color.buttonColor));
         setSupportActionBar(toolbar);
@@ -37,26 +36,27 @@ public class PushNotification extends AppCompatActivity {
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         TextView titleText = (TextView) findViewById(R.id.titletext);
         titleText.setText("Push Notifications");
-        List<SQLiteData> messageList = new PushNotificationData(getApplicationContext()).getAllData();
-        Set<String> hashLinkSet = new LinkedHashSet<>();
-        Set<String> titleLinkSet=new LinkedHashSet<>();
-        for (int i = 0; i < messageList.size(); i++) {
-            SQLiteData sqLiteData = messageList.get(i);
-            hashLinkSet.add(sqLiteData.getNotification());
-            titleLinkSet.add(sqLiteData.getTitle());
+        //calling for the json from server to get the push notification data
+        progressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        if (new ConnectionManager(this).isConnectionToInternet()) {
+            new PushNotificationJSON(this,progressBar).makeJsonArrayRequest();
+            data=new PushNotificationData(getApplicationContext()).getAllData();
+        } else {
+            progressBar.setVisibility(View.INVISIBLE);
+            data=new PushNotificationData(getApplicationContext()).getAllData();
         }
-        final ArrayList<String> values = new ArrayList<>(hashLinkSet);
-        final ArrayList<String> title=new ArrayList<>(titleLinkSet);
         pushNotification = (ListView) findViewById(R.id.push_notification);
-        ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,values){
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, data) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                View view=super.getView(position,convertView,parent);
-                TextView textView=(TextView)view.findViewById(android.R.id.text1);
-                textView.setText(Html.fromHtml("<b>"+title.get(position)+"</b>"+"<br>"+values.get(position)));
-                textView.setBackgroundColor(Color.parseColor("#ffffff"));
-                textView.setTextSize(17);
-                textView.setPadding(12,12,12,12);
+                View view = super.getView(position, convertView, parent);
+                SQLiteData sqLiteData=data.get(position);
+                TextView textView = (TextView) view.findViewById(android.R.id.text1);
+                textView.setPadding(10, 10, 10, 10);
+                textView.setBackgroundColor(Color.WHITE);
+                textView.setTag(String .valueOf(sqLiteData.getId()));
+                textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.recycle, 0);
+                textView.setText(Html.fromHtml(sqLiteData.getTitle()+"<br>"+"------------------------------------------"+"<br>"+sqLiteData.getNotification()));
                 return view;
             }
         };

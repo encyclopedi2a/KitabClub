@@ -1,9 +1,9 @@
 package com.sunbi.organisatiom.activity.kitabclub;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,7 +34,6 @@ import nl.siegmann.epublib.epub.EpubReader;
 import nl.siegmann.epublib.service.MediatypeService;
 
 public class TableContent extends ListActivity {
-    private LayoutInflater inflater;
     private List<RowData> contentDetails;
     private Book book;
     private String bookPath;
@@ -44,7 +43,6 @@ public class TableContent extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list);
         bookPath = getIntent().getStringExtra("bookPath");
-        inflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         contentDetails = new ArrayList<>();
 
         try {
@@ -71,45 +69,28 @@ public class TableContent extends ListActivity {
             super(context, resource, textViewResourceId, objects);
         }
 
-        private class ViewHolder {
-            private View row;
-            private TextView titleHolder = null;
-
-            public ViewHolder(View row) {
-                super();
-                this.row = row;
-            }
-
-            public TextView getTitle() {
-                if (null == titleHolder)
-                    titleHolder = (TextView) row.findViewById(R.id.title);
-                return titleHolder;
-            }
-        }
-
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder = null;
-            TextView title = null;
             RowData rowData = getItem(position);
             if (null == convertView) {
+                LayoutInflater inflater=(LayoutInflater)TableContent.this.getSystemService(TableContent.this.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.list, null);
-                holder = new ViewHolder(convertView);
-                convertView.setTag(holder);
             }
-            holder = (ViewHolder) convertView.getTag();
-            title = holder.getTitle();
+            TextView title=(TextView)convertView.findViewById(R.id.title);
             title.setText(rowData.getTitle());
-            title.setBackgroundResource(R.drawable.partition);
             title.setGravity(Gravity.CENTER_VERTICAL);
             switch (position) {
                 case 0:
                     title.setBackgroundColor(getResources().getColor(R.color.buttonColor));
-                    title.setPadding(0, 30, 0, 30);
+                    title.setPadding(10, 30, 0, 30);
                     title.setTextSize(20);
                     title.setTypeface(null, Typeface.BOLD);
                     title.setGravity(Gravity.CENTER);
                     break;
+                default:
+                    title.setTextColor(Color.parseColor("#b3000000"));
+                    title.setPadding(10, 30, 0, 30);
+
             }
             return convertView;
         }
