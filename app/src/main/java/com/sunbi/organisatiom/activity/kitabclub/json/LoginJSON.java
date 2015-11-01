@@ -1,6 +1,8 @@
 package com.sunbi.organisatiom.activity.kitabclub.json;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -29,12 +31,16 @@ public class LoginJSON {
     private StringRequest signInRequest;
     private CircularProgressButton signUpButton;
     private LoginInterface loginInterface;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     public LoginJSON(Context context, SignUpDTO signUpDTO, CircularProgressButton signUpButton, LoginInterface loginInterface) {
         this.context = context;
         this.signUpDTO = signUpDTO;
         this.signUpButton = signUpButton;
         this.loginInterface = loginInterface;
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        editor = preferences.edit();
     }
 
     String tag_json_obj = "json_obj_req";
@@ -52,11 +58,12 @@ public class LoginJSON {
                     final String status = responseValue.getString("status");
                     final String message = responseValue.getString("message");
                     Log.d("Login Response", status);
-
                     signUpButton.setProgress(100);
 
                     if (loginInterface != null) {
                         if (status.equals("true") && message.equals("login successfull")) {
+                            Log.d("Message type:",responseValue.getString("user_id"));
+                            editor.putString("userId", responseValue.getString("user_id"));
                             loginInterface.result(true);
                         } else {
                             loginInterface.result(false);
@@ -88,3 +95,5 @@ public class LoginJSON {
 
     }
 }
+
+
